@@ -1,0 +1,183 @@
+---
+title: "constitution"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 2
+---
+
+# Cal Ripken Junior Memorial League Constitution {.unlisted .unnumbered}
+
+*Last Update, November 2026*
+
+
+## Basics
+
+The RJML consists of 24 teams. The Organization is divided into 2 leagues, with each league having 2 6-team divisions. The divisions are realigned each season based on records from the previous season. Teams are ranked from 1-24 in order of the most wins.  The divisions are then grouped as follows:  (1,5,9,13,17,21), (2,6,10,14,18,22), (3,7,11,15,19,23), (4,8,12,16,20,24). The results are reported back to the league statistician. Results are then sent back to each manager on a monthly basis. The DH is used in the RJML whenever the universal DH is used in MLB.
+
+#### What’s required?
+
+Each team must have the most current version of the DMB computer game (Version 12) as well as the latest season disk. Team owners are also responsible to download and install any current patch available.
+
+#### Dues 
+No League fee is required
+
+## League Play
+
+Each home team is responsible for playing all their home games and send in all results to the league statistician.  Each away team is responsible in sending the commissioner a copy of their manager profile.  The commissioner will then send out a "play-game" database with all of the MP’s loaded and ready to go.  Generally, manager profiles are due to the commissioner on the 1st of every month.  Each home team then has until the 20th of every month to email the results back to the.  Please note, make sure manager profiles you send out are accurate.  Once you send the profile to the commissioner, it should be final.  The system is referred to as "load and go."  All the home team should have to do is download and install the 'play-game' database, set all aspects of the visitor manager to computer and then play the games.  It is recommended that all depth charts be set to "game by game" and not "track starts".  Setting the depth chart to track starts may result in an unwanted lineup.  If you have play time percentages in your depth chart, a starter may not start.  Make sure that the play time percentages are what you want set before you send it out.  If a manager neglects to send the commissioner a copy of his manager profile by the first of the month, the commissioner will generate an MP for that team for that month on the first offense.  For future offenses, the previous month's MP will be used, and the manager will have to live with any usage penalties that result.  Teams may use a different MP to play their home games than the one they submitted for their away games.
+
+## Commissioner
+
+The Commissioner is responsible for awarding and revoking RJML franchises.  The commissioner, in conjunction with the Board of Trustees, are responsible for resolving any disputes and have complete and final authority in all matters.
+
+## Schedule
+
+The regular season starts April 1st and ends on September 25th.  Each team will play 160 games (32 5-games series).  The Diamond Mind computer manager will be used for visiting teams.  Teams may play h2h if both managers agree to it.  As stated before, the manager profile for visiting teams must reach the commissioner by the 1st of each month. All results must be sent to the league statistician by the 20th of each month. 
+
+## Rosters
+
+Team Rosters will be set at 40 players.  No uncarded players may be on a RJML Roster. The only exception to this rule is if a player was previously drafted to a RJML roster then that player may be retained for the following season but counts towards your roster count of 40 players.  Teams must have sufficient batting and pitching resources to cover the 160 game schedule.  Sufficient resources include 160 starts, at least 600 at bats per position, and about 600 innings of relief pitching.  Of the 40 players on your roster, 26 are designated as active for each series from April through August.  Rosters may expand to 40 players in September. By the end of December, all teams must cut down to 27 players.  The players released will be available in the next year’s rookie/free agent draft.  Any team meeting the minimum resources above will be allowed to request free agents during the season to avoid overuse penalties.  Free agents may only be added between months of gameplay (the 21st to the 1st day of the next month). Free agents may not be retained for the following year.  If your roster is at 40, a player must be dropped to add the free agent.  Free agent requests must be submitted to the entire league (You won’t be allowed to add a player if you have players on your roster who can fill the same void). 
+
+## Player Limits
+
+* All batters are limited to a + 5% over usage limit of their actual plate appearances (the listed percentage in the game)
+
+* Batters with 600+ plate appearances have unlimited usage.
+
+* All starting pitchers are limited to actual starts.
+
+* All relief pitchers are limited to a +5% over usage limit of their actual batters faced.
+
+* A pitcher with no actual starts may not start a game.  A pitcher with actual starts, but no starter rating (opener), may be used as a starter, but is limited to the batters faced limitations for relievers.
+
+* A pitcher with no relief appearances may not be used in relief in a game.
+
+* A pitcher with both reliever and starter ratings will be subject to both usage restrictions for pitchers. The exception would be a dual pitcher used only as a starter in DMB that goes over 105% of his actual batters faced.  This pitcher would not be penalized, unless he exceeded his actual number of starts.
+
+* Batters with 50 or more actual at bats must be used for at least 50% of their actual plate appearances or they will be released from their team and be made available for the next years rookie draft.  Batters with 50 or more actual at bats who are not used for at least 50% of their actual plate appearances during the regular season may not be traded.  *This rule is waived if a new manager takes over the team after the season.*
+
+* Pitchers with 4 or more actual starts, and a starter rating, must be used for 50% of their actual starts or they will be released from their team and be made available for the next year’s rookie draft.  Pitchers with 4 or more actual starts, and a starter rating, who are not used for at least 50% of their actual starts during the regular season may not be traded.  *This rule is waived for new ownership.*
+
+* Pitchers that have both starter and reliever ratings must be used for either 50% of their actual batters faced or 50% of their actual starts (4 or more), or they will be released from their team and be made available for the next year's rookie draft. *This rule is waived if a new manager takes over the team after the season.*
+
+<!-- old language: Pitchers that have both starter and reliever ratings must be used for 50% of their actual starts (4 or more) or they will be released from their team and be made available for the next years rookie draft.  Pitchers with starter and reliever ratings who are not used for at least 50% of their actual starts (4 or more) during the regular season may not be traded.  **This rule is waived if a new manager takes over the team after the season.** -->
+
+## Draft
+
+The RJML draft will get underway the first week in January.  The draft will be conducted by email on a pick-by-pick basis according to a schedule involving one hour time slots  The number of picks per day will vary, as the schedule tries to accomodate each manager and the time zone in which they reside.  Please see the Draft page of the website to see the most up to date information 1for the draft. Since we are freezing 27 players only 13 rounds will be necessary to complete the draft.  If a team has less than 40 players after the 13 rounds, they may add players on a first come, first served basis by announcing their remaining additions to the entire league once the final pick has been announced.  Teams that reach 40 players during the draft and have picks remaining may pass for the remainder of the draft or drop a player in order to draft another.  The draft order will go in reverse order of record and will be a straight draft for all rounds.  The worst three teams will enter in a NBA draft style lottery to determine the #1 overall pick.  The worst team will get 3 chances, second worst 2 chances, and the 3rd worst 1 chance.  The team that comes out of the hat first will receive the1st pick, the second name, 2nd pick and the 3rd name will receive the #3 pick in the draft.  Ties will be broken using the following in order with the earlier pick going to: (1)fewest penalty games, (2)worst away games record, (3)worst head-to-head record, (4)worst run differential, (5)coin flip.
+
+## Series Play
+
+Each Visiting team sends the commissioner his completed manager profile by the 1st of each month
+
+The home team installs the ‘play game’ database into the RJML database. (Transfer/install league database)
+
+The home team manager resets player usage and injuries for his team before each series is played.
+
+After completion of all home games for the month, the home manager exports the statistics back to the commissioner by the 20th of each month. (Transfer /export statistics)
+
+The Commissioner will post a new RJML database on the 2nd and 21st day of each month
+
+Managers are not to play any practice games in the RJML database!!!!!
+
+Managers are not to play ahead in any games using the RJML database!!!!
+
+If any manager has problems importing/transferring please do not hesitate to ask.  After you do it the first couple of times it’s a breeze.
+
+## Playoffs
+
+Each playoff series is a 7-game series.  Days off will be between games 2 and 3 and 5 and 6.  Injuries and player fatigue do not carry over from one playoff series to the next.  The first round of playoffs will be the top teams in each division and the two teams with the best record that did not win their division.  The second round of the playoffs will be division playoff winners and finally the last round will be the World Series between League Pennant winners. Playoff games must either be played head to head online, by the home team manager, or simulated by a neutral manager.  Game 7 cannot be played by the home team manager.  The league champion will be awarded a free copy of the new player disk when it is released.
+
+ 
+
+ 
+
+## Playoff Player Usage
+
+To be eligible to make a playoff start, a pitcher must have at least made 10 or more RJML starts during the regular season. The chart below determines how many starts per series that starting pitchers are eligible to make.
+
+* 10-14 RJML Starts= 1 playoff **appearance** per series
+
+* 15-19 RJML Starts= 2 playoff **appearances** per series
+
+* 20+ RJML Starts= 3 playoff **appearances** per series
+
+Starting pitchers need at least 2 games rest between **starts**. If that pitcher is still tired he must pitch at that level of tiredness.
+
+Batters with 600+ plate appearances are allowed an unlimited amount of at bats per series.
+
+Batters and relief pitchers will be limited to 6% of their real life plate appearances and batters faced per series.  A starter may not appear in relief if he is at or above the 6% batters faced limit.  If he is only used as a starter, the batters faced limit does not apply.
+
+Players that reach their 6% limit in a series are permitted to finish the game they entered, regardless of usage.
+
+Any players that are over-used during the regular season will have their post-season playing time modified as follows.
+
+* Starting pitchers - Each start over his actual total reduces his eligible playoff starts by one. For example, a pitcher with 30 actual starts is given 32 starts during the DMB season. Instead of being eligible for 3 starts in a series, he would only be allowed one start.
+
+* Batters and RP 
+  - 106-110% of actual PA or BF may not appear in games 1 or 2.
+  - 111-115% of actual PA or BF may not appear in games 1-4.
+  - over 115% of actual PA or BF is not eligible for any games.
+
+Players must be on the roster the entire series in order to appear in a game.
+
+For every extra inning game in a series, the maximum % for each batter and reliever goes up by one percent.  For example, in a series with 2 extra inning games, the maximum usage increases to 8%.
+
+ 
+
+## Trading
+
+All trades must be approved by the Commissioner.
+
+Both managers must report trades to the Commissioner before approved.
+
+The off-season trading Period is from November 1st to March 1st.
+
+During the season, trading will be allowed (including picks for the upcoming draft) from the 21st of each month to the 1st day of the following month until August 1st.  Players involved in trades during the season must adhere to all usage limits for their season totals, not just for their new team.
+
+Only draft choices for the upcoming draft may be traded.
+
+If during any season, a manager trades away multiple draft picks and drops out of the league prior to the completion of the next draft, the in-season trading period will be removed permanently.
+
+## Penalties
+
+For each 5% total overuse of all the players added together, a team will have 1 game added to their victory total (1%-5% over = 1 game, 6%-10% over = 2 games, etc).  For example, one team has a batter at 107%, another batter at 109%, and a reliever at 111%, the team would be at 12% overuse overall, resulting in a 3 game penalty. 
+
+For each game started of overuse per pitcher a team will have 9 games added to their victory total with no exceptions.
+
+<!-- Pitchers with both starter and relief ratings must follow the usage restrictions for both starters and relievers.  For example, suppose a pitcher had 10 actual starts and 30 total appearances is used in only 11 games, but all starts.  This would result in a 9 game penalty.  If the pitcher pitched in 29 games, but only started 4 games, he would become a free agent due to underusage.  Pitchers with actual starts, but no starter rating (openers) may be used as a starter, but cannot exceed his actual starts or 105% of his actual batters faced.  A pitcher that is not rated as a starter cannot be lost due to underusage.-->
+
+For every two penalty games accrued, the team's first round draft pick will drop one spot, with a maximum drop of 23 spots.  Penalties will be assessed beginning with the team picking 24th and ending with the team picking 1st.  Since some teams may drop less than teams that are above them, the net result of where a team picks may not reflect the same drop in position as the penalties would indicate.  For example, if a team that would normally have the 5th pick in the draft accrues 20 penalty games, his pick would drop to the 15th pick in round one.  If the team with the 4th pick drops 22 spots, the team that started with the 5th pick essentially moves back up a spot..
+
+For round 2, the draft order goes from the team with the fewest adjusted wins (actual wins + penalty games) to the team with the greatest number of adjusted wins.  Rounds 3-13 will be strictly based on the actual number of wins.
+
+All penalties are null and void if a manager resigns or is removed from the league.  New managers are not penalized for the actions of a previous manager.
+
+## Late Reporting
+
+If a manager fails to meet the deadline for submitting home stats, his home games will be simulated by the commissioner and he will run the risk of playing time penalties.  If the 'play-game' database was not installed prior to playing the home games for that month, the manager will have the option of re-playing the games until the 20th of the month, or having the games simulated.
+
+## Board of Trustees
+
+The Board of Trustees are made up of the Commissioner and one manager from each division (the manager that has been in the league the longest) creating a membership of 5 trustees. The Trustees sole duty is to vote on certain issues that arise during the course of the season or off-season that are not part of the Constitution. The trustees will also vote on trades that are deemed totally unfair to the rest of the League. Should a Board Member become involved in the dispute, he/she shall not have a vote on matter at hand. Should the board vote in a tie due to that possibility, a league wide vote of all 24 members will take place on that issue.
+
+## Odds and Ends
+
+* The Ripken Junior Memorial League is a DH League whenever MLB uses a universal DH.
+
+* Era setting (A or N) will be determined by coin flip
+
+* A player rated in the OF may play any OF position
+
+* Other than above, a player may only play a game at a position he is rated at. A player only rated at DH can play his last position played on a Diamond Mind disk taking into consideration he will not have a rating at that position.
+
+* Managers must be aware that they will have to take the defensive consequences of playing players not rated at positions.
+
+* Teams can, if they wish, use net meeting to conduct their games.  This is up to the home team if he desires to do so.  If the Visiting team does not wish to play over net meeting and the Home team does, the home team will play using the visitor’s manager profile.
+
+* The tie-break procedure for playoff seeding is as follows: head to head record, then division record, then league record, then road record, then a coin flip.
+
+* The tie-break procedure for draft order is as follows: If two or more teams have the same win total, the team with the fewest game penalties from over usage receives the better draft position; if the game penalties are equal, the team that would have lost the tie-break procedure for playoff seeding receives the better draft position.
+
+ 

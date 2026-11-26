@@ -1,0 +1,8 @@
+---
+title: "MLB Stats"
+output:
+  html_document:
+    toc: false
+---
+
+This page will provide MLB 2027 stats by team, assuming stats exist!

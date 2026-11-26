@@ -1,0 +1,184 @@
+---
+title: "Baseball Roster Depth Chart"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+tm = 'VAN'
+file_hit <- paste0('data/',tm,'_hit.csv')
+file_pit <- paste0('data/',tm,'_pit.csv')
+# Install packages if you don't already have them:
+# install.packages(c("tidyverse", "sportyR"))
+
+library(tidyverse)
+library(sportyR)
+library(kableExtra)
+```
+
+```{r roster-data, echo=F}
+pos_order <- c("c", "1b", "2b", "3b", "ss", "lf", "cf", "rf", "dh")
+
+dc_hit <- read.csv(file_hit) |> 
+  select(Name,Pos,PA,RC27)
+sorted_hit <- dc_hit |> 
+  mutate(Pos = factor(Pos, levels = pos_order)) |> 
+  arrange(desc(PA)) |> 
+  group_by(Pos)
+
+top_2 <- sorted_hit |> 
+  slice(1:2) |> 
+  ungroup()
+other_hit <- sorted_hit |> 
+  slice(-(1:2)) |> 
+  ungroup() |> 
+  arrange(desc(PA))
+dc_hit <- dc_hit |> 
+  mutate(Pos = factor(Pos, levels = pos_order)) |> 
+  arrange(Pos,desc(PA))
+dc_pit <- read.csv(file_pit) |> 
+  select(Name,Pos,GS,BF,RC27)
+dc_sp <- dc_pit |> filter(Pos == 'sp') |> select(-BF) |> arrange(desc(GS)) |> slice(1:6)
+colnames(dc_sp) <- colnames(dc_hit)
+dc_rp <- dc_pit |> filter(Pos != 'sp',BF>=150) |> select(-GS) |> arrange(RC27) |> slice(1:5)
+dc_rp$Pos = 'rp'
+colnames(dc_rp) <- colnames(dc_hit)
+pit_names <- unique(c(dc_rp$Name,dc_sp$Name))
+other_pit <- dc_pit |> filter(!Name %in% pit_names)
+roster <- rbind(top_2,dc_sp,dc_rp)
+```
+
+```{r roster-data2, eval= F}
+# 1. Sample Roster Data (Replace this with read.csv("your_roster.csv"))
+roster <- tibble(
+  Name = c(
+    "J. Realmuto", "G. Stubbs", "R. Marchan",
+    "B. Harper", "K. Clemens",
+    "B. Stott", "E. Sosa",
+    "T. Turner", "W. Merrifield",
+    "A. Bohm", "E. Sosa",
+    "B. Marsh", "C. Pache",
+    "J. Rojas", "D. Dahl",
+    "N. Castellanos", "W. Wilson",
+    "K. Schwarber",
+    "Z. Wheeler", "A. Nola", "R. Suarez", "C. Sanchez", "J. Alvarado"
+  ),
+  Pos = c(
+    "C", "C", "C",
+    "1B", "1B",
+    "2B", "2B",
+    "SS", "SS",
+    "3B", "3B",
+    "LF", "LF",
+    "CF", "CF",
+    "RF", "RF",
+    "DH",
+    "P", "P", "P", "P", "P"
+  ),
+  PA = c(
+    450, 120, 45,
+    580, 95,
+    540, 210,
+    560, 180,
+    590, 150,
+    460, 140,
+    380, 90,
+    610, 85,
+    620,
+    750, 720, 610, 650, 240 # For pitchers, PA represents Batters Faced (BF)
+  ),
+  RC27 = c(
+    5.4, 3.1, 4.2,
+    8.2, 4.5,
+    4.9, 5.1,
+    6.3, 3.4,
+    6.1, 4.8,
+    5.8, 2.9,
+    3.6, 4.0,
+    5.2, 4.7,
+    7.4,
+    2.8, 3.3, 3.1, 3.5, 2.4  # For pitchers, RC27 allowed
+  )
+)
+```
+
+:::: {.colummns}
+
+::: {.column width="75%"
+}
+```{r depth-chart, fig.width=9, fig.height=5,dpi=150}
+# 2. Define X, Y coordinates on the sportyR field (in feet from home plate)
+pos_coords <- tribble(
+  ~Pos, ~x,   ~y,
+  "sp",    0,   80,
+  "rp", -140, 40,
+  "c",    0,  -18,
+  "1b",  110,   110,
+  "2b",  60,  165,
+  "ss", -60,  165,
+  "3b", -110,   110,
+  "lf",-130,  230,
+  "cf",   0,  240,
+  "rf", 130,  230,
+  "dh", 140,   40   # Placed near the first-base dugout
+)
+#pos_coords$x <- pos_coords$x*.8
+pos_coords$y <- pos_coords$y*.8+10
+# 3. Group by position, sort by PA (descending), and build the text box per position
+depth_chart_df <- roster %>%
+  group_by(Pos) %>%
+  mutate(line = sprintf("%s (%d | %.1f)", Name, PA, RC27)) %>%
+  summarise(
+    label = paste0(first(Pos), "\n", paste(line, collapse = "\n")),
+    .groups = "drop"
+  ) %>%
+  inner_join(pos_coords, by = "Pos")
+
+# 4. Draw the baseball field and overlay the depth chart labels
+geom_baseball(league = "MLB",
+                color_updates = list(
+                  #plot_background = "#7CFC00",
+                  infield_grass = "#78a66f"),
+              xlims = c(-190,190),
+              ylims = .8*c(-20, 270)) +
+  geom_label(
+    data = depth_chart_df,
+    aes(x = x, y = y, label = label),
+    size = 2.8,
+    fontface = "bold",
+    fill = alpha("lightgray", 0.90),
+    color = "#1a1a1a",
+    label.padding = unit(0.35, "lines"),
+    label.r = unit(0.2, "lines"),
+    lineheight = 1.15
+  ) +
+  labs(
+    title = paste(tm,"Depth Chart"),
+    subtitle = "(Stats shown: Usage (PA or GS or BF) | RC27)"
+  ) +
+  theme(
+    plot.title = element_text(size = 16, face = "bold", color = 'white',hjust = 0.5, vjust = -0.5),
+    plot.subtitle = element_text(size = 11, color = 'white', hjust = 0.5, vjust = -0.5, margin = margin(b = 10))
+  )
+```
+
+:::
+
+::: {.column width="20%"}
+
+```{r}
+other_hit |> 
+  kbl(format = 'html',
+      caption = "Other Hitters") |> 
+  kable_classic(full_width=F)
+```
+
+```{r}
+other_pit |> 
+  kbl(format = 'html',
+      caption = "Other Pitchers") |> 
+  kable_classic(full_width=F)
+```
+:::
+
+::::

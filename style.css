@@ -1,0 +1,154 @@
+/* Whole document: */
+
+div.main-container {
+  max-width: 90% !important;
+}
+
+.navbar-brand {
+  padding-left: 65px; /* Make room for the image on the left */
+  background-image: url("logos/rjml.png");
+  background-repeat: no-repeat;
+  background-size: 50px 50px; /* Adjust width and height of your logo */
+  background-position: 10px center; /* 10px from the left edge, vertically centered */
+}
+
+/* Tab Pill formatting */
+/* Style all pill tab links */
+.nav-pills > li > a {
+  font-size: 18px;
+  color: black;
+  border-radius: 10px;       /* Adjust for more or less rounding */
+  padding: 8px 12px;         /* Optional: adds a sleek pill shape */
+  margin-right: 5px;         /* Optional: adds spacing between pills */
+  border: 2px solid darkgray;    /* Optional: subtle border for inactive tabs */
+}
+
+/* Style the active pill tab */
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+  border-radius: 10px;
+  background-color: steelblue; /* Optional: custom active color */
+  border-color: black;
+  color: white;
+}
+
+body{
+  font-size: 16px;
+}
+/* Headers */
+h1.title {
+  font-size: 24px;
+  color: DarkGreen;
+}
+h1 { /* Header 1 */
+  font-size: 24px;
+  color: DarkGreen;
+}
+h2 { /* Header 2 */
+    font-size: 22px;
+      color: DarkBlue;
+}
+h3 { /* Header 3 */
+  font-size: 20px;
+  color: darkred;
+}
+code.r{ /* Code block */
+    font-size: 15px;
+}
+
+
+blockquote {
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 15px;
+    border-left: 1px solid #eee;
+    border-color: blue;
+}
+
+/*this prevents the page titles from appearing as a title on the page itself (but will display the title on the browser tab) */
+#header {
+  display: none;
+}
+
+.no-link-underline {
+  text-decoration: none;
+}
+
+/* Apply mega-menu layout ONLY to the 2nd navbar item (adjust number as needed) */
+.navbar-nav > li.dropdown:nth-child(2) > .dropdown-menu {
+  font-size: 18px;
+  width: 750px; /* Adjust width to fit your text */
+  padding: 15px;
+}
+
+/* Activate 4-column grid when the menu is clicked/open */
+.navbar-nav > li.dropdown:nth-child(2).open > .dropdown-menu {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(7, auto); /* 1 header + 6 options per column */
+  grid-auto-flow: column;
+  column-gap: 2px;
+}
+
+/* Hide horizontal dividers so they don't disrupt the grid cells */
+.navbar-nav > li.dropdown:nth-child(2) > .dropdown-menu > .divider {
+  display: none;
+}
+
+/* Style the column headers */
+.navbar-nav > li.dropdown:nth-child(2) > .dropdown-menu > .dropdown-header {
+  font-weight: bold;
+  color: #333;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 2px;
+  padding-left: 3px;
+}
+
+/* Keep the menu single-column on mobile/tablet screens */
+@media (max-width: 767px) {
+  .navbar-nav > li.dropdown:nth-child(2) > .dropdown-menu {
+    width: auto;
+  }
+  .navbar-nav > li.dropdown:nth-child(2).open > .dropdown-menu {
+    display: block;
+  }
+  .navbar-nav > li.dropdown:nth-child(2) > .dropdown-menu > .divider {
+    display: block;
+  }
+}
+
+/* Add boundary box to table */
+/* Wrapper or direct table styling for rounded corners */
+.rounded-table {
+  border-collapse: separate !important;
+  border-spacing: 0;
+  border: 2px solid #2c3e50; /* Solid outer boundary */
+  border-radius: 12px;       /* Rounded corners */
+  overflow: hidden;          /* Clips inner header/cell backgrounds to the rounded corners */
+}
+
+/* Optional: Keep clean inner borders without doubling up on the outer edge */
+.rounded-table th,
+.rounded-table td {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.rounded-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Make flex boxes so side-by-side tables stack vertically if window screen is small */
+.table-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.table-box {
+  flex: 1 1 250px; /* Grow, shrink, and wrap when width drops below 250px */
+  min-width: 0;    /* Prevents wide tables from breaking the layout */
+}
+
+
+

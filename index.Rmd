@@ -1,0 +1,171 @@
+---
+title: "RJML 2027 Draft" 
+output:
+  html_document:
+    toc: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(kableExtra)
+library(htmltools)
+library(DT)
+library(dplyr)
+picks_left <- read.csv('data/picks_left.csv')
+picks_made <- read.csv('data/picks_made.csv')
+hit <- read.csv("data/avail_hit.csv")
+pit <- read.csv("data/avail_pit.csv")
+use <- read.csv('data/team_usage.csv')
+```
+
+# RJML 2027 Draft Central{.tabset .tabset-pills}
+
+## Draft Tables
+
+:::: {.columns}
+
+::: {.column width="30%"}
+
+### Picks Remaining
+
+```{r, results='asis'}
+picks_left |> kbl(
+  booktabs = T) |>
+  column_spec(1, bold = T) |> 
+  column_spec(2, color = 'darkgray') |> 
+  column_spec(3, width = '25em') |> 
+  kable_styling(font_size = 16,  full_width = F,fixed_thead = T) |>
+  scroll_box(height = "500px") |>
+  HTML()
+```
+
+:::
+
+::: {.column width="10%"}
+&nbsp;
+:::
+
+::: {.column width="40%"}
+
+### Selected Players
+
+```{r, results='asis'}
+picks_made |> 
+  kbl(
+    booktabs = T) |>
+    column_spec(1, bold = T) |> 
+    column_spec(2, width = '25em') |> 
+    column_spec(3, width = '25em', color = 'seagreen') |>
+  kable_styling(font_size = 16,  full_width = F,fixed_thead = T) |> 
+  scroll_box(height = "500px") |>
+  HTML()
+```
+
+:::
+
+::::
+
+## Available Hitters
+
+### Table can be Filtered, sorted, and/or searched on each column.
+```{r}
+datatable(
+  hit |> rename(`1b` = X1b,`2b` = X2b,`3b` = X3b),
+  rownames = FALSE,
+  extensions = list("Buttons",'FixedHeader'),
+  filter = list(position="top",clear=FALSE),
+  options = list(
+    lengthChange = FALSE,
+    paging = F,
+    scrollY = T,
+    scroller = TRUE,
+    scrollX = T,
+    search = list(regex = TRUE,caseInsensitive = TRUE),
+    dom = "Bfrtip",
+    buttons = c("copy", "csv", "excel")
+  )
+)
+```
+
+
+## Available Pitchers
+
+### Table can be Filtered, sorted, and/or searched on each column.
+```{r}
+datatable(
+  pit,
+  rownames = FALSE,
+  extensions = list("Buttons",'FixedHeader'),
+  filter = list(position="top",clear=FALSE),
+  options = list(
+    lengthChange = FALSE,
+    paging = FALSE,
+    scrollY = T,
+    scroller = TRUE,
+    scrollX = T,
+    search = list(regex = TRUE,caseInsensitive = TRUE),
+    dom = "Bfrtip",
+    buttons = c("copy", "csv", "excel")
+  )
+)
+```
+
+## Team Usage Totals
+
+These numbers are calculated as follows:
+
+* `SP` is the total starts by pitchers on their roster. Each team will need to cover 160 starts; rosters with fewer than 160 starts have their starts highlighted in red in the table below.
+* `RP` is the total BF by pitchers with an RP rating. A team generally uses around 2000 BF per season. Overcounting appears for pitchers with starts and a relief rating. In practice, a dual pitcher used as a starter and a reliever will have fewer relief BF available due to their starts.
+* `PA` is the team's total plate appearances, which generally exceeds 6000 each season.
+* Each position total is calculated by the total number of PA by those players on the roster eligible to play that position. In this table, a player eligible at multiple positions will have all of their PA added to each of their positions, resulting in over-counting. 
+
+
+```{r, results='asis'}
+use |> 
+  mutate(across(GS,
+         ~ cell_spec(
+      .x,
+      format = "html",
+      background = ifelse(.x < 160, "red", "white"),
+      color = ifelse(.x < 160, "white", "black")
+    )
+  ) )|> 
+  mutate(across(Relief_BF,
+         ~ cell_spec(
+      .x,
+      format = "html",
+      background = ifelse(.x < 2000, "red", "white"),
+      color = ifelse(.x < 2000, "white", "black")
+    )
+  ) )|> 
+  mutate(across(PA_tot,
+         ~ cell_spec(
+      .x,
+      format = "html",
+      background = ifelse(.x < 6000, "red", "white"),
+      color = ifelse(.x < 6000, "white", "black")
+    )
+  ) )|> 
+  mutate(across(
+    all_of(5:12),
+    ~ cell_spec(
+      .x,
+      format = "html",
+      background = ifelse(.x < 650, "red", "white"),
+      color = ifelse(.x < 650, "white", "black")
+    )
+  )) |> 
+  kbl(
+    align = 'lccccccccccc',
+    escape = F,
+    col.names = c('Team','SP','RP','PA','c','1b','2b','3b','ss','lf','cf','rf'),
+    booktabs = T) |>
+  column_spec(1, bold = T, color = 'seagreen', border_right = T) |>
+  column_spec(2:4, bold = T) |> 
+  #column_spec(2, width = '25em') |> 
+  #column_spec(3, width = '25em', color = 'seagreen')
+  kable_styling(font_size = 16,  full_width = F,fixed_thead = T)
+```
+
+
+

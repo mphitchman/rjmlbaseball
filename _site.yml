@@ -1,0 +1,80 @@
+name: "rjml"
+title: 'mph'
+output_dir: "docs"
+navbar:
+  title: "&nbsp;"
+  left:
+    - text: "Draft Central"
+      href: index.html
+    - text: "Teams"
+      menu:
+        - text: "Wagner Division"
+        - text: "Camarillo"
+          href: CAM.html
+        - text: "Gig Harbor"
+          href: GH.html
+        - text: "Haliburton"
+          href: HAL.html
+        - text: "Highland Village"
+          href: HV.html
+        - text: "Homestead"
+          href: HOM.html
+        - text: "Ramey"
+          href: RAM.html
+        - text: "Hornsby Divsion"
+        - text: "Alameda"
+          href: ALA.html
+        - text: "New Britain"
+          href: NB.html
+        - text: "Rochester"
+          href: ROC.html
+        - text: "Silicon Valley"
+          href: SV.html
+        - text: "Thunder Bay"
+          href: TB.html
+        - text: "Whitby"
+          href: WHI.html
+        - text: "Gehrig Division"
+        - text: "Arboga"
+          href: ARB.html
+        - text: "Beauce"
+          href: BEA.html
+        - text: "Bradenton"
+          href: BRA.html
+        - text: "Harrison"
+          href: HAR.html
+        - text: "Powder River"
+          href: PR.html
+        - text: "Vancouver"
+          href: VAN.html
+        - text: "Alexander Division"
+        - text: "C. Kentucy"
+          href: CK.html
+        - text: "Dayton"
+          href: DAY.html
+        - text: "Death Valley"
+          href: DV.html
+        - text: "Evansville"
+          href: EVA.html
+        - text: "Grafton"
+          href: GRF.html
+        - text: "Granby"
+          href: GNB.html
+    - text: "Current Season"
+      href: dmb.html
+    - text: "Current MLB Stats"
+      href: mlb.html
+    - text: "Transactions"
+      href: transactions.html
+    - text: "Constitution"
+      href: constitution.html
+output:
+  html_document:
+    theme: flatly
+    css: style.css
+    includes:
+      in_header: header.html
+
+    
+    
+

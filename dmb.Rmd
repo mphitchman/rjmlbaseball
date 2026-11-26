@@ -1,0 +1,8 @@
+---
+title: "Current Season"
+output:
+  html_document:
+    toc: false
+---
+
+This page will share RJML standings, usage reports, and game logs when the RJML season begins in April.

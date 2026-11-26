@@ -1,0 +1,150 @@
+---
+title: "Transactions" 
+output:
+  html_document:
+    toc: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(kableExtra)
+trades <- read.csv('data/trades.csv')
+claims <- read.csv('data/claims.csv')
+draft26 <- read.csv('data/draft26.csv')
+draft25 <- read.csv('data/draft25.csv')
+draft24 <- read.csv('data/draft24.csv')
+draft23 <- read.csv('data/draft23.csv')
+draft22 <- read.csv('data/draft22.csv')
+```
+
+# RJML Transactions {.tabset .tabset-pills}
+
+## Trades
+
+```{r}
+trades |> 
+      kbl(caption = "Recent RJML Trades",
+          align='ccllll',
+          col.names = c('Year','No.','Team A','A Receives','Team B', 'B Receives')) |> 
+      kable_styling(font_size = 16,full_width = F,fixed_thead = T,bootstrap_options = c("hover", "condensed", "responsive")) |>
+      column_spec(c(3,5),color = 'steelblue', border_left = TRUE) |> 
+  scroll_box(height = "500px")
+```
+
+## FA  Claims
+
+```{r}
+claims |> kbl(caption = "RJML 2026 FA Claims",
+              align='clllc',
+              col.names = c('No.','Team','Added','Dropped','Window')) |> 
+      kable_styling(font_size = 16,full_width = F,fixed_thead = T,bootstrap_options = c("hover", "condensed", "responsive"))  |> 
+  scroll_box(height = "500px")
+```
+
+
+## Recent Drafts {.tabset .tabset-pills}
+```{r,echo=F}
+early_rounds <- paste('Round',1:6)
+late_rounds <- paste('Round',7:13)
+```
+
+### 2026 {.tabset .tabset-pills}
+
+#### Rounds 1-6
+
+```{r}
+draft26[,1:7] |> 
+  kbl(col.names = c("Pick",early_rounds)) |> 
+  kable_paper(full_width = F,fixed_thead = T) |> 
+  scroll_box(height = "500px",width="100%")
+```
+
+#### Rounds 7-13
+
+```{r}
+draft26[,c(1,8:14)] |> 
+  kbl(col.names = c("Pick",late_rounds)) |> 
+  kable_paper(full_width = F,fixed_thead = T) |> 
+  scroll_box(height = "500px",width="100%")
+```
+
+
+### 2025 {.tabset .tabset-pills}
+
+#### Rounds 1-6
+
+```{r}
+draft25[,1:7] |> 
+  kbl(col.names = c("Pick",early_rounds)) |> 
+  kable_paper(full_width = F,fixed_thead = T) |> 
+  scroll_box(height = "500px",width="100%")
+```
+
+#### Rounds 7-13
+
+```{r}
+draft25[,c(1,8:14)] |> 
+  kbl(col.names = c("Pick",late_rounds)) |> 
+  kable_paper(full_width = F,fixed_thead = T) |> 
+  scroll_box(height = "500px",width="100%")
+```
+
+### 2024 {.tabset .tabset-pills}
+
+#### Rounds 1-6
+
+```{r}
+draft24[,1:7] |> 
+  kbl(col.names = c("Pick",early_rounds)) |> 
+  kable_paper(full_width = F,fixed_thead = T) |> 
+  scroll_box(height = "500px",width="100%")
+```
+
+#### Rounds 7-13
+
+```{r}
+draft24[,c(1,8:14)] |> 
+  kbl(col.names = c("Pick",late_rounds)) |> 
+  kable_paper(full_width = F,fixed_thead = T) |> 
+  scroll_box(height = "500px",width="100%")
+```
+
+### 2023 {.tabset .tabset-pills}
+
+#### Rounds 1-6
+
+```{r}
+draft23[,1:7] |> 
+  kbl(col.names = c("Pick",early_rounds)) |> 
+  kable_paper(full_width = F,fixed_thead = T) |> 
+  scroll_box(height = "500px",width="100%")
+```
+
+#### Rounds 7-13
+
+```{r}
+draft23[,c(1,8:14)] |> 
+  kbl(col.names = c("Pick",late_rounds)) |> 
+  kable_paper(full_width = F,fixed_thead = T) |> 
+  scroll_box(height = "500px",width="100%")
+```
+
+### 2022 {.tabset .tabset-pills}
+
+#### Rounds 1-6
+
+```{r}
+draft22[,1:7] |> 
+  kbl(col.names = c("Pick",early_rounds)) |> 
+  kable_paper(full_width = F,fixed_thead = T) |> 
+  scroll_box(height = "500px",width="100%")
+```
+
+#### Rounds 7-13
+
+```{r}
+draft22[,c(1,8:14)] |> 
+  kbl(col.names = c("Pick",late_rounds)) |> 
+  kable_paper(full_width = F,fixed_thead = T) |> 
+  scroll_box(height = "500px",width="100%")
+```
