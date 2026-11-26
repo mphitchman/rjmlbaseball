@@ -1,0 +1,4625 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>VAN</title>
+
+<script src="site_libs/header-attrs-2.32/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link rel="shortcut icon" href="logos/favicon.png" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">&nbsp;</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Draft Central</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Teams
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Wagner Division</li>
+    <li>
+      <a href="CAM.html">Camarillo</a>
+    </li>
+    <li>
+      <a href="GH.html">Gig Harbor</a>
+    </li>
+    <li>
+      <a href="HAL.html">Haliburton</a>
+    </li>
+    <li>
+      <a href="HV.html">Highland Village</a>
+    </li>
+    <li>
+      <a href="HOM.html">Homestead</a>
+    </li>
+    <li>
+      <a href="RAM.html">Ramey</a>
+    </li>
+    <li class="dropdown-header">Hornsby Divsion</li>
+    <li>
+      <a href="ALA.html">Alameda</a>
+    </li>
+    <li>
+      <a href="NB.html">New Britain</a>
+    </li>
+    <li>
+      <a href="ROC.html">Rochester</a>
+    </li>
+    <li>
+      <a href="SV.html">Silicon Valley</a>
+    </li>
+    <li>
+      <a href="TB.html">Thunder Bay</a>
+    </li>
+    <li>
+      <a href="WHI.html">Whitby</a>
+    </li>
+    <li class="dropdown-header">Gehrig Division</li>
+    <li>
+      <a href="ARB.html">Arboga</a>
+    </li>
+    <li>
+      <a href="BEA.html">Beauce</a>
+    </li>
+    <li>
+      <a href="BRA.html">Bradenton</a>
+    </li>
+    <li>
+      <a href="HAR.html">Harrison</a>
+    </li>
+    <li>
+      <a href="PR.html">Powder River</a>
+    </li>
+    <li>
+      <a href="VAN.html">Vancouver</a>
+    </li>
+    <li class="dropdown-header">Alexander Division</li>
+    <li>
+      <a href="CK.html">C. Kentucy</a>
+    </li>
+    <li>
+      <a href="DAY.html">Dayton</a>
+    </li>
+    <li>
+      <a href="DV.html">Death Valley</a>
+    </li>
+    <li>
+      <a href="EVA.html">Evansville</a>
+    </li>
+    <li>
+      <a href="GRF.html">Grafton</a>
+    </li>
+    <li>
+      <a href="GNB.html">Granby</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="dmb.html">Current Season</a>
+</li>
+<li>
+  <a href="mlb.html">Current MLB Stats</a>
+</li>
+<li>
+  <a href="transactions.html">Transactions</a>
+</li>
+<li>
+  <a href="constitution.html">Constitution</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">VAN</h1>
+
+</div>
+
+
+<div
+style="display: flex; align-items: center; justify-content: center; gap: 5px;">
+<img src=https://mphitchman.com/stats/sports/logos/rjml/whitecaps.png alt="Logo" style="height: 70px;">
+<div style="text-align: center;font-size:1.5em; line-height: 1.4;">
+Vancouver Whitecaps<br><span
+style="font-size: 0.9em; font-weight: normal;">Mike Hitchman</span>
+</div>
+</div>
+<div id="section" class="section level1 tabset tabset-pills">
+<h1 class="tabset tabset-pills"></h1>
+<div id="roster" class="section level2">
+<h2>Roster</h2>
+<div class="table-container">
+<div class="table-box">
+<p><strong>2027 Draft Picks</strong></p>
+<table class=" table table-striped rounded-table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;">
+Pick
+</th>
+<th style="text-align:left;">
+Player
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+1.16
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 20em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+2.17
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 20em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+3.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 20em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+4.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 20em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+6.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 20em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+7.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 20em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+8.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 20em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+9.14
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 20em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+9.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 20em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+10.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 20em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+11.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 20em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+12.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 20em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+13.20
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 20em; ">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-box">
+<p><strong>Hitters</strong> Total PA = 7403</p>
+<table class=" table table-striped rounded-table" style="font-size: 14px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Name
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Age
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Pos
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+all_pos
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+PA
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+RC27
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Hunter Goodman
+</td>
+<td style="text-align:right;">
+26
+</td>
+<td style="text-align:left;">
+c
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+579
+</td>
+<td style="text-align:right;">
+5.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gabriel Moreno
+</td>
+<td style="text-align:right;">
+26
+</td>
+<td style="text-align:left;">
+c
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+309
+</td>
+<td style="text-align:right;">
+5.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Vinnie Pasquantino*
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:left;">
+1b
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+682
+</td>
+<td style="text-align:right;">
+5.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Willi Castro#
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:left;">
+2b
+</td>
+<td style="text-align:right;">
+456789
+</td>
+<td style="text-align:right;">
+454
+</td>
+<td style="text-align:right;">
+3.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nick Yorke
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+2b
+</td>
+<td style="text-align:right;">
+3459
+</td>
+<td style="text-align:right;">
+72
+</td>
+<td style="text-align:right;">
+2.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jose Fermin
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:left;">
+2b
+</td>
+<td style="text-align:right;">
+4579
+</td>
+<td style="text-align:right;">
+70
+</td>
+<td style="text-align:right;">
+5.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Leo Jimenez
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:left;">
+2b
+</td>
+<td style="text-align:right;">
+46
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+0.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alex Bregman
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:left;">
+3b
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+495
+</td>
+<td style="text-align:right;">
+5.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+J.P. Crawford*
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:left;">
+ss
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+654
+</td>
+<td style="text-align:right;">
+4.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jacob T. Wilson
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+ss
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+523
+</td>
+<td style="text-align:right;">
+5.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gabriel Arias
+</td>
+<td style="text-align:right;">
+26
+</td>
+<td style="text-align:left;">
+ss
+</td>
+<td style="text-align:right;">
+456
+</td>
+<td style="text-align:right;">
+471
+</td>
+<td style="text-align:right;">
+3.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jordan Beck
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:left;">
+lf
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+588
+</td>
+<td style="text-align:right;">
+4.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Luis Robert
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:left;">
+cf
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+431
+</td>
+<td style="text-align:right;">
+3.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Brandon Marsh*
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:left;">
+cf
+</td>
+<td style="text-align:right;">
+789
+</td>
+<td style="text-align:right;">
+425
+</td>
+<td style="text-align:right;">
+5.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kyle Isbel*
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:left;">
+cf
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+409
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corbin Carroll*
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:left;">
+rf
+</td>
+<td style="text-align:right;">
+89
+</td>
+<td style="text-align:right;">
+642
+</td>
+<td style="text-align:right;">
+6.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Trevor Larnach*
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:left;">
+dh
+</td>
+<td style="text-align:right;">
+79
+</td>
+<td style="text-align:right;">
+567
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-box">
+<p><strong>Pitchers</strong> Total Starts = 177; Relief BF <span
+class="math inline">\(\approx\)</span> 1956</p>
+<table class=" table table-striped rounded-table" style="font-size: 14px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Name
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Age
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+St
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Rel
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+GS
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+BF
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+RC27
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Max Fried*
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:left;">
+Vg
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+801
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dylan Cease
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+722
+</td>
+<td style="text-align:right;">
+4.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ryan Pepiot
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+679
+</td>
+<td style="text-align:right;">
+3.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Brayan Bello
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:left;">
+Vg
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:right;">
+700
+</td>
+<td style="text-align:right;">
+3.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Grant Holmes
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+492
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jacob Misiorowski
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+Fr
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+273
+</td>
+<td style="text-align:right;">
+3.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ian Seymour*
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:left;">
+Ex
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+242
+</td>
+<td style="text-align:right;">
+3.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Caden Dana
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:left;">
+Ex
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+141
+</td>
+<td style="text-align:right;">
+6.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Troy Melton
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:left;">
+Fr
+</td>
+<td style="text-align:left;">
+Vg
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+180
+</td>
+<td style="text-align:right;">
+2.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Justin Wrobleski*
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:left;">
+Ex
+</td>
+<td style="text-align:left;">
+Ex
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+280
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Trevor McDonald
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:left;">
+Vg
+</td>
+<td style="text-align:left;">
+Ex
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reynaldo Lopez
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:left;">
+Vg
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+11.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Garrett Whitlock
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+293
+</td>
+<td style="text-align:right;">
+2.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Camilo Doval
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+278
+</td>
+<td style="text-align:right;">
+3.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Raisel Iglesias
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+266
+</td>
+<td style="text-align:right;">
+3.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ryan Helsley
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+252
+</td>
+<td style="text-align:right;">
+5.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Garrett Cleavinger*
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+243
+</td>
+<td style="text-align:right;">
+2.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mason Miller
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+234
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Justin Slaten
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+137
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A.J. Minter*
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Fr
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+44
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hunter Harvey
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Fr
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+39
+</td>
+<td style="text-align:right;">
+0.9
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!--
+### Depth Chart
+
+
+
+:::: {.colummns}
+
+::: {.column width="75%"
+}
+<img src="team_files/figure-html/depth-chart-1.png" alt="" width="1350" />
+
+:::
+
+::: {.column width="20%"}
+
+<table class=" lightable-classic" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
+<caption>Other Hitters</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Name </th>
+   <th style="text-align:left;"> Pos </th>
+   <th style="text-align:right;"> PA </th>
+   <th style="text-align:right;"> RC27 </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Gabriel Arias </td>
+   <td style="text-align:left;"> ss </td>
+   <td style="text-align:right;"> 471 </td>
+   <td style="text-align:right;"> 3.3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Kyle Isbel* </td>
+   <td style="text-align:left;"> cf </td>
+   <td style="text-align:right;"> 409 </td>
+   <td style="text-align:right;"> 3.4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Jose Fermin </td>
+   <td style="text-align:left;"> 2b </td>
+   <td style="text-align:right;"> 70 </td>
+   <td style="text-align:right;"> 5.8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Leo Jimenez </td>
+   <td style="text-align:left;"> 2b </td>
+   <td style="text-align:right;"> 32 </td>
+   <td style="text-align:right;"> 0.5 </td>
+  </tr>
+</tbody>
+</table>
+
+<table class=" lightable-classic" style='font-family: "Arial Narrow", "Source Sans Pro", sans-serif; width: auto !important; margin-left: auto; margin-right: auto;'>
+<caption>Other Pitchers</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Name </th>
+   <th style="text-align:left;"> Pos </th>
+   <th style="text-align:right;"> GS </th>
+   <th style="text-align:right;"> BF </th>
+   <th style="text-align:right;"> RC27 </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Justin Wrobleski* </td>
+   <td style="text-align:left;"> mr </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 280 </td>
+   <td style="text-align:right;"> 4.2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Camilo Doval </td>
+   <td style="text-align:left;"> mr </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 278 </td>
+   <td style="text-align:right;"> 3.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Ryan Helsley </td>
+   <td style="text-align:left;"> cl </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 252 </td>
+   <td style="text-align:right;"> 5.8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Ian Seymour* </td>
+   <td style="text-align:left;"> mr </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 242 </td>
+   <td style="text-align:right;"> 3.3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Caden Dana </td>
+   <td style="text-align:left;"> sp </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 141 </td>
+   <td style="text-align:right;"> 6.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Justin Slaten </td>
+   <td style="text-align:left;"> mr </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 137 </td>
+   <td style="text-align:right;"> 2.8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Trevor McDonald </td>
+   <td style="text-align:left;"> sp </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 60 </td>
+   <td style="text-align:right;"> 2.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> A.J. Minter* </td>
+   <td style="text-align:left;"> mr </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 44 </td>
+   <td style="text-align:right;"> 1.8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Hunter Harvey </td>
+   <td style="text-align:left;"> mr </td>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> 39 </td>
+   <td style="text-align:right;"> 0.9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Reynaldo Lopez </td>
+   <td style="text-align:left;"> sp </td>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 25 </td>
+   <td style="text-align:right;"> 11.5 </td>
+  </tr>
+</tbody>
+</table>
+:::
+
+::::
+-->
+</div>
+<div id="hitters" class="section level2">
+<h2>Hitters</h2>
+<div id="total-pa-7403" class="section level3">
+<h3>Total PA = 7403</h3>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:450px; ">
+<table class="table table-hover table-condensed table-responsive" style="font-size: 15px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Name
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Age
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Pos
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+all_pos
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+PA
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+AB
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+H
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+HR
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+R
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+RBI
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+SB
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+CS
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+BB
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+K
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+AVG
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+OBP
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+SLG
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+OPS
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+RC27
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Vinnie Pasquantino*
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:left;">
+1b
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+682
+</td>
+<td style="text-align:right;">
+621
+</td>
+<td style="text-align:right;">
+164
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+72
+</td>
+<td style="text-align:right;">
+113
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+49
+</td>
+<td style="text-align:right;">
+107
+</td>
+<td style="text-align:right;">
+264
+</td>
+<td style="text-align:right;">
+323
+</td>
+<td style="text-align:right;">
+475
+</td>
+<td style="text-align:right;">
+798
+</td>
+<td style="text-align:right;">
+5.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+J.P. Crawford*
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:left;">
+ss
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+654
+</td>
+<td style="text-align:right;">
+570
+</td>
+<td style="text-align:right;">
+151
+</td>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:right;">
+69
+</td>
+<td style="text-align:right;">
+58
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+122
+</td>
+<td style="text-align:right;">
+265
+</td>
+<td style="text-align:right;">
+352
+</td>
+<td style="text-align:right;">
+370
+</td>
+<td style="text-align:right;">
+722
+</td>
+<td style="text-align:right;">
+4.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Corbin Carroll*
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:left;">
+rf
+</td>
+<td style="text-align:right;">
+89
+</td>
+<td style="text-align:right;">
+642
+</td>
+<td style="text-align:right;">
+564
+</td>
+<td style="text-align:right;">
+146
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+107
+</td>
+<td style="text-align:right;">
+84
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+67
+</td>
+<td style="text-align:right;">
+153
+</td>
+<td style="text-align:right;">
+259
+</td>
+<td style="text-align:right;">
+343
+</td>
+<td style="text-align:right;">
+541
+</td>
+<td style="text-align:right;">
+883
+</td>
+<td style="text-align:right;">
+6.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jordan Beck
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:left;">
+lf
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+588
+</td>
+<td style="text-align:right;">
+539
+</td>
+<td style="text-align:right;">
+139
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+62
+</td>
+<td style="text-align:right;">
+53
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+43
+</td>
+<td style="text-align:right;">
+174
+</td>
+<td style="text-align:right;">
+258
+</td>
+<td style="text-align:right;">
+317
+</td>
+<td style="text-align:right;">
+416
+</td>
+<td style="text-align:right;">
+732
+</td>
+<td style="text-align:right;">
+4.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hunter Goodman
+</td>
+<td style="text-align:right;">
+26
+</td>
+<td style="text-align:left;">
+c
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+579
+</td>
+<td style="text-align:right;">
+540
+</td>
+<td style="text-align:right;">
+150
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+73
+</td>
+<td style="text-align:right;">
+91
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+33
+</td>
+<td style="text-align:right;">
+152
+</td>
+<td style="text-align:right;">
+278
+</td>
+<td style="text-align:right;">
+323
+</td>
+<td style="text-align:right;">
+520
+</td>
+<td style="text-align:right;">
+843
+</td>
+<td style="text-align:right;">
+5.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Trevor Larnach*
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:left;">
+dh
+</td>
+<td style="text-align:right;">
+79
+</td>
+<td style="text-align:right;">
+567
+</td>
+<td style="text-align:right;">
+503
+</td>
+<td style="text-align:right;">
+126
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+62
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+53
+</td>
+<td style="text-align:right;">
+122
+</td>
+<td style="text-align:right;">
+250
+</td>
+<td style="text-align:right;">
+323
+</td>
+<td style="text-align:right;">
+404
+</td>
+<td style="text-align:right;">
+727
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jacob T. Wilson
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+ss
+</td>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:right;">
+523
+</td>
+<td style="text-align:right;">
+486
+</td>
+<td style="text-align:right;">
+151
+</td>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:right;">
+62
+</td>
+<td style="text-align:right;">
+63
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:right;">
+39
+</td>
+<td style="text-align:right;">
+311
+</td>
+<td style="text-align:right;">
+355
+</td>
+<td style="text-align:right;">
+444
+</td>
+<td style="text-align:right;">
+800
+</td>
+<td style="text-align:right;">
+5.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alex Bregman
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:left;">
+3b
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+495
+</td>
+<td style="text-align:right;">
+433
+</td>
+<td style="text-align:right;">
+118
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+64
+</td>
+<td style="text-align:right;">
+62
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+51
+</td>
+<td style="text-align:right;">
+70
+</td>
+<td style="text-align:right;">
+273
+</td>
+<td style="text-align:right;">
+360
+</td>
+<td style="text-align:right;">
+462
+</td>
+<td style="text-align:right;">
+821
+</td>
+<td style="text-align:right;">
+5.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gabriel Arias
+</td>
+<td style="text-align:right;">
+26
+</td>
+<td style="text-align:left;">
+ss
+</td>
+<td style="text-align:right;">
+456
+</td>
+<td style="text-align:right;">
+471
+</td>
+<td style="text-align:right;">
+432
+</td>
+<td style="text-align:right;">
+95
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+44
+</td>
+<td style="text-align:right;">
+54
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:right;">
+162
+</td>
+<td style="text-align:right;">
+220
+</td>
+<td style="text-align:right;">
+274
+</td>
+<td style="text-align:right;">
+363
+</td>
+<td style="text-align:right;">
+638
+</td>
+<td style="text-align:right;">
+3.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Willi Castro#
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:left;">
+2b
+</td>
+<td style="text-align:right;">
+456789
+</td>
+<td style="text-align:right;">
+454
+</td>
+<td style="text-align:right;">
+402
+</td>
+<td style="text-align:right;">
+91
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+58
+</td>
+<td style="text-align:right;">
+33
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:right;">
+111
+</td>
+<td style="text-align:right;">
+226
+</td>
+<td style="text-align:right;">
+313
+</td>
+<td style="text-align:right;">
+366
+</td>
+<td style="text-align:right;">
+679
+</td>
+<td style="text-align:right;">
+3.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Luis Robert
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:left;">
+cf
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+431
+</td>
+<td style="text-align:right;">
+382
+</td>
+<td style="text-align:right;">
+85
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+52
+</td>
+<td style="text-align:right;">
+53
+</td>
+<td style="text-align:right;">
+33
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:right;">
+112
+</td>
+<td style="text-align:right;">
+223
+</td>
+<td style="text-align:right;">
+297
+</td>
+<td style="text-align:right;">
+364
+</td>
+<td style="text-align:right;">
+661
+</td>
+<td style="text-align:right;">
+3.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Brandon Marsh*
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:left;">
+cf
+</td>
+<td style="text-align:right;">
+789
+</td>
+<td style="text-align:right;">
+425
+</td>
+<td style="text-align:right;">
+379
+</td>
+<td style="text-align:right;">
+106
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+59
+</td>
+<td style="text-align:right;">
+43
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+38
+</td>
+<td style="text-align:right;">
+110
+</td>
+<td style="text-align:right;">
+280
+</td>
+<td style="text-align:right;">
+342
+</td>
+<td style="text-align:right;">
+443
+</td>
+<td style="text-align:right;">
+785
+</td>
+<td style="text-align:right;">
+5.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kyle Isbel*
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:left;">
+cf
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+409
+</td>
+<td style="text-align:right;">
+368
+</td>
+<td style="text-align:right;">
+94
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+42
+</td>
+<td style="text-align:right;">
+33
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:right;">
+74
+</td>
+<td style="text-align:right;">
+255
+</td>
+<td style="text-align:right;">
+301
+</td>
+<td style="text-align:right;">
+353
+</td>
+<td style="text-align:right;">
+654
+</td>
+<td style="text-align:right;">
+3.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Gabriel Moreno
+</td>
+<td style="text-align:right;">
+26
+</td>
+<td style="text-align:left;">
+c
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+309
+</td>
+<td style="text-align:right;">
+277
+</td>
+<td style="text-align:right;">
+79
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+44
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:right;">
+53
+</td>
+<td style="text-align:right;">
+285
+</td>
+<td style="text-align:right;">
+353
+</td>
+<td style="text-align:right;">
+433
+</td>
+<td style="text-align:right;">
+786
+</td>
+<td style="text-align:right;">
+5.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Nick Yorke
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+2b
+</td>
+<td style="text-align:right;">
+3459
+</td>
+<td style="text-align:right;">
+72
+</td>
+<td style="text-align:right;">
+69
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+232
+</td>
+<td style="text-align:right;">
+264
+</td>
+<td style="text-align:right;">
+319
+</td>
+<td style="text-align:right;">
+583
+</td>
+<td style="text-align:right;">
+2.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jose Fermin
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:left;">
+2b
+</td>
+<td style="text-align:right;">
+4579
+</td>
+<td style="text-align:right;">
+70
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+283
+</td>
+<td style="text-align:right;">
+377
+</td>
+<td style="text-align:right;">
+417
+</td>
+<td style="text-align:right;">
+793
+</td>
+<td style="text-align:right;">
+5.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Leo Jimenez
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:left;">
+2b
+</td>
+<td style="text-align:right;">
+46
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+29
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+69
+</td>
+<td style="text-align:right;">
+129
+</td>
+<td style="text-align:right;">
+172
+</td>
+<td style="text-align:right;">
+301
+</td>
+<td style="text-align:right;">
+0.5
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="pitchers" class="section level2">
+<h2>Pitchers</h2>
+<div id="total-gs-177-relief-bf-approx-1956" class="section level3">
+<h3>Total GS = 177; Relief BF <span
+class="math inline">\(\approx\)</span> 1956</h3>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:450px; ">
+<table class="table table-hover table-condensed table-responsive" style="font-size: 15px; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Pitcher
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Age
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Pos
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+SDur
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+RDur
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+GS
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+INN
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+BF
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+ERA
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+WHIP
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+K
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+BB
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+OPS
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+RC27
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+K%
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+BB%
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+HR9
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Max Fried*
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:left;">
+sp
+</td>
+<td style="text-align:left;">
+Vg
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+195.1
+</td>
+<td style="text-align:right;">
+801
+</td>
+<td style="text-align:right;">
+2.86
+</td>
+<td style="text-align:right;">
+1.10
+</td>
+<td style="text-align:right;">
+189
+</td>
+<td style="text-align:right;">
+51
+</td>
+<td style="text-align:right;">
+615
+</td>
+<td style="text-align:right;">
+3.2
+</td>
+<td style="text-align:right;">
+23.6
+</td>
+<td style="text-align:right;">
+6.4
+</td>
+<td style="text-align:right;">
+0.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Dylan Cease
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:left;">
+sp
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:right;">
+168.0
+</td>
+<td style="text-align:right;">
+722
+</td>
+<td style="text-align:right;">
+4.55
+</td>
+<td style="text-align:right;">
+1.33
+</td>
+<td style="text-align:right;">
+215
+</td>
+<td style="text-align:right;">
+71
+</td>
+<td style="text-align:right;">
+717
+</td>
+<td style="text-align:right;">
+4.6
+</td>
+<td style="text-align:right;">
+29.8
+</td>
+<td style="text-align:right;">
+9.8
+</td>
+<td style="text-align:right;">
+1.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ryan Pepiot
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:left;">
+sp
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+167.2
+</td>
+<td style="text-align:right;">
+679
+</td>
+<td style="text-align:right;">
+3.86
+</td>
+<td style="text-align:right;">
+1.16
+</td>
+<td style="text-align:right;">
+167
+</td>
+<td style="text-align:right;">
+61
+</td>
+<td style="text-align:right;">
+701
+</td>
+<td style="text-align:right;">
+3.9
+</td>
+<td style="text-align:right;">
+24.6
+</td>
+<td style="text-align:right;">
+9.0
+</td>
+<td style="text-align:right;">
+1.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Brayan Bello
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:left;">
+sp
+</td>
+<td style="text-align:left;">
+Vg
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:right;">
+166.2
+</td>
+<td style="text-align:right;">
+700
+</td>
+<td style="text-align:right;">
+3.35
+</td>
+<td style="text-align:right;">
+1.24
+</td>
+<td style="text-align:right;">
+124
+</td>
+<td style="text-align:right;">
+59
+</td>
+<td style="text-align:right;">
+669
+</td>
+<td style="text-align:right;">
+3.8
+</td>
+<td style="text-align:right;">
+17.7
+</td>
+<td style="text-align:right;">
+8.4
+</td>
+<td style="text-align:right;">
+0.9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Grant Holmes
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:left;">
+sp
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:right;">
+115.0
+</td>
+<td style="text-align:right;">
+492
+</td>
+<td style="text-align:right;">
+3.99
+</td>
+<td style="text-align:right;">
+1.34
+</td>
+<td style="text-align:right;">
+123
+</td>
+<td style="text-align:right;">
+54
+</td>
+<td style="text-align:right;">
+715
+</td>
+<td style="text-align:right;">
+4.4
+</td>
+<td style="text-align:right;">
+25.0
+</td>
+<td style="text-align:right;">
+11.0
+</td>
+<td style="text-align:right;">
+1.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Jacob Misiorowski
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+sp
+</td>
+<td style="text-align:left;">
+Fr
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+66.0
+</td>
+<td style="text-align:right;">
+273
+</td>
+<td style="text-align:right;">
+4.36
+</td>
+<td style="text-align:right;">
+1.24
+</td>
+<td style="text-align:right;">
+87
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:right;">
+671
+</td>
+<td style="text-align:right;">
+3.7
+</td>
+<td style="text-align:right;">
+31.9
+</td>
+<td style="text-align:right;">
+11.4
+</td>
+<td style="text-align:right;">
+1.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ian Seymour*
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:left;">
+mr
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:left;">
+Ex
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+57.0
+</td>
+<td style="text-align:right;">
+242
+</td>
+<td style="text-align:right;">
+3.63
+</td>
+<td style="text-align:right;">
+1.18
+</td>
+<td style="text-align:right;">
+64
+</td>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:right;">
+618
+</td>
+<td style="text-align:right;">
+3.3
+</td>
+<td style="text-align:right;">
+26.4
+</td>
+<td style="text-align:right;">
+7.9
+</td>
+<td style="text-align:right;">
+0.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Caden Dana
+</td>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+sp
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:left;">
+Ex
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+32.1
+</td>
+<td style="text-align:right;">
+141
+</td>
+<td style="text-align:right;">
+6.40
+</td>
+<td style="text-align:right;">
+1.48
+</td>
+<td style="text-align:right;">
+33
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+863
+</td>
+<td style="text-align:right;">
+6.0
+</td>
+<td style="text-align:right;">
+23.4
+</td>
+<td style="text-align:right;">
+12.8
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Troy Melton
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:left;">
+mr
+</td>
+<td style="text-align:left;">
+Fr
+</td>
+<td style="text-align:left;">
+Vg
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+45.2
+</td>
+<td style="text-align:right;">
+180
+</td>
+<td style="text-align:right;">
+2.76
+</td>
+<td style="text-align:right;">
+1.01
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:right;">
+608
+</td>
+<td style="text-align:right;">
+2.7
+</td>
+<td style="text-align:right;">
+20.0
+</td>
+<td style="text-align:right;">
+8.3
+</td>
+<td style="text-align:right;">
+1.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Justin Wrobleski*
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:left;">
+mr
+</td>
+<td style="text-align:left;">
+Ex
+</td>
+<td style="text-align:left;">
+Ex
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+66.2
+</td>
+<td style="text-align:right;">
+280
+</td>
+<td style="text-align:right;">
+4.32
+</td>
+<td style="text-align:right;">
+1.23
+</td>
+<td style="text-align:right;">
+76
+</td>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:right;">
+686
+</td>
+<td style="text-align:right;">
+4.2
+</td>
+<td style="text-align:right;">
+27.1
+</td>
+<td style="text-align:right;">
+6.1
+</td>
+<td style="text-align:right;">
+0.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Trevor McDonald
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:left;">
+sp
+</td>
+<td style="text-align:left;">
+Vg
+</td>
+<td style="text-align:left;">
+Ex
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+15.0
+</td>
+<td style="text-align:right;">
+60
+</td>
+<td style="text-align:right;">
+1.80
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+552
+</td>
+<td style="text-align:right;">
+2.5
+</td>
+<td style="text-align:right;">
+23.3
+</td>
+<td style="text-align:right;">
+3.3
+</td>
+<td style="text-align:right;">
+0.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Reynaldo Lopez
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:left;">
+sp
+</td>
+<td style="text-align:left;">
+Vg
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+5.0
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+5.40
+</td>
+<td style="text-align:right;">
+2.20
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+1005
+</td>
+<td style="text-align:right;">
+11.5
+</td>
+<td style="text-align:right;">
+4.0
+</td>
+<td style="text-align:right;">
+8.0
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Garrett Whitlock
+</td>
+<td style="text-align:right;">
+30
+</td>
+<td style="text-align:left;">
+mr
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+72.0
+</td>
+<td style="text-align:right;">
+293
+</td>
+<td style="text-align:right;">
+2.25
+</td>
+<td style="text-align:right;">
+1.08
+</td>
+<td style="text-align:right;">
+91
+</td>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:right;">
+543
+</td>
+<td style="text-align:right;">
+2.7
+</td>
+<td style="text-align:right;">
+31.1
+</td>
+<td style="text-align:right;">
+8.2
+</td>
+<td style="text-align:right;">
+0.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Camilo Doval
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:left;">
+mr
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+65.1
+</td>
+<td style="text-align:right;">
+278
+</td>
+<td style="text-align:right;">
+3.58
+</td>
+<td style="text-align:right;">
+1.32
+</td>
+<td style="text-align:right;">
+72
+</td>
+<td style="text-align:right;">
+35
+</td>
+<td style="text-align:right;">
+624
+</td>
+<td style="text-align:right;">
+3.5
+</td>
+<td style="text-align:right;">
+25.9
+</td>
+<td style="text-align:right;">
+12.6
+</td>
+<td style="text-align:right;">
+0.6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Raisel Iglesias
+</td>
+<td style="text-align:right;">
+36
+</td>
+<td style="text-align:left;">
+cl
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+67.1
+</td>
+<td style="text-align:right;">
+266
+</td>
+<td style="text-align:right;">
+3.21
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+73
+</td>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:right;">
+612
+</td>
+<td style="text-align:right;">
+3.1
+</td>
+<td style="text-align:right;">
+27.4
+</td>
+<td style="text-align:right;">
+6.0
+</td>
+<td style="text-align:right;">
+1.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ryan Helsley
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:left;">
+cl
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+56.0
+</td>
+<td style="text-align:right;">
+252
+</td>
+<td style="text-align:right;">
+4.50
+</td>
+<td style="text-align:right;">
+1.54
+</td>
+<td style="text-align:right;">
+63
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+784
+</td>
+<td style="text-align:right;">
+5.8
+</td>
+<td style="text-align:right;">
+25.0
+</td>
+<td style="text-align:right;">
+9.9
+</td>
+<td style="text-align:right;">
+1.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Garrett Cleavinger*
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:left;">
+mr
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+61.1
+</td>
+<td style="text-align:right;">
+243
+</td>
+<td style="text-align:right;">
+2.35
+</td>
+<td style="text-align:right;">
+0.95
+</td>
+<td style="text-align:right;">
+82
+</td>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:right;">
+609
+</td>
+<td style="text-align:right;">
+2.9
+</td>
+<td style="text-align:right;">
+33.7
+</td>
+<td style="text-align:right;">
+7.4
+</td>
+<td style="text-align:right;">
+1.3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mason Miller
+</td>
+<td style="text-align:right;">
+27
+</td>
+<td style="text-align:left;">
+cl
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+61.2
+</td>
+<td style="text-align:right;">
+234
+</td>
+<td style="text-align:right;">
+2.63
+</td>
+<td style="text-align:right;">
+0.91
+</td>
+<td style="text-align:right;">
+104
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:right;">
+493
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+44.4
+</td>
+<td style="text-align:right;">
+12.0
+</td>
+<td style="text-align:right;">
+0.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Justin Slaten
+</td>
+<td style="text-align:right;">
+28
+</td>
+<td style="text-align:left;">
+mr
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Av
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+34.0
+</td>
+<td style="text-align:right;">
+137
+</td>
+<td style="text-align:right;">
+4.24
+</td>
+<td style="text-align:right;">
+1.09
+</td>
+<td style="text-align:right;">
+25
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+580
+</td>
+<td style="text-align:right;">
+2.8
+</td>
+<td style="text-align:right;">
+18.2
+</td>
+<td style="text-align:right;">
+7.3
+</td>
+<td style="text-align:right;">
+0.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+A.J. Minter*
+</td>
+<td style="text-align:right;">
+32
+</td>
+<td style="text-align:left;">
+mr
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Fr
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+11.0
+</td>
+<td style="text-align:right;">
+44
+</td>
+<td style="text-align:right;">
+1.64
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:right;">
+429
+</td>
+<td style="text-align:right;">
+1.8
+</td>
+<td style="text-align:right;">
+31.8
+</td>
+<td style="text-align:right;">
+11.4
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hunter Harvey
+</td>
+<td style="text-align:right;">
+31
+</td>
+<td style="text-align:left;">
+mr
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Fr
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+10.2
+</td>
+<td style="text-align:right;">
+39
+</td>
+<td style="text-align:right;">
+0.00
+</td>
+<td style="text-align:right;">
+0.66
+</td>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+337
+</td>
+<td style="text-align:right;">
+0.9
+</td>
+<td style="text-align:right;">
+28.2
+</td>
+<td style="text-align:right;">
+2.6
+</td>
+<td style="text-align:right;">
+0.0
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="current-mlb-stats" class="section level2">
+<h2>Current MLB Stats</h2>
+<p>Coming Soon, hopefully!</p>
+</div>
+<div id="recent-drafts" class="section level2">
+<h2>Recent Drafts</h2>
+<div class="table-container">
+<div class="table-box">
+<table class=" table table-striped rounded-table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+2027 Picks
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Pick
+</th>
+<th style="text-align:left;">
+Player
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+1.16
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 15em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+2.17
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 15em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+3.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 15em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+4.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 15em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+6.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 15em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+7.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 15em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+8.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 15em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+9.14
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 15em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+9.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 15em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+10.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 15em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+11.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 15em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+12.19
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 15em; ">
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: wheat !important;">
+13.20
+</td>
+<td style="text-align:left;background-color: wheat !important;width: 15em; ">
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="table-box">
+<table class=" table table-striped rounded-table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+2026 Picks
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Pick
+</th>
+<th style="text-align:left;">
+Player
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;background-color: lightgray !important;">
+1.04
+</td>
+<td style="text-align:left;background-color: lightgray !important;width: 15em; ">
+Jacob Misiorowski, sp
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: lightgray !important;">
+2.04
+</td>
+<td style="text-align:left;background-color: lightgray !important;width: 15em; ">
+Dalton Rushing*, c
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: lightgray !important;">
+3.05
+</td>
+<td style="text-align:left;background-color: lightgray !important;width: 15em; ">
+Troy Melton, mr
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: lightgray !important;">
+4.05
+</td>
+<td style="text-align:left;background-color: lightgray !important;width: 15em; ">
+Ian Seymour*, mr
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: lightgray !important;">
+5.05
+</td>
+<td style="text-align:left;background-color: lightgray !important;width: 15em; ">
+Justin Wrobleski*, mr
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: lightgray !important;">
+6.05
+</td>
+<td style="text-align:left;background-color: lightgray !important;width: 15em; ">
+Ryan Helsley, cl
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: lightgray !important;">
+6.23
+</td>
+<td style="text-align:left;background-color: lightgray !important;width: 15em; ">
+Reynaldo Lopez, sp
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: lightgray !important;">
+7.05
+</td>
+<td style="text-align:left;background-color: lightgray !important;width: 15em; ">
+Justin Slaten, mr
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: lightgray !important;">
+7.19
+</td>
+<td style="text-align:left;background-color: lightgray !important;width: 15em; ">
+Jose Fermin, 2b
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: lightgray !important;">
+8.05
+</td>
+<td style="text-align:left;background-color: lightgray !important;width: 15em; ">
+Trevor McDonald, sp
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: lightgray !important;">
+9.05
+</td>
+<td style="text-align:left;background-color: lightgray !important;width: 15em; ">
+Hunter Harvey, mr
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: lightgray !important;">
+9.20
+</td>
+<td style="text-align:left;background-color: lightgray !important;width: 15em; ">
+A.J. Minter*, mr
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: lightgray !important;">
+10.05
+</td>
+<td style="text-align:left;background-color: lightgray !important;width: 15em; ">
+Leo Jimenez, 2b
+</td>
+</tr>
+<tr>
+<td style="text-align:right;background-color: lightgray !important;">
+13.09
+</td>
+<td style="text-align:left;background-color: lightgray !important;width: 15em; ">
+pass
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!--
+::: {.column width="5%"}
+&nbsp;
+:::
+-->
+<div class="table-box">
+<table class=" table table-striped rounded-table" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+2025 Picks
+</caption>
+<thead>
+<tr>
+<th style="text-align:right;">
+Pick
+</th>
+<th style="text-align:left;">
+Player
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;color: white !important;background-color: rgba(205, 127, 50, 255) !important;">
+1.16
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(205, 127, 50, 255) !important;width: 15em; ">
+Colt Keith
+</td>
+</tr>
+<tr>
+<td style="text-align:right;color: white !important;background-color: rgba(205, 127, 50, 255) !important;">
+2.18
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(205, 127, 50, 255) !important;width: 15em; ">
+Caden Dana
+</td>
+</tr>
+<tr>
+<td style="text-align:right;color: white !important;background-color: rgba(205, 127, 50, 255) !important;">
+3.19
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(205, 127, 50, 255) !important;width: 15em; ">
+Grant Holmes
+</td>
+</tr>
+<tr>
+<td style="text-align:right;color: white !important;background-color: rgba(205, 127, 50, 255) !important;">
+4.10
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(205, 127, 50, 255) !important;width: 15em; ">
+Nick Yorke
+</td>
+</tr>
+<tr>
+<td style="text-align:right;color: white !important;background-color: rgba(205, 127, 50, 255) !important;">
+4.19
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(205, 127, 50, 255) !important;width: 15em; ">
+Leo Jimenez
+</td>
+</tr>
+<tr>
+<td style="text-align:right;color: white !important;background-color: rgba(205, 127, 50, 255) !important;">
+5.19
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(205, 127, 50, 255) !important;width: 15em; ">
+Pedro Pages
+</td>
+</tr>
+<tr>
+<td style="text-align:right;color: white !important;background-color: rgba(205, 127, 50, 255) !important;">
+6.19
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(205, 127, 50, 255) !important;width: 15em; ">
+Hunter Harvey
+</td>
+</tr>
+<tr>
+<td style="text-align:right;color: white !important;background-color: rgba(205, 127, 50, 255) !important;">
+7.19
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(205, 127, 50, 255) !important;width: 15em; ">
+Garrett Whitlock
+</td>
+</tr>
+<tr>
+<td style="text-align:right;color: white !important;background-color: rgba(205, 127, 50, 255) !important;">
+8.19
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(205, 127, 50, 255) !important;width: 15em; ">
+Jordan Romano
+</td>
+</tr>
+<tr>
+<td style="text-align:right;color: white !important;background-color: rgba(205, 127, 50, 255) !important;">
+9.19
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(205, 127, 50, 255) !important;width: 15em; ">
+Jordan Beck
+</td>
+</tr>
+<tr>
+<td style="text-align:right;color: white !important;background-color: rgba(205, 127, 50, 255) !important;">
+10.19
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(205, 127, 50, 255) !important;width: 15em; ">
+Ian Hamilton
+</td>
+</tr>
+<tr>
+<td style="text-align:right;color: white !important;background-color: rgba(205, 127, 50, 255) !important;">
+11.19
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(205, 127, 50, 255) !important;width: 15em; ">
+Ryan Bliss
+</td>
+</tr>
+<tr>
+<td style="text-align:right;color: white !important;background-color: rgba(205, 127, 50, 255) !important;">
+12.19
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(205, 127, 50, 255) !important;width: 15em; ">
+Caleb Kilian
+</td>
+</tr>
+<tr>
+<td style="text-align:right;color: white !important;background-color: rgba(205, 127, 50, 255) !important;">
+13.19
+</td>
+<td style="text-align:left;color: white !important;background-color: rgba(205, 127, 50, 255) !important;width: 15em; ">
+pass
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!--
+## At a Glance B
+
+:::: {.columns}
+
+::: {.column width="20%"} 
+**2027 Draft Picks**
+
+<table class="table table-hover table-condensed table-responsive" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:right;"> Pick </th>
+   <th style="text-align:left;"> Player </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;background-color: wheat !important;"> 1.16 </td>
+   <td style="text-align:left;background-color: wheat !important;width: 16em; ">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;background-color: wheat !important;"> 2.17 </td>
+   <td style="text-align:left;background-color: wheat !important;width: 16em; ">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;background-color: wheat !important;"> 3.19 </td>
+   <td style="text-align:left;background-color: wheat !important;width: 16em; ">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;background-color: wheat !important;"> 4.19 </td>
+   <td style="text-align:left;background-color: wheat !important;width: 16em; ">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;background-color: wheat !important;"> 6.19 </td>
+   <td style="text-align:left;background-color: wheat !important;width: 16em; ">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;background-color: wheat !important;"> 7.19 </td>
+   <td style="text-align:left;background-color: wheat !important;width: 16em; ">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;background-color: wheat !important;"> 8.19 </td>
+   <td style="text-align:left;background-color: wheat !important;width: 16em; ">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;background-color: wheat !important;"> 9.14 </td>
+   <td style="text-align:left;background-color: wheat !important;width: 16em; ">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;background-color: wheat !important;"> 9.19 </td>
+   <td style="text-align:left;background-color: wheat !important;width: 16em; ">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;background-color: wheat !important;"> 10.19 </td>
+   <td style="text-align:left;background-color: wheat !important;width: 16em; ">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;background-color: wheat !important;"> 11.19 </td>
+   <td style="text-align:left;background-color: wheat !important;width: 16em; ">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;background-color: wheat !important;"> 12.19 </td>
+   <td style="text-align:left;background-color: wheat !important;width: 16em; ">  </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;background-color: wheat !important;"> 13.20 </td>
+   <td style="text-align:left;background-color: wheat !important;width: 16em; ">  </td>
+  </tr>
+</tbody>
+</table>
+:::
+
+::: {.column width="3%"}
+&nbsp;
+:::
+
+::: {.column width="35%"}
+**Hitters** Total PA = 7403
+
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; "><table class="table table-hover table-condensed table-responsive" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">Recent RJML Trades</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;"> Hitter </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;"> Age </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;"> Pos </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;"> All Pos </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;"> PA </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;"> RC27 </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Hunter Goodman </td>
+   <td style="text-align:center;"> 26 </td>
+   <td style="text-align:center;"> c </td>
+   <td style="text-align:center;"> 2 </td>
+   <td style="text-align:center;"> 579 </td>
+   <td style="text-align:center;"> 5.6 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Gabriel Moreno </td>
+   <td style="text-align:center;"> 26 </td>
+   <td style="text-align:center;"> c </td>
+   <td style="text-align:center;"> 2 </td>
+   <td style="text-align:center;"> 309 </td>
+   <td style="text-align:center;"> 5.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Vinnie Pasquantino* </td>
+   <td style="text-align:center;"> 28 </td>
+   <td style="text-align:center;"> 1b </td>
+   <td style="text-align:center;"> 3 </td>
+   <td style="text-align:center;"> 682 </td>
+   <td style="text-align:center;"> 5.3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Willi Castro# </td>
+   <td style="text-align:center;"> 29 </td>
+   <td style="text-align:center;"> 2b </td>
+   <td style="text-align:center;"> 456789 </td>
+   <td style="text-align:center;"> 454 </td>
+   <td style="text-align:center;"> 3.8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Nick Yorke </td>
+   <td style="text-align:center;"> 24 </td>
+   <td style="text-align:center;"> 2b </td>
+   <td style="text-align:center;"> 3459 </td>
+   <td style="text-align:center;"> 72 </td>
+   <td style="text-align:center;"> 2.9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Jose Fermin </td>
+   <td style="text-align:center;"> 27 </td>
+   <td style="text-align:center;"> 2b </td>
+   <td style="text-align:center;"> 4579 </td>
+   <td style="text-align:center;"> 70 </td>
+   <td style="text-align:center;"> 5.8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Leo Jimenez </td>
+   <td style="text-align:center;"> 25 </td>
+   <td style="text-align:center;"> 2b </td>
+   <td style="text-align:center;"> 46 </td>
+   <td style="text-align:center;"> 32 </td>
+   <td style="text-align:center;"> 0.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Alex Bregman </td>
+   <td style="text-align:center;"> 32 </td>
+   <td style="text-align:center;"> 3b </td>
+   <td style="text-align:center;"> 5 </td>
+   <td style="text-align:center;"> 495 </td>
+   <td style="text-align:center;"> 5.9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> J.P. Crawford* </td>
+   <td style="text-align:center;"> 31 </td>
+   <td style="text-align:center;"> ss </td>
+   <td style="text-align:center;"> 6 </td>
+   <td style="text-align:center;"> 654 </td>
+   <td style="text-align:center;"> 4.9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Jacob T. Wilson </td>
+   <td style="text-align:center;"> 24 </td>
+   <td style="text-align:center;"> ss </td>
+   <td style="text-align:center;"> 6 </td>
+   <td style="text-align:center;"> 523 </td>
+   <td style="text-align:center;"> 5.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Gabriel Arias </td>
+   <td style="text-align:center;"> 26 </td>
+   <td style="text-align:center;"> ss </td>
+   <td style="text-align:center;"> 456 </td>
+   <td style="text-align:center;"> 471 </td>
+   <td style="text-align:center;"> 3.3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Jordan Beck </td>
+   <td style="text-align:center;"> 25 </td>
+   <td style="text-align:center;"> lf </td>
+   <td style="text-align:center;"> 7 </td>
+   <td style="text-align:center;"> 588 </td>
+   <td style="text-align:center;"> 4.6 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Luis Robert </td>
+   <td style="text-align:center;"> 28 </td>
+   <td style="text-align:center;"> cf </td>
+   <td style="text-align:center;"> 8 </td>
+   <td style="text-align:center;"> 431 </td>
+   <td style="text-align:center;"> 3.7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Brandon Marsh* </td>
+   <td style="text-align:center;"> 28 </td>
+   <td style="text-align:center;"> cf </td>
+   <td style="text-align:center;"> 789 </td>
+   <td style="text-align:center;"> 425 </td>
+   <td style="text-align:center;"> 5.9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Kyle Isbel* </td>
+   <td style="text-align:center;"> 29 </td>
+   <td style="text-align:center;"> cf </td>
+   <td style="text-align:center;"> 8 </td>
+   <td style="text-align:center;"> 409 </td>
+   <td style="text-align:center;"> 3.4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Corbin Carroll* </td>
+   <td style="text-align:center;"> 25 </td>
+   <td style="text-align:center;"> rf </td>
+   <td style="text-align:center;"> 89 </td>
+   <td style="text-align:center;"> 642 </td>
+   <td style="text-align:center;"> 6.9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Trevor Larnach* </td>
+   <td style="text-align:center;"> 29 </td>
+   <td style="text-align:center;"> dh </td>
+   <td style="text-align:center;"> 79 </td>
+   <td style="text-align:center;"> 567 </td>
+   <td style="text-align:center;"> 4.2 </td>
+  </tr>
+</tbody>
+</table></div>
+:::
+
+::: {.column width="2%"}
+&nbsp;
+:::
+
+::: {.column width="40%"}
+**Pitchers** Total Starts = 177; Relief BF $\approx$ 1956
+
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; "><table class="table table-hover table-condensed table-responsive" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">Recent RJML Trades</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;"> Pitcher </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;"> Age </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;"> SDur </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;"> RDur </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;"> GS </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;"> BF </th>
+   <th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;"> RC27 </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Max Fried* </td>
+   <td style="text-align:center;"> 32 </td>
+   <td style="text-align:center;"> Vg </td>
+   <td style="text-align:center;">  </td>
+   <td style="text-align:center;"> 32 </td>
+   <td style="text-align:center;"> 801 </td>
+   <td style="text-align:center;"> 3.2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Dylan Cease </td>
+   <td style="text-align:center;"> 30 </td>
+   <td style="text-align:center;"> Av </td>
+   <td style="text-align:center;">  </td>
+   <td style="text-align:center;"> 32 </td>
+   <td style="text-align:center;"> 722 </td>
+   <td style="text-align:center;"> 4.6 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Ryan Pepiot </td>
+   <td style="text-align:center;"> 28 </td>
+   <td style="text-align:center;"> Av </td>
+   <td style="text-align:center;">  </td>
+   <td style="text-align:center;"> 31 </td>
+   <td style="text-align:center;"> 679 </td>
+   <td style="text-align:center;"> 3.9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Brayan Bello </td>
+   <td style="text-align:center;"> 27 </td>
+   <td style="text-align:center;"> Vg </td>
+   <td style="text-align:center;">  </td>
+   <td style="text-align:center;"> 28 </td>
+   <td style="text-align:center;"> 700 </td>
+   <td style="text-align:center;"> 3.8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Grant Holmes </td>
+   <td style="text-align:center;"> 30 </td>
+   <td style="text-align:center;"> Av </td>
+   <td style="text-align:center;">  </td>
+   <td style="text-align:center;"> 21 </td>
+   <td style="text-align:center;"> 492 </td>
+   <td style="text-align:center;"> 4.4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Jacob Misiorowski </td>
+   <td style="text-align:center;"> 24 </td>
+   <td style="text-align:center;"> Fr </td>
+   <td style="text-align:center;">  </td>
+   <td style="text-align:center;"> 14 </td>
+   <td style="text-align:center;"> 273 </td>
+   <td style="text-align:center;"> 3.7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Ian Seymour* </td>
+   <td style="text-align:center;"> 27 </td>
+   <td style="text-align:center;"> Av </td>
+   <td style="text-align:center;"> Ex </td>
+   <td style="text-align:center;"> 5 </td>
+   <td style="text-align:center;"> 242 </td>
+   <td style="text-align:center;"> 3.3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Caden Dana </td>
+   <td style="text-align:center;"> 22 </td>
+   <td style="text-align:center;"> Av </td>
+   <td style="text-align:center;"> Ex </td>
+   <td style="text-align:center;"> 5 </td>
+   <td style="text-align:center;"> 141 </td>
+   <td style="text-align:center;"> 6.0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Troy Melton </td>
+   <td style="text-align:center;"> 25 </td>
+   <td style="text-align:center;"> Fr </td>
+   <td style="text-align:center;"> Vg </td>
+   <td style="text-align:center;"> 4 </td>
+   <td style="text-align:center;"> 180 </td>
+   <td style="text-align:center;"> 2.7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Justin Wrobleski* </td>
+   <td style="text-align:center;"> 25 </td>
+   <td style="text-align:center;"> Ex </td>
+   <td style="text-align:center;"> Ex </td>
+   <td style="text-align:center;"> 2 </td>
+   <td style="text-align:center;"> 280 </td>
+   <td style="text-align:center;"> 4.2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Trevor McDonald </td>
+   <td style="text-align:center;"> 25 </td>
+   <td style="text-align:center;"> Vg </td>
+   <td style="text-align:center;"> Ex </td>
+   <td style="text-align:center;"> 2 </td>
+   <td style="text-align:center;"> 60 </td>
+   <td style="text-align:center;"> 2.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Reynaldo Lopez </td>
+   <td style="text-align:center;"> 32 </td>
+   <td style="text-align:center;"> Vg </td>
+   <td style="text-align:center;">  </td>
+   <td style="text-align:center;"> 1 </td>
+   <td style="text-align:center;"> 25 </td>
+   <td style="text-align:center;"> 11.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Garrett Whitlock </td>
+   <td style="text-align:center;"> 30 </td>
+   <td style="text-align:center;">  </td>
+   <td style="text-align:center;"> Av </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:center;"> 293 </td>
+   <td style="text-align:center;"> 2.7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Camilo Doval </td>
+   <td style="text-align:center;"> 28 </td>
+   <td style="text-align:center;">  </td>
+   <td style="text-align:center;"> Av </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:center;"> 278 </td>
+   <td style="text-align:center;"> 3.5 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Raisel Iglesias </td>
+   <td style="text-align:center;"> 36 </td>
+   <td style="text-align:center;">  </td>
+   <td style="text-align:center;"> Av </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:center;"> 266 </td>
+   <td style="text-align:center;"> 3.1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Ryan Helsley </td>
+   <td style="text-align:center;"> 31 </td>
+   <td style="text-align:center;">  </td>
+   <td style="text-align:center;"> Av </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:center;"> 252 </td>
+   <td style="text-align:center;"> 5.8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Garrett Cleavinger* </td>
+   <td style="text-align:center;"> 32 </td>
+   <td style="text-align:center;">  </td>
+   <td style="text-align:center;"> Av </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:center;"> 243 </td>
+   <td style="text-align:center;"> 2.9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Mason Miller </td>
+   <td style="text-align:center;"> 27 </td>
+   <td style="text-align:center;">  </td>
+   <td style="text-align:center;"> Av </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:center;"> 234 </td>
+   <td style="text-align:center;"> 1.8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Justin Slaten </td>
+   <td style="text-align:center;"> 28 </td>
+   <td style="text-align:center;">  </td>
+   <td style="text-align:center;"> Av </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:center;"> 137 </td>
+   <td style="text-align:center;"> 2.8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> A.J. Minter* </td>
+   <td style="text-align:center;"> 32 </td>
+   <td style="text-align:center;">  </td>
+   <td style="text-align:center;"> Fr </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:center;"> 44 </td>
+   <td style="text-align:center;"> 1.8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;color: steelblue !important;border-left:1px solid;"> Hunter Harvey </td>
+   <td style="text-align:center;"> 31 </td>
+   <td style="text-align:center;">  </td>
+   <td style="text-align:center;"> Fr </td>
+   <td style="text-align:center;"> 0 </td>
+   <td style="text-align:center;"> 39 </td>
+   <td style="text-align:center;"> 0.9 </td>
+  </tr>
+</tbody>
+</table></div>
+:::
+
+::::
+
+-->
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

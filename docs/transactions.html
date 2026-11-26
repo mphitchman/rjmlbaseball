@@ -1,0 +1,8940 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Transactions</title>
+
+<script src="site_libs/header-attrs-2.32/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link rel="shortcut icon" href="logos/favicon.png" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">&nbsp;</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Draft Central</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Teams
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Wagner Division</li>
+    <li>
+      <a href="CAM.html">Camarillo</a>
+    </li>
+    <li>
+      <a href="GH.html">Gig Harbor</a>
+    </li>
+    <li>
+      <a href="HAL.html">Haliburton</a>
+    </li>
+    <li>
+      <a href="HV.html">Highland Village</a>
+    </li>
+    <li>
+      <a href="HOM.html">Homestead</a>
+    </li>
+    <li>
+      <a href="RAM.html">Ramey</a>
+    </li>
+    <li class="dropdown-header">Hornsby Divsion</li>
+    <li>
+      <a href="ALA.html">Alameda</a>
+    </li>
+    <li>
+      <a href="NB.html">New Britain</a>
+    </li>
+    <li>
+      <a href="ROC.html">Rochester</a>
+    </li>
+    <li>
+      <a href="SV.html">Silicon Valley</a>
+    </li>
+    <li>
+      <a href="TB.html">Thunder Bay</a>
+    </li>
+    <li>
+      <a href="WHI.html">Whitby</a>
+    </li>
+    <li class="dropdown-header">Gehrig Division</li>
+    <li>
+      <a href="ARB.html">Arboga</a>
+    </li>
+    <li>
+      <a href="BEA.html">Beauce</a>
+    </li>
+    <li>
+      <a href="BRA.html">Bradenton</a>
+    </li>
+    <li>
+      <a href="HAR.html">Harrison</a>
+    </li>
+    <li>
+      <a href="PR.html">Powder River</a>
+    </li>
+    <li>
+      <a href="VAN.html">Vancouver</a>
+    </li>
+    <li class="dropdown-header">Alexander Division</li>
+    <li>
+      <a href="CK.html">C. Kentucy</a>
+    </li>
+    <li>
+      <a href="DAY.html">Dayton</a>
+    </li>
+    <li>
+      <a href="DV.html">Death Valley</a>
+    </li>
+    <li>
+      <a href="EVA.html">Evansville</a>
+    </li>
+    <li>
+      <a href="GRF.html">Grafton</a>
+    </li>
+    <li>
+      <a href="GNB.html">Granby</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="dmb.html">Current Season</a>
+</li>
+<li>
+  <a href="mlb.html">Current MLB Stats</a>
+</li>
+<li>
+  <a href="transactions.html">Transactions</a>
+</li>
+<li>
+  <a href="constitution.html">Constitution</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Transactions</h1>
+
+</div>
+
+
+<div id="rjml-transactions" class="section level1 tabset tabset-pills">
+<h1 class="tabset tabset-pills">RJML Transactions</h1>
+<div id="trades" class="section level2">
+<h2>Trades</h2>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; ">
+<table class="table table-hover table-condensed table-responsive" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+Recent RJML Trades
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Year
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+No. 
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Team A
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+A Receives
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Team B
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+B Receives
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+25
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Grafton
+</td>
+<td style="text-align:left;">
+C. Keith
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Vancouver
+</td>
+<td style="text-align:left;">
+J. Wilson
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+24
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Grafton
+</td>
+<td style="text-align:left;">
+B. Buxton
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Powder River
+</td>
+<td style="text-align:left;">
+J. Aranda
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+23
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Harrison
+</td>
+<td style="text-align:left;">
+C. Faucher
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Dayton
+</td>
+<td style="text-align:left;">
+Pick 6.03
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+22
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Whitby
+</td>
+<td style="text-align:left;">
+E. Quero, pick 12.20
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Dayton
+</td>
+<td style="text-align:left;">
+Pick 6.14
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+21
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Dayton
+</td>
+<td style="text-align:left;">
+A. Riley, D. Rushing, pick 5.19
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Vancouver
+</td>
+<td style="text-align:left;">
+A. Bregman, R. Iglesias, pick 13.20
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+20
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Grafton
+</td>
+<td style="text-align:left;">
+T. Stephenson
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Silicon Velley
+</td>
+<td style="text-align:left;">
+L. Arraez
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+19
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Whitby
+</td>
+<td style="text-align:left;">
+R. Lowder
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Gig Harbor
+</td>
+<td style="text-align:left;">
+Pick 5.14
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+18
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Powder River
+</td>
+<td style="text-align:left;">
+L. Butler
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Harrison
+</td>
+<td style="text-align:left;">
+Pick 2.14
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+17
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Gig Harbor
+</td>
+<td style="text-align:left;">
+Picks 4.10 and 7.23
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Beauce
+</td>
+<td style="text-align:left;">
+M. Perez, J. Leiter, M. Conforto
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+16
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Whitby
+</td>
+<td style="text-align:left;">
+D. May
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Harrison
+</td>
+<td style="text-align:left;">
+Pick 3.14
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+15
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Whitby
+</td>
+<td style="text-align:left;">
+W. Warren
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Grafton
+</td>
+<td style="text-align:left;">
+A. Bohm
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+14
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Evansville
+</td>
+<td style="text-align:left;">
+R. Acuna, C. Seager, C. Montgomery, E. Cabrera, pick 6.15
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Powder River
+</td>
+<td style="text-align:left;">
+B. Witt, C. Smith, pick 1.04
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+13
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Whitby
+</td>
+<td style="text-align:left;">
+J. Springs, pick 13.19
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Vancouver
+</td>
+<td style="text-align:left;">
+Pick 9.14
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Whitby
+</td>
+<td style="text-align:left;">
+B. Singer, 2027 BEA 3
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Beauce
+</td>
+<td style="text-align:left;">
+Tr. Rogers
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Cape Coral
+</td>
+<td style="text-align:left;">
+T. Ward, G. Valera, G. Conine
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Beauce
+</td>
+<td style="text-align:left;">
+G. Springer, M. Mastrobuani, J. Estes
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Alameda
+</td>
+<td style="text-align:left;">
+A. Kirk, J. deGrom, J. Triolo, 2027 ROC 11 &amp; 12
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Rochester
+</td>
+<td style="text-align:left;">
+L. Henderson, J. Malloy, H. Davis, 2027 ALA 1 &amp; 4
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Camarillo
+</td>
+<td style="text-align:left;">
+J. Estrada
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Beauce
+</td>
+<td style="text-align:left;">
+D. Santana
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Thunder Bay
+</td>
+<td style="text-align:left;">
+J. Holliday, 2027 BEA 9
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Beauce
+</td>
+<td style="text-align:left;">
+A. Chapman, R. Laureano, 2027 TB 4
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Powder River
+</td>
+<td style="text-align:left;">
+J. McCarthy
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Central Kentucky
+</td>
+<td style="text-align:left;">
+2027 PR 4
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Rochester
+</td>
+<td style="text-align:left;">
+M. Kepler, T. Freeman, 2027 ALA 3
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Alameda
+</td>
+<td style="text-align:left;">
+N. Lukes, E. Bazardo, 2027 ROC 13
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Rochester
+</td>
+<td style="text-align:left;">
+I. Kiner-Falefa, E. Henriquez and 2027 BEA 4
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Beauce
+</td>
+<td style="text-align:left;">
+M. Chapman, F. Ellard and 2027 ROC 9
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Harrison
+</td>
+<td style="text-align:left;">
+2027 CK 4
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Central Kentucky
+</td>
+<td style="text-align:left;">
+R Rodriguez
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Powder River
+</td>
+<td style="text-align:left;">
+W. Klein and 2027 pick EVA 4
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Evansville
+</td>
+<td style="text-align:left;">
+L. Rengifo
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Central Kentucky
+</td>
+<td style="text-align:left;">
+S. Suzuki and J. McCarthy
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+New Britain
+</td>
+<td style="text-align:left;">
+R. Grichuk, J. Winker, and 2027 picks CK 2 and CK 3
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2026
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Central Kentucky
+</td>
+<td style="text-align:left;">
+C. Rodon and K. Bubic
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+New Britain
+</td>
+<td style="text-align:left;">
+M. Lorenzen, C. Cavalli, and 2027 picks CK 1, CK 5
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+34
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Death Valley
+</td>
+<td style="text-align:left;">
+JT Realmuto and pick 6.9
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Homestead
+</td>
+<td style="text-align:left;">
+C Kershaw and R. Garrett
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+33
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Grafton
+</td>
+<td style="text-align:left;">
+Pick 4.22
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Rochester
+</td>
+<td style="text-align:left;">
+D. Kremer
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+32
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Silicon Velley
+</td>
+<td style="text-align:left;">
+K. Schwarber
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Harrison
+</td>
+<td style="text-align:left;">
+Pick 2.09
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+31
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Cape Coral
+</td>
+<td style="text-align:left;">
+C. Walker
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Beauce
+</td>
+<td style="text-align:left;">
+Pick 2.21
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+30
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Silicon Velley
+</td>
+<td style="text-align:left;">
+Y. Diaz
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Whitby
+</td>
+<td style="text-align:left;">
+A. Barger
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+29
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Homestead
+</td>
+<td style="text-align:left;">
+Pick 3.04
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Camarillo
+</td>
+<td style="text-align:left;">
+B. Naylor
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+28
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Gig Harbor
+</td>
+<td style="text-align:left;">
+Pick 2.22
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Beauce
+</td>
+<td style="text-align:left;">
+O. Cruz and pick 4.3
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+27
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Powder River
+</td>
+<td style="text-align:left;">
+K. Marte and pick 1.19
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Ramey
+</td>
+<td style="text-align:left;">
+Picks 1.14 and 2.10
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+26
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Homestead
+</td>
+<td style="text-align:left;">
+J.T. Realmuto and pick 12.24
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Ramey
+</td>
+<td style="text-align:left;">
+Pick 4.23
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+25
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Homestead
+</td>
+<td style="text-align:left;">
+Pick 4.7
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Vancouver
+</td>
+<td style="text-align:left;">
+J.P. Crawford and pick 13.09
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+24
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Ramey
+</td>
+<td style="text-align:left;">
+Pick 3.23
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Beauce
+</td>
+<td style="text-align:left;">
+R. O’Hearn, R. Refsnyder, and J. Estrada
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+23
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Homestead
+</td>
+<td style="text-align:left;">
+Pick 1.3
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Gig Harbor
+</td>
+<td style="text-align:left;">
+Pick 1.7 and J. Leiter
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+22
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Powder River
+</td>
+<td style="text-align:left;">
+Pick 1.14
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Evansville
+</td>
+<td style="text-align:left;">
+M. Vargas and pick 5.14
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+21
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Vancouver
+</td>
+<td style="text-align:left;">
+Pick 7.19
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Grafton
+</td>
+<td style="text-align:left;">
+T. Ferguson and pick 11.5
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+20
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Ramey
+</td>
+<td style="text-align:left;">
+D. Hernandez and pick 5.19
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Grafton
+</td>
+<td style="text-align:left;">
+R. Garcia and pick 13.24
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+19
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Ramey
+</td>
+<td style="text-align:left;">
+Pick 3.8
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Highland Village
+</td>
+<td style="text-align:left;">
+Carlos Correa
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+18
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Ramey
+</td>
+<td style="text-align:left;">
+M. King and K. Yates and pick 5.23
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Beauce
+</td>
+<td style="text-align:left;">
+Z. Wheeler and pick 10.24
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+17
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Vancouver
+</td>
+<td style="text-align:left;">
+Pick 6.23
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Beauce
+</td>
+<td style="text-align:left;">
+Brennan Bernardino Pick 12.5
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+16
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Highland Village
+</td>
+<td style="text-align:left;">
+J. Trevino
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Beauce
+</td>
+<td style="text-align:left;">
+Pick 5.8
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+15
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Central Kentucky
+</td>
+<td style="text-align:left;">
+T. Scott
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Homestead
+</td>
+<td style="text-align:left;">
+Pick 4.16
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+14
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Beauce
+</td>
+<td style="text-align:left;">
+A. Bender and pick 9.9
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Homestead
+</td>
+<td style="text-align:left;">
+Pick 4.23
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+13
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Grafton
+</td>
+<td style="text-align:left;">
+Pick 5.9
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Homestead
+</td>
+<td style="text-align:left;">
+M. Semien and pick 9.19
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Haliburton
+</td>
+<td style="text-align:left;">
+J. Soler
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Homestead
+</td>
+<td style="text-align:left;">
+A. Pallente
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Grafton
+</td>
+<td style="text-align:left;">
+Pick 6.14
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Powder River
+</td>
+<td style="text-align:left;">
+L. Rengifo and pick 10.19
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Grafton
+</td>
+<td style="text-align:left;">
+Pick 7.23
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Beauce
+</td>
+<td style="text-align:left;">
+I. Kiner-Falefa and pick 11.19
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Powder River
+</td>
+<td style="text-align:left;">
+F. Fermin
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Evansville
+</td>
+<td style="text-align:left;">
+V. Robles
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Grafton
+</td>
+<td style="text-align:left;">
+Pick 3.11
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Evansville
+</td>
+<td style="text-align:left;">
+R. Arozarena and pick 12.19
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Grafton
+</td>
+<td style="text-align:left;">
+Pick 4.11
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Evansville
+</td>
+<td style="text-align:left;">
+L. O’Hoppe and pick 13.19
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Powder River
+</td>
+<td style="text-align:left;">
+W. Smith, B. Cook, J. Encarnacion, H. Ramirez
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Evansville
+</td>
+<td style="text-align:left;">
+K. Rocker, Z. Littell, G. Ashcraft, K. Ruiz, R. Mountcastle
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Ramey
+</td>
+<td style="text-align:left;">
+J. Boyle and M. Meyer and picks 1.20 and 2.18
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Central Kentucky
+</td>
+<td style="text-align:left;">
+J. Ramirez and picks 6.24 and 7.24
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Whitby
+</td>
+<td style="text-align:left;">
+A. Munoz
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Ramey
+</td>
+<td style="text-align:left;">
+J. Sanoja and pick 3.7
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Whitby
+</td>
+<td style="text-align:left;">
+Y. Kikuchi
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Vancouver
+</td>
+<td style="text-align:left;">
+Pick 4.7
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Whitby
+</td>
+<td style="text-align:left;">
+A. Bohm and pick 3.14
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Powder River
+</td>
+<td style="text-align:left;">
+Pick 1.17
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2025
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Vancouver
+</td>
+<td style="text-align:left;">
+B. Bernardino and pick 9.20
+</td>
+<td style="text-align:left;color: steelblue !important;border-left:1px solid;">
+Dayton
+</td>
+<td style="text-align:left;">
+C. Bradford and pick 13.5
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="fa-claims" class="section level2">
+<h2>FA Claims</h2>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; ">
+<table class="table table-hover table-condensed table-responsive" style="font-size: 16px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+RJML 2026 FA Claims
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+No. 
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Team
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Added
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Dropped
+</th>
+<th style="text-align:center;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Window
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+60
+</td>
+<td style="text-align:left;">
+CK
+</td>
+<td style="text-align:left;">
+Luke Maile
+</td>
+<td style="text-align:left;">
+Richie Palacios
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+59
+</td>
+<td style="text-align:left;">
+TB
+</td>
+<td style="text-align:left;">
+Bryce Teodosio
+</td>
+<td style="text-align:left;">
+Drew Waters
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+58
+</td>
+<td style="text-align:left;">
+TB
+</td>
+<td style="text-align:left;">
+Austin Hedges
+</td>
+<td style="text-align:left;">
+Jake Rogers
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+57
+</td>
+<td style="text-align:left;">
+BRA
+</td>
+<td style="text-align:left;">
+Carson Seymour
+</td>
+<td style="text-align:left;">
+Tyler Ferguson
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+56
+</td>
+<td style="text-align:left;">
+GNB
+</td>
+<td style="text-align:left;">
+Yerry de los Santos
+</td>
+<td style="text-align:left;">
+Kyle Nicolas
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+55
+</td>
+<td style="text-align:left;">
+GNB
+</td>
+<td style="text-align:left;">
+Hunter Strickland
+</td>
+<td style="text-align:left;">
+Tyler Heineman
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+54
+</td>
+<td style="text-align:left;">
+GNB
+</td>
+<td style="text-align:left;">
+Jhonny Pereda
+</td>
+<td style="text-align:left;">
+Eric Haase
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+53
+</td>
+<td style="text-align:left;">
+HV
+</td>
+<td style="text-align:left;">
+Luis L Ortiz
+</td>
+<td style="text-align:left;">
+Tanner Gordan
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+52
+</td>
+<td style="text-align:left;">
+HV
+</td>
+<td style="text-align:left;">
+Kameron Misner
+</td>
+<td style="text-align:left;">
+Patrick Corbin
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+51
+</td>
+<td style="text-align:left;">
+HV
+</td>
+<td style="text-align:left;">
+Nolan Jones
+</td>
+<td style="text-align:left;">
+Ben Rortvedt
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+50
+</td>
+<td style="text-align:left;">
+HV
+</td>
+<td style="text-align:left;">
+Matt Thaiss
+</td>
+<td style="text-align:left;">
+Dylan Carlson
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+49
+</td>
+<td style="text-align:left;">
+HAR
+</td>
+<td style="text-align:left;">
+Genesis Cabrera
+</td>
+<td style="text-align:left;">
+Jackson Rutledge
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+48
+</td>
+<td style="text-align:left;">
+HAR
+</td>
+<td style="text-align:left;">
+Ryan Pressly
+</td>
+<td style="text-align:left;">
+Zach Dezenzo
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+47
+</td>
+<td style="text-align:left;">
+HAR
+</td>
+<td style="text-align:left;">
+Chad Green
+</td>
+<td style="text-align:left;">
+Carlos Vargas
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+46
+</td>
+<td style="text-align:left;">
+GH
+</td>
+<td style="text-align:left;">
+Jordan Romano
+</td>
+<td style="text-align:left;">
+JP Sears
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+45
+</td>
+<td style="text-align:left;">
+GH
+</td>
+<td style="text-align:left;">
+Josh Rojas
+</td>
+<td style="text-align:left;">
+Santiago Espinal
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+44
+</td>
+<td style="text-align:left;">
+ROC
+</td>
+<td style="text-align:left;">
+Caleb Boushley
+</td>
+<td style="text-align:left;">
+Andrew Saalfrank
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+43
+</td>
+<td style="text-align:left;">
+ROC
+</td>
+<td style="text-align:left;">
+Scott Blewett
+</td>
+<td style="text-align:left;">
+Cole Sulser
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+42
+</td>
+<td style="text-align:left;">
+ROC
+</td>
+<td style="text-align:left;">
+Bryse Wilson
+</td>
+<td style="text-align:left;">
+Yimi Garcia
+</td>
+<td style="text-align:center;">
+pre-Sep
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+41
+</td>
+<td style="text-align:left;">
+BRA
+</td>
+<td style="text-align:left;">
+Frankie Montas
+</td>
+<td style="text-align:left;">
+Christian Moore
+</td>
+<td style="text-align:center;">
+pre-Aug
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+40
+</td>
+<td style="text-align:left;">
+BRA
+</td>
+<td style="text-align:left;">
+Marcus Stroman
+</td>
+<td style="text-align:left;">
+Luis Ortiz
+</td>
+<td style="text-align:center;">
+pre-Aug
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+39
+</td>
+<td style="text-align:left;">
+GNB
+</td>
+<td style="text-align:left;">
+Eric Haase
+</td>
+<td style="text-align:left;">
+Nestor Cortes
+</td>
+<td style="text-align:center;">
+pre-Aug
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+38
+</td>
+<td style="text-align:left;">
+RAM
+</td>
+<td style="text-align:left;">
+Jorge Alcala
+</td>
+<td style="text-align:left;">
+Jared Koenig
+</td>
+<td style="text-align:center;">
+pre-Aug
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+37
+</td>
+<td style="text-align:left;">
+RAM
+</td>
+<td style="text-align:left;">
+Emmanuel Rivera
+</td>
+<td style="text-align:left;">
+Tim Herrin
+</td>
+<td style="text-align:center;">
+pre-Aug
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+36
+</td>
+<td style="text-align:left;">
+RAM
+</td>
+<td style="text-align:left;">
+Gio Urshela
+</td>
+<td style="text-align:left;">
+Carlos Hernandez
+</td>
+<td style="text-align:center;">
+pre-Aug
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+35
+</td>
+<td style="text-align:left;">
+RAM
+</td>
+<td style="text-align:left;">
+Leody Taveras
+</td>
+<td style="text-align:left;">
+Keegan Akin
+</td>
+<td style="text-align:center;">
+pre-Aug
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+34
+</td>
+<td style="text-align:left;">
+HAR
+</td>
+<td style="text-align:left;">
+Dietrich Enns
+</td>
+<td style="text-align:left;">
+Cole Henry
+</td>
+<td style="text-align:center;">
+pre-Aug
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+33
+</td>
+<td style="text-align:left;">
+HAR
+</td>
+<td style="text-align:left;">
+Kevin Newman
+</td>
+<td style="text-align:left;">
+Ryan Ritter
+</td>
+<td style="text-align:center;">
+pre-Aug
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+32
+</td>
+<td style="text-align:left;">
+GH
+</td>
+<td style="text-align:left;">
+Carlos Carrasco
+</td>
+<td style="text-align:left;">
+Yu Darvish
+</td>
+<td style="text-align:center;">
+pre-Aug
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+31
+</td>
+<td style="text-align:left;">
+GH
+</td>
+<td style="text-align:left;">
+Austin Gomber
+</td>
+<td style="text-align:left;">
+Tony Gonsolin
+</td>
+<td style="text-align:center;">
+pre-Aug
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+30
+</td>
+<td style="text-align:left;">
+GH
+</td>
+<td style="text-align:left;">
+Christian Vasquez
+</td>
+<td style="text-align:left;">
+Orlando Arcia
+</td>
+<td style="text-align:center;">
+pre-Aug
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+29
+</td>
+<td style="text-align:left;">
+EVA
+</td>
+<td style="text-align:left;">
+Brandon Wadell
+</td>
+<td style="text-align:left;">
+Stuart Fairchild
+</td>
+<td style="text-align:center;">
+pre-Aug
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+28
+</td>
+<td style="text-align:left;">
+BEA
+</td>
+<td style="text-align:left;">
+Nick Sandlin
+</td>
+<td style="text-align:left;">
+Miles Mastrobuoni
+</td>
+<td style="text-align:center;">
+pre-Aug
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+27
+</td>
+<td style="text-align:left;">
+BEA
+</td>
+<td style="text-align:left;">
+Tyler Tolbert
+</td>
+<td style="text-align:left;">
+Joey Estes
+</td>
+<td style="text-align:center;">
+pre-Aug
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+26
+</td>
+<td style="text-align:left;">
+RAM
+</td>
+<td style="text-align:left;">
+Kaleb Ort
+</td>
+<td style="text-align:left;">
+Trevor Williams
+</td>
+<td style="text-align:center;">
+pre-July
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+25
+</td>
+<td style="text-align:left;">
+RAM
+</td>
+<td style="text-align:left;">
+Jose Urena
+</td>
+<td style="text-align:left;">
+Joe Boyle
+</td>
+<td style="text-align:center;">
+pre-July
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+24
+</td>
+<td style="text-align:left;">
+RAM
+</td>
+<td style="text-align:left;">
+David Hamilton
+</td>
+<td style="text-align:left;">
+Trey Sweeney
+</td>
+<td style="text-align:center;">
+pre-July
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+23
+</td>
+<td style="text-align:left;">
+RAM
+</td>
+<td style="text-align:left;">
+Christopher Morel
+</td>
+<td style="text-align:left;">
+Otto Kemp
+</td>
+<td style="text-align:center;">
+pre-July
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+22
+</td>
+<td style="text-align:left;">
+ROC
+</td>
+<td style="text-align:left;">
+Bradley Blalock
+</td>
+<td style="text-align:left;">
+Beau Brieske
+</td>
+<td style="text-align:center;">
+pre-July
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+21
+</td>
+<td style="text-align:left;">
+BEA
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Fraser Ellard
+</td>
+<td style="text-align:center;">
+pre-July
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+20
+</td>
+<td style="text-align:left;">
+TB
+</td>
+<td style="text-align:left;">
+Drew Waters
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+pre-July
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+19
+</td>
+<td style="text-align:left;">
+PR
+</td>
+<td style="text-align:left;">
+Trent Thornton
+</td>
+<td style="text-align:left;">
+Chris Devenski
+</td>
+<td style="text-align:center;">
+pre-July
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+18
+</td>
+<td style="text-align:left;">
+PR
+</td>
+<td style="text-align:left;">
+Yohan Ramirez
+</td>
+<td style="text-align:left;">
+Max Kranick
+</td>
+<td style="text-align:center;">
+pre-July
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+17
+</td>
+<td style="text-align:left;">
+PR
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Alex Verdugo
+</td>
+<td style="text-align:center;">
+pre-July
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+16
+</td>
+<td style="text-align:left;">
+CK
+</td>
+<td style="text-align:left;">
+Jose Suarez
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+pre-July
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+15
+</td>
+<td style="text-align:left;">
+NB
+</td>
+<td style="text-align:left;">
+Connor Brogdon
+</td>
+<td style="text-align:left;">
+Thairo Estrada
+</td>
+<td style="text-align:center;">
+pre-July
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+14
+</td>
+<td style="text-align:left;">
+NB
+</td>
+<td style="text-align:left;">
+Brandon Young
+</td>
+<td style="text-align:left;">
+Jesse Winker
+</td>
+<td style="text-align:center;">
+pre-July
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+13
+</td>
+<td style="text-align:left;">
+NB
+</td>
+<td style="text-align:left;">
+Ryan Feltner
+</td>
+<td style="text-align:left;">
+Nolan Jones
+</td>
+<td style="text-align:center;">
+pre-July
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+12
+</td>
+<td style="text-align:left;">
+NB
+</td>
+<td style="text-align:left;">
+Adam Mazur
+</td>
+<td style="text-align:left;">
+Valente Bellozo
+</td>
+<td style="text-align:center;">
+pre-July
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+11
+</td>
+<td style="text-align:left;">
+HAR
+</td>
+<td style="text-align:left;">
+Casey Legumina
+</td>
+<td style="text-align:left;">
+Gordon Graceffo
+</td>
+<td style="text-align:center;">
+pre-July
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+10
+</td>
+<td style="text-align:left;">
+BRA
+</td>
+<td style="text-align:left;">
+John King
+</td>
+<td style="text-align:left;">
+Christopher Morel
+</td>
+<td style="text-align:center;">
+pre-June
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:left;">
+BRA
+</td>
+<td style="text-align:left;">
+Lou Trivino
+</td>
+<td style="text-align:left;">
+Drew Waters
+</td>
+<td style="text-align:center;">
+pre-June
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:left;">
+HAL
+</td>
+<td style="text-align:left;">
+Ildemaro Vargas
+</td>
+<td style="text-align:left;">
+Jarred Kelenic
+</td>
+<td style="text-align:center;">
+pre-June
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+7
+</td>
+<td style="text-align:left;">
+RAM
+</td>
+<td style="text-align:left;">
+Jake Bird
+</td>
+<td style="text-align:left;">
+Daysbel Hernandez
+</td>
+<td style="text-align:center;">
+pre-June
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+6
+</td>
+<td style="text-align:left;">
+RAM
+</td>
+<td style="text-align:left;">
+Travis d’Arnaud
+</td>
+<td style="text-align:left;">
+Jose Herrera
+</td>
+<td style="text-align:center;">
+pre-June
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+5
+</td>
+<td style="text-align:left;">
+CK
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+Jerar Encarnacion
+</td>
+<td style="text-align:center;">
+pre-June
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+4
+</td>
+<td style="text-align:left;">
+HAR
+</td>
+<td style="text-align:left;">
+Bryan Baker
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:center;">
+pre-June
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:left;">
+PR
+</td>
+<td style="text-align:left;">
+Derek Hill
+</td>
+<td style="text-align:left;">
+Jordan Wicks
+</td>
+<td style="text-align:center;">
+pre-June
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:left;">
+CK
+</td>
+<td style="text-align:left;">
+Richie Palacios
+</td>
+<td style="text-align:left;">
+Andrew Alvarez
+</td>
+<td style="text-align:center;">
+pre-May
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:left;">
+CK
+</td>
+<td style="text-align:left;">
+Justin Lawrence
+</td>
+<td style="text-align:left;">
+Alexis Diaz
+</td>
+<td style="text-align:center;">
+pre-May
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="recent-drafts" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">Recent Drafts</h2>
+<div id="section" class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">2026</h3>
+<div id="rounds-1-6" class="section level4">
+<h4>Rounds 1-6</h4>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Pick
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 1
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 2
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 3
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 4
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 5
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 6
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Roman Anthony | TB
+</td>
+<td style="text-align:left;">
+Carter Jensen | BRA
+</td>
+<td style="text-align:left;">
+Christian Moore | BRA
+</td>
+<td style="text-align:left;">
+Liam Hicks | BRA
+</td>
+<td style="text-align:left;">
+Tomoyuki Sugano | BRA
+</td>
+<td style="text-align:left;">
+Logan Evans | BRA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Nick Kurtz | BRA
+</td>
+<td style="text-align:left;">
+Daylen Lile | TB
+</td>
+<td style="text-align:left;">
+Chase Meidroth | TB
+</td>
+<td style="text-align:left;">
+Chase Dollander | TB
+</td>
+<td style="text-align:left;">
+Brad Lord | TB
+</td>
+<td style="text-align:left;">
+Tyler Phillips | TB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+Samuel Basallo | HOM
+</td>
+<td style="text-align:left;">
+Harry Ford | GH
+</td>
+<td style="text-align:left;">
+Alex Freeland | GH
+</td>
+<td style="text-align:left;">
+Matt Svanson | BEA
+</td>
+<td style="text-align:left;">
+Jhostynxon Garcia | GH
+</td>
+<td style="text-align:left;">
+Taijuan Walker | GH
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+Jacob Misiorowski | VAN
+</td>
+<td style="text-align:left;">
+Dalton Rushing | VAN
+</td>
+<td style="text-align:left;">
+Caleb Durbin | HOM
+</td>
+<td style="text-align:left;">
+Eric Wagaman | CAM
+</td>
+<td style="text-align:left;">
+Chris Paddack | CAM
+</td>
+<td style="text-align:left;">
+Charlie Morton | CAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+Cade Horton | CAM
+</td>
+<td style="text-align:left;">
+Shane Smith | CAM
+</td>
+<td style="text-align:left;">
+Troy Melton | VAN
+</td>
+<td style="text-align:left;">
+Ian Seymour | VAN
+</td>
+<td style="text-align:left;">
+Justin Wrobleski | VAN
+</td>
+<td style="text-align:left;">
+Ryan Helsley | VAN
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+Drake Baldwin | HAR
+</td>
+<td style="text-align:left;">
+Braxton Ashcraft | HAR
+</td>
+<td style="text-align:left;">
+Luis Morales | HAR
+</td>
+<td style="text-align:left;">
+Brandon Sproat | HAR
+</td>
+<td style="text-align:left;">
+Mick Abel | HAR
+</td>
+<td style="text-align:left;">
+Jacob Melton | HAR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+Nolan McLean | GH
+</td>
+<td style="text-align:left;">
+Payton Tolle | HOM
+</td>
+<td style="text-align:left;">
+Jakob Marsee | RAM
+</td>
+<td style="text-align:left;">
+Daniel Palencia | HOM
+</td>
+<td style="text-align:left;">
+Brice Matthews | WHI
+</td>
+<td style="text-align:left;">
+Nick Mears | WHI
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+Chase Burns | SV
+</td>
+<td style="text-align:left;">
+Max P. Muncy | HV
+</td>
+<td style="text-align:left;">
+Chad Patrick | RAM
+</td>
+<td style="text-align:left;">
+Kody Clemens | HV
+</td>
+<td style="text-align:left;">
+Jake Latz | BEA
+</td>
+<td style="text-align:left;">
+Jack Kochanowicz | HV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+Kristian Campbell | HV
+</td>
+<td style="text-align:left;">
+Carson Williams | HAR
+</td>
+<td style="text-align:left;">
+Chandler Simpson | HOM
+</td>
+<td style="text-align:left;">
+Gabe Speier | HOM
+</td>
+<td style="text-align:left;">
+Jimmy Herget | GRF
+</td>
+<td style="text-align:left;">
+Tim Tawa | DV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+Sal Stewart | DV
+</td>
+<td style="text-align:left;">
+Kyle Manzardo | RAM
+</td>
+<td style="text-align:left;">
+Denzel Clarke | NB
+</td>
+<td style="text-align:left;">
+Lucas Giolito | NB
+</td>
+<td style="text-align:left;">
+Drew Gilbert | NB
+</td>
+<td style="text-align:left;">
+Jake McCarthy | NB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:left;">
+Trey Yesavage | GRF
+</td>
+<td style="text-align:left;">
+Owen Caissie | DV
+</td>
+<td style="text-align:left;">
+Stephen Kolek | GRF
+</td>
+<td style="text-align:left;">
+Riley O’Brien | GRF
+</td>
+<td style="text-align:left;">
+Johan Oviedo | EVA
+</td>
+<td style="text-align:left;">
+Mason Fluharty | EVA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+Bubba Chandler | PR
+</td>
+<td style="text-align:left;">
+Cam Smith | EVA
+</td>
+<td style="text-align:left;">
+Isaac Collins | HAL
+</td>
+<td style="text-align:left;">
+Hyeseong Kim | HAL
+</td>
+<td style="text-align:left;">
+Nasim Nunez | HAL
+</td>
+<td style="text-align:left;">
+Tyrone Taylor | HAL
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:left;">
+Roki Sasaki | DAY
+</td>
+<td style="text-align:left;">
+Moises Ballesteros | GRF
+</td>
+<td style="text-align:left;">
+Grant Taylor | SV
+</td>
+<td style="text-align:left;">
+Ronny Henriquez | SV
+</td>
+<td style="text-align:left;">
+Mike Vasil | SV
+</td>
+<td style="text-align:left;">
+Justin Martinez | SV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:left;">
+Cam Schlittler | RAM
+</td>
+<td style="text-align:left;">
+Chase DeLauter | GNB
+</td>
+<td style="text-align:left;">
+Jake Mangum | WHI
+</td>
+<td style="text-align:left;">
+Eric Lauer | PR
+</td>
+<td style="text-align:left;">
+Justin Sterner | EVA
+</td>
+<td style="text-align:left;">
+Will Wagner | GRF
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+Noah Cameron | GNB
+</td>
+<td style="text-align:left;">
+Agustin Ramirez | HAL
+</td>
+<td style="text-align:left;">
+C.J. Kayfus | GNB
+</td>
+<td style="text-align:left;">
+Adrian Houser | GNB
+</td>
+<td style="text-align:left;">
+Caleb Thielbar | GNB
+</td>
+<td style="text-align:left;">
+Tommy Nance | GNB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+Emmet Sheehan | HAL
+</td>
+<td style="text-align:left;">
+Edgar Quero | DAY
+</td>
+<td style="text-align:left;">
+Shawn Armstrong | CK
+</td>
+<td style="text-align:left;">
+Bennett Sousa | HOM
+</td>
+<td style="text-align:left;">
+Felix Bautista | CK
+</td>
+<td style="text-align:left;">
+Griffin Canning | CK
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:left;">
+Colson Montgomery | PR
+</td>
+<td style="text-align:left;">
+Jack Dreyer | WHI
+</td>
+<td style="text-align:left;">
+Dominic Canzone | DV
+</td>
+<td style="text-align:left;">
+Myles Straw | DV
+</td>
+<td style="text-align:left;">
+Braydon Fisher | DV
+</td>
+<td style="text-align:left;">
+David Morgan | DV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+Nick Pivetta | BEA
+</td>
+<td style="text-align:left;">
+Cole Young | RAM
+</td>
+<td style="text-align:left;">
+Logan Henderson | ALA
+</td>
+<td style="text-align:left;">
+Ryan Bergert | ALA
+</td>
+<td style="text-align:left;">
+Grant Anderson | ALA
+</td>
+<td style="text-align:left;">
+Taylor Clarke | ALA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:left;">
+Luke Keaschall | PR
+</td>
+<td style="text-align:left;">
+Connelly Early | ROC
+</td>
+<td style="text-align:left;">
+Matt Brash | GRF
+</td>
+<td style="text-align:left;">
+Graham Pauley | GRF
+</td>
+<td style="text-align:left;">
+Otto Kemp | RAM
+</td>
+<td style="text-align:left;">
+Alan Roden | GRF
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:left;">
+Jac Caglianone | RAM
+</td>
+<td style="text-align:left;">
+Parker Messick | ALA
+</td>
+<td style="text-align:left;">
+Jacob Lopez | DAY
+</td>
+<td style="text-align:left;">
+Jahmai Jones | DAY
+</td>
+<td style="text-align:left;">
+Juan M. Mejia | DAY
+</td>
+<td style="text-align:left;">
+Warming Bernabel | DAY
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+Bryce Eldridge | ROC
+</td>
+<td style="text-align:left;">
+Brad Keller | BEA
+</td>
+<td style="text-align:left;">
+Heriberto Hernandez | CC
+</td>
+<td style="text-align:left;">
+Jeremiah Jackson | CC
+</td>
+<td style="text-align:left;">
+Sean Newcomb | CC
+</td>
+<td style="text-align:left;">
+Robert Hassell | CC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+Kyle Teel | CC
+</td>
+<td style="text-align:left;">
+Jonah Tong | GH
+</td>
+<td style="text-align:left;">
+Jared Triolo | ROC
+</td>
+<td style="text-align:left;">
+Jordan Leasure | GRF
+</td>
+<td style="text-align:left;">
+Janson Junk | ROC
+</td>
+<td style="text-align:left;">
+Colby Thomas | ROC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:left;">
+Matt Shaw | ALA
+</td>
+<td style="text-align:left;">
+Brady House | RAM
+</td>
+<td style="text-align:left;">
+Jimmy Crooks | RAM
+</td>
+<td style="text-align:left;">
+Pedro Pages | RAM
+</td>
+<td style="text-align:left;">
+Hunter Barco | RAM
+</td>
+<td style="text-align:left;">
+Reynaldo Lopez | VAN
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+Marcelo Mayer | NB
+</td>
+<td style="text-align:left;">
+Dylan Beavers | NB
+</td>
+<td style="text-align:left;">
+Mike Burrows | RAM
+</td>
+<td style="text-align:left;">
+Jack Perkins | RAM
+</td>
+<td style="text-align:left;">
+Ben Williamson | RAM
+</td>
+<td style="text-align:left;">
+Austin Wynns | CK
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="rounds-7-13" class="section level4">
+<h4>Rounds 7-13</h4>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Pick
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 7
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 8
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 9
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 10
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 11
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 12
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 13
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Luis L. Ortiz | BRA
+</td>
+<td style="text-align:left;">
+Dylan Moore | BRA
+</td>
+<td style="text-align:left;">
+Wandy Peralta | BRA
+</td>
+<td style="text-align:left;">
+Tyler Ferguson | BRA
+</td>
+<td style="text-align:left;">
+Jason Alexander | BRA
+</td>
+<td style="text-align:left;">
+Luke Jackson | BRA
+</td>
+<td style="text-align:left;">
+Justin Wilson | BRA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Ben Casparius | TB
+</td>
+<td style="text-align:left;">
+Jose Iglesias | TB
+</td>
+<td style="text-align:left;">
+Kyle Karros | TB
+</td>
+<td style="text-align:left;">
+Huascar Brazoban | TB
+</td>
+<td style="text-align:left;">
+Yanquiel Fernandez | TB
+</td>
+<td style="text-align:left;">
+Ian Hamilton | TB
+</td>
+<td style="text-align:left;">
+Oswald Peraza | TB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+Connor Wong | GH
+</td>
+<td style="text-align:left;">
+Santiago Espinal | GH
+</td>
+<td style="text-align:left;">
+Orlando Arcia | GH
+</td>
+<td style="text-align:left;">
+Joey Wentz | GH
+</td>
+<td style="text-align:left;">
+Osvaldo Bido | GH
+</td>
+<td style="text-align:left;">
+Colton Gordon | GH
+</td>
+<td style="text-align:left;">
+Yoendrys Gomez | GH
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+Andrew Heaney | CAM
+</td>
+<td style="text-align:left;">
+Eli White | CAM
+</td>
+<td style="text-align:left;">
+Steven Cruz | CAM
+</td>
+<td style="text-align:left;">
+Chris Murphy | CAM
+</td>
+<td style="text-align:left;">
+Troy Johnston | CAM
+</td>
+<td style="text-align:left;">
+Nick Sogard | CAM
+</td>
+<td style="text-align:left;">
+PJ Poulin | CAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+Justin Slaten | VAN
+</td>
+<td style="text-align:left;">
+Trevor McDonald | VAN
+</td>
+<td style="text-align:left;">
+Hunter Harvey | VAN
+</td>
+<td style="text-align:left;">
+Leo Jimenez | VAN
+</td>
+<td style="text-align:left;">
+Ryan Johnson | GRF
+</td>
+<td style="text-align:left;">
+Michael Helman | BEA
+</td>
+<td style="text-align:left;">
+Cody Freeman | DAY
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+Darell Hernaiz | HAR
+</td>
+<td style="text-align:left;">
+Ryan Ritter | HAR
+</td>
+<td style="text-align:left;">
+Mason Montgomery | HAR
+</td>
+<td style="text-align:left;">
+Carlos Vargas | HAR
+</td>
+<td style="text-align:left;">
+Zach Dezenzo | HAR
+</td>
+<td style="text-align:left;">
+Jackson Rutledge | HAR
+</td>
+<td style="text-align:left;">
+Cole Henry | HAR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+Bryan Baker | WHI
+</td>
+<td style="text-align:left;">
+Bradgley Rodriguez | WHI
+</td>
+<td style="text-align:left;">
+Maximo Acosta | WHI
+</td>
+<td style="text-align:left;">
+Zac Veen | WHI
+</td>
+<td style="text-align:left;">
+Dustin Harris | WHI
+</td>
+<td style="text-align:left;">
+Steven Wilson | WHI
+</td>
+<td style="text-align:left;">
+Chase Lee | WHI
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+Dane Myers | HV
+</td>
+<td style="text-align:left;">
+German Marquez | HV
+</td>
+<td style="text-align:left;">
+Dylan Carlson | HV
+</td>
+<td style="text-align:left;">
+Alexander Canario | HV
+</td>
+<td style="text-align:left;">
+Brandon Eisert | HV
+</td>
+<td style="text-align:left;">
+Elvis Alvarado | HV
+</td>
+<td style="text-align:left;">
+Jose M Fermin | HV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+Aaron Bummer | HOM
+</td>
+<td style="text-align:left;">
+Gary Sanchez | HOM
+</td>
+<td style="text-align:left;">
+Donovan Solano | BEA
+</td>
+<td style="text-align:left;">
+Brock Stewart | HOM
+</td>
+<td style="text-align:left;">
+Yilber Diaz | HOM
+</td>
+<td style="text-align:left;">
+Zach Maxwell | HOM
+</td>
+<td style="text-align:left;">
+pass | VAN
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+Ryan Gusto | NB
+</td>
+<td style="text-align:left;">
+Wikelman Gonzalez | NB
+</td>
+<td style="text-align:left;">
+Didier Fuentes | NB
+</td>
+<td style="text-align:left;">
+Tanner Houck | NB
+</td>
+<td style="text-align:left;">
+Angel Chivilli | NB
+</td>
+<td style="text-align:left;">
+McCade Brown | NB
+</td>
+<td style="text-align:left;">
+Mitch Garver | NB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:left;">
+Cade Gibson | EVA
+</td>
+<td style="text-align:left;">
+Tyler Gilbert | EVA
+</td>
+<td style="text-align:left;">
+Will Klein | EVA
+</td>
+<td style="text-align:left;">
+Tyler Fitzgerald | EVA
+</td>
+<td style="text-align:left;">
+Evan Phillips | EVA
+</td>
+<td style="text-align:left;">
+Vidal Brujan | EVA
+</td>
+<td style="text-align:left;">
+Stuart Fairchild | EVA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+Steven Matz | HAL
+</td>
+<td style="text-align:left;">
+Hunter Dobbins | HAL
+</td>
+<td style="text-align:left;">
+Kade Strowd | HAL
+</td>
+<td style="text-align:left;">
+Michael Toglia | HAL
+</td>
+<td style="text-align:left;">
+Jarred Kelenic | HAL
+</td>
+<td style="text-align:left;">
+Jack Suwinski | HAL
+</td>
+<td style="text-align:left;">
+Austin Slater | HAL
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:left;">
+A.J. Blubaugh | SV
+</td>
+<td style="text-align:left;">
+Leo Rivas | SV
+</td>
+<td style="text-align:left;">
+Brock Burke | SV
+</td>
+<td style="text-align:left;">
+Justin Turner | SV
+</td>
+<td style="text-align:left;">
+Kody Funderburk | SV
+</td>
+<td style="text-align:left;">
+Cristian Mena | SV
+</td>
+<td style="text-align:left;">
+Jose Corniell | SV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:left;">
+Christian Encarnacn-Stran | PR
+</td>
+<td style="text-align:left;">
+Matt Festa | PR
+</td>
+<td style="text-align:left;">
+Max Kranick | PR
+</td>
+<td style="text-align:left;">
+JT Brubaker | PR
+</td>
+<td style="text-align:left;">
+Brent Headrick | PR
+</td>
+<td style="text-align:left;">
+Bobby Miller | PR
+</td>
+<td style="text-align:left;">
+Chris Devenski | PR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+Tyler Heineman | GNB
+</td>
+<td style="text-align:left;">
+Robert Gasser | GNB
+</td>
+<td style="text-align:left;">
+Isaac Mattson | GNB
+</td>
+<td style="text-align:left;">
+Kolby Allard | GNB
+</td>
+<td style="text-align:left;">
+John Rave | GNB
+</td>
+<td style="text-align:left;">
+Justin Topa | GNB
+</td>
+<td style="text-align:left;">
+Nic Enright | GNB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+Chase Petty | CK
+</td>
+<td style="text-align:left;">
+Andrew Alvarez | CK
+</td>
+<td style="text-align:left;">
+Zach Cole | CK
+</td>
+<td style="text-align:left;">
+Connor Phillips | CK
+</td>
+<td style="text-align:left;">
+Jace Jung | CK
+</td>
+<td style="text-align:left;">
+Braxton Fulford | CK
+</td>
+<td style="text-align:left;">
+Luis Mey | CK
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:left;">
+Enrique Hernandez | DV
+</td>
+<td style="text-align:left;">
+Mason Englert | DV
+</td>
+<td style="text-align:left;">
+Jake Fraley | DV
+</td>
+<td style="text-align:left;">
+Carlos Cortes | DV
+</td>
+<td style="text-align:left;">
+Nick Loftin | DV
+</td>
+<td style="text-align:left;">
+Michael Kelly | DV
+</td>
+<td style="text-align:left;">
+Lane Thomas | DV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+Kyren Paris | ALA
+</td>
+<td style="text-align:left;">
+Alex Jackson | ALA
+</td>
+<td style="text-align:left;">
+Lake Bachar | ALA
+</td>
+<td style="text-align:left;">
+Brandon Walter | ALA
+</td>
+<td style="text-align:left;">
+Tommy Kahnle | ALA
+</td>
+<td style="text-align:left;">
+Kyle Hart | ALA
+</td>
+<td style="text-align:left;">
+Chris Flexen | ALA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:left;">
+Jose Fermin | VAN
+</td>
+<td style="text-align:left;">
+Jonathan Bowlan | GRF
+</td>
+<td style="text-align:left;">
+Carson Whisenhunt | HOM
+</td>
+<td style="text-align:left;">
+John Curtiss | PR
+</td>
+<td style="text-align:left;">
+Adam Mazur | BEA
+</td>
+<td style="text-align:left;">
+Joey Lucchesi | EVA
+</td>
+<td style="text-align:left;">
+Porter Hodge | EVA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:left;">
+Drew Pomeranz | DAY
+</td>
+<td style="text-align:left;">
+Andruw Monasterio | DAY
+</td>
+<td style="text-align:left;">
+A.J. Minter | VAN
+</td>
+<td style="text-align:left;">
+Erik Sabrowski | DAY
+</td>
+<td style="text-align:left;">
+Bryce Johnson | DAY
+</td>
+<td style="text-align:left;">
+Luinder Avila | DAY
+</td>
+<td style="text-align:left;">
+pass | DAY
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+Luis Urias | CC
+</td>
+<td style="text-align:left;">
+Christian Koss | CC
+</td>
+<td style="text-align:left;">
+Andy Ibanez | CC
+</td>
+<td style="text-align:left;">
+Nabil Crismatt | CC
+</td>
+<td style="text-align:left;">
+Chase Shugart | CC
+</td>
+<td style="text-align:left;">
+Miles Mastrobuoni | CC
+</td>
+<td style="text-align:left;">
+Victor Mesa | CC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+Michael A. Taylor | ROC
+</td>
+<td style="text-align:left;">
+Sam Haggerty | ROC
+</td>
+<td style="text-align:left;">
+Andrew Saalfrank | ROC
+</td>
+<td style="text-align:left;">
+Luis A. Garcia | ROC
+</td>
+<td style="text-align:left;">
+Dylan Dodd | ROC
+</td>
+<td style="text-align:left;">
+Yimi Garcia | ROC
+</td>
+<td style="text-align:left;">
+Cole Sulser | ROC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:left;">
+Alejandro Osuna | GRF
+</td>
+<td style="text-align:left;">
+Reese McGuire | BEA
+</td>
+<td style="text-align:left;">
+Blade Tidwell | BEA
+</td>
+<td style="text-align:left;">
+Clayton Beeter | BEA
+</td>
+<td style="text-align:left;">
+Nate Eaton | BEA
+</td>
+<td style="text-align:left;">
+Denzer Guzman | BEA
+</td>
+<td style="text-align:left;">
+Justin Lawrence | BEA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+Brooks Raley | CK
+</td>
+<td style="text-align:left;">
+Antonio Senzatela | RAM
+</td>
+<td style="text-align:left;">
+Keegan Akin | RAM
+</td>
+<td style="text-align:left;">
+Griffin Conine | BEA
+</td>
+<td style="text-align:left;">
+Trevor Williams | RAM
+</td>
+<td style="text-align:left;">
+Brandyn Garcia | HOM
+</td>
+<td style="text-align:left;">
+Craig Yoho | GRF
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="section-1" class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">2025</h3>
+<div id="rounds-1-6-1" class="section level4">
+<h4>Rounds 1-6</h4>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Pick
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 1
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 2
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 3
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 4
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 5
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 6
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Paul Skenes | GH
+</td>
+<td style="text-align:left;">
+Wenceel Perez | HV
+</td>
+<td style="text-align:left;">
+Andrew Vaughn | GH
+</td>
+<td style="text-align:left;">
+River Ryan | GH
+</td>
+<td style="text-align:left;">
+Miles Mikolas | GH
+</td>
+<td style="text-align:left;">
+Cooper Criswell | GH
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Jackson Chourio | BRA
+</td>
+<td style="text-align:left;">
+Erick Fedde | BRA
+</td>
+<td style="text-align:left;">
+Adael Amador | BRA
+</td>
+<td style="text-align:left;">
+Orelvis Martinez | BRA
+</td>
+<td style="text-align:left;">
+Victor Scott II | BRA
+</td>
+<td style="text-align:left;">
+Ezequiel Duran | BRA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+Jackson Merrill | NB
+</td>
+<td style="text-align:left;">
+Hayden Birdsong | NB
+</td>
+<td style="text-align:left;">
+Max Schuemann | HV
+</td>
+<td style="text-align:left;">
+Michael zzSiani | HV
+</td>
+<td style="text-align:left;">
+Erik Miller | HV
+</td>
+<td style="text-align:left;">
+Ben Rortvedt | HV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+Wyatt Langford | PR
+</td>
+<td style="text-align:left;">
+Jace Jung | ALA
+</td>
+<td style="text-align:left;">
+Adrian Del Castillo | ALA
+</td>
+<td style="text-align:left;">
+Tayler Scott | ALA
+</td>
+<td style="text-align:left;">
+Trevor Story | ALA
+</td>
+<td style="text-align:left;">
+Jacob Stallings | ALA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+Yoshinobu Yamamoto | ALA
+</td>
+<td style="text-align:left;">
+Kumar Rocker | PR
+</td>
+<td style="text-align:left;">
+Jhonkensy Noel | NB
+</td>
+<td style="text-align:left;">
+Alec Marsh | NB
+</td>
+<td style="text-align:left;">
+Reid Detmers | NB
+</td>
+<td style="text-align:left;">
+Thairo Estrada | NB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+Jared Jones | CAM
+</td>
+<td style="text-align:left;">
+Otto Lopez | CAM
+</td>
+<td style="text-align:left;">
+Keegan Akin | STE
+</td>
+<td style="text-align:left;">
+Pavin Smith | STE
+</td>
+<td style="text-align:left;">
+Adrian Morejon | STE
+</td>
+<td style="text-align:left;">
+John King | STE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+Dylan Crews | TB
+</td>
+<td style="text-align:left;">
+Spencer Arrighetti | TB
+</td>
+<td style="text-align:left;">
+Thomas Saggese | TB
+</td>
+<td style="text-align:left;">
+Jonathan Cannon | TB
+</td>
+<td style="text-align:left;">
+Ramon Laureano | TB
+</td>
+<td style="text-align:left;">
+Justin Verlander | TB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+James Wood | RAM
+</td>
+<td style="text-align:left;">
+Cade Smith | STE
+</td>
+<td style="text-align:left;">
+Landen Roupp | PR
+</td>
+<td style="text-align:left;">
+Aaron Ashby | PR
+</td>
+<td style="text-align:left;">
+Albert Suarez | CK
+</td>
+<td style="text-align:left;">
+Christian Scott | PR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+Spencer Schwellenbach | WHI
+</td>
+<td style="text-align:left;">
+Jeremiah Estrada | RAM
+</td>
+<td style="text-align:left;">
+Josh Bell | CAM
+</td>
+<td style="text-align:left;">
+Rowdy Tellez | CAM
+</td>
+<td style="text-align:left;">
+Romy Gonzalez | CAM
+</td>
+<td style="text-align:left;">
+Dennis Santana | CAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+Jackson Holliday | STE
+</td>
+<td style="text-align:left;">
+Connor Norby | HAL
+</td>
+<td style="text-align:left;">
+Kyle Manzardo | DAY
+</td>
+<td style="text-align:left;">
+Nick Yorke | VAN
+</td>
+<td style="text-align:left;">
+Bryan Hoeing | WHI
+</td>
+<td style="text-align:left;">
+Sean Hjelle | WHI
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:left;">
+Jackson Jobe | HAL
+</td>
+<td style="text-align:left;">
+Miguel Amaya | DAY
+</td>
+<td style="text-align:left;">
+Jared Koenig | RAM
+</td>
+<td style="text-align:left;">
+Blake Treinen | RAM
+</td>
+<td style="text-align:left;">
+Trey Sweeney | RAM
+</td>
+<td style="text-align:left;">
+Kevin Pillar | RAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+Shota Imanaga | DAY
+</td>
+<td style="text-align:left;">
+Cole Sands | WHI
+</td>
+<td style="text-align:left;">
+Hurston Waldrep | HAL
+</td>
+<td style="text-align:left;">
+Will Wagner | HAL
+</td>
+<td style="text-align:left;">
+Yuki Matsui | HAL
+</td>
+<td style="text-align:left;">
+Joey Loperfido | HAL
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:left;">
+Coby Mayo | DV
+</td>
+<td style="text-align:left;">
+Casey Mize | DV
+</td>
+<td style="text-align:left;">
+David Hamilton | DAY
+</td>
+<td style="text-align:left;">
+Cade Povich | WHI
+</td>
+<td style="text-align:left;">
+Calvin Faucher | DAY
+</td>
+<td style="text-align:left;">
+Griffin Conine | DAY
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:left;">
+Tobias Myers | RAC
+</td>
+<td style="text-align:left;">
+Mitch Spence | RAC
+</td>
+<td style="text-align:left;">
+Justin Slaten | DV
+</td>
+<td style="text-align:left;">
+Brant Hurter | DV
+</td>
+<td style="text-align:left;">
+Landon Knack | DV
+</td>
+<td style="text-align:left;">
+Drew Romo | DV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+Jacob T. Wilson | GRF
+</td>
+<td style="text-align:left;">
+Leody Taveras | HV
+</td>
+<td style="text-align:left;">
+Juan Yepez | RAC
+</td>
+<td style="text-align:left;">
+Trey Lipscomb | RAC
+</td>
+<td style="text-align:left;">
+Dedniel Nunez | CC
+</td>
+<td style="text-align:left;">
+Nasim Nunez | RAC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+Colt Keith | VAN
+</td>
+<td style="text-align:left;">
+Jose Tena | WHI
+</td>
+<td style="text-align:left;">
+Jose Iglesias | HOM
+</td>
+<td style="text-align:left;">
+Jack Leiter | HOM
+</td>
+<td style="text-align:left;">
+Ryan Fernandez | HAL
+</td>
+<td style="text-align:left;">
+Beau Brieske | HOM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:left;">
+Luis Gil | HV
+</td>
+<td style="text-align:left;">
+Justin Martinez | GRF
+</td>
+<td style="text-align:left;">
+Jack Kochanowicz | GRF
+</td>
+<td style="text-align:left;">
+Michael McGreevy | GRF
+</td>
+<td style="text-align:left;">
+Ben Rice | GRF
+</td>
+<td style="text-align:left;">
+Declan Cronin | GRF
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+Kevin Alcantara | HOM
+</td>
+<td style="text-align:left;">
+Caden Dana | VAN
+</td>
+<td style="text-align:left;">
+Edwin Uceta | CC
+</td>
+<td style="text-align:left;">
+Austin Martin | CC
+</td>
+<td style="text-align:left;">
+Derek Hill | CC
+</td>
+<td style="text-align:left;">
+Daniel Schneemann | CC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:left;">
+Jung Hoo Lee | SV
+</td>
+<td style="text-align:left;">
+David Festa | SV
+</td>
+<td style="text-align:left;">
+Grant Holmes | VAN
+</td>
+<td style="text-align:left;">
+Leo Jimenez | VAN
+</td>
+<td style="text-align:left;">
+Pedro Pages | VAN
+</td>
+<td style="text-align:left;">
+Hunter Harvey | VAN
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:left;">
+Brooks Lee | GNB
+</td>
+<td style="text-align:left;">
+Drew Thorpe | GNB
+</td>
+<td style="text-align:left;">
+Ben Brown | SV
+</td>
+<td style="text-align:left;">
+Nacho Alvarez | SV
+</td>
+<td style="text-align:left;">
+Bryan Ramos | SV
+</td>
+<td style="text-align:left;">
+Jairo Iriarte | SV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+Ronel Blanco | ROC
+</td>
+<td style="text-align:left;">
+Jonah Bride | CC
+</td>
+<td style="text-align:left;">
+Yariel Rodriguez | GNB
+</td>
+<td style="text-align:left;">
+Jon Singleton | GNB
+</td>
+<td style="text-align:left;">
+Rafael Marchan | GRF
+</td>
+<td style="text-align:left;">
+Daniel Hudson | ALA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+Andy Pages | HAR
+</td>
+<td style="text-align:left;">
+Luis Matos | ROC
+</td>
+<td style="text-align:left;">
+Porter Hodge | ROC
+</td>
+<td style="text-align:left;">
+David Peralta | RAM
+</td>
+<td style="text-align:left;">
+Casey Schmitt | ROC
+</td>
+<td style="text-align:left;">
+Adam Duvall | ROC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:left;">
+Mitchell Parker | RAC
+</td>
+<td style="text-align:left;">
+DJ Herz | HAR
+</td>
+<td style="text-align:left;">
+Zebby Matthews | HAR
+</td>
+<td style="text-align:left;">
+Yilber Diaz | HAR
+</td>
+<td style="text-align:left;">
+Jorge Alcala | ALA
+</td>
+<td style="text-align:left;">
+Taylor Walls | HAR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+Rhett Lowder | GH
+</td>
+<td style="text-align:left;">
+Luisangel Acuna | BRA
+</td>
+<td style="text-align:left;">
+Tyson Miller | CK
+</td>
+<td style="text-align:left;">
+Brett Wisely | CK
+</td>
+<td style="text-align:left;">
+Joey Cantillo | GRF
+</td>
+<td style="text-align:left;">
+Sam Hilliard | CK
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="rounds-7-13-1" class="section level4">
+<h4>Rounds 7-13</h4>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Pick
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 7
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 8
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 9
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 10
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 11
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 12
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 13
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Keider Montero | GH
+</td>
+<td style="text-align:left;">
+Kris Bryant | GH
+</td>
+<td style="text-align:left;">
+Dane Dunning | GH
+</td>
+<td style="text-align:left;">
+Carson Fulmer | GH
+</td>
+<td style="text-align:left;">
+Joey Wentz | GH
+</td>
+<td style="text-align:left;">
+Jesse Chavez | GH
+</td>
+<td style="text-align:left;">
+James McArthur | GH
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Joe Ross | BRA
+</td>
+<td style="text-align:left;">
+Blake Walston | STE
+</td>
+<td style="text-align:left;">
+Dillon Dingler | STE
+</td>
+<td style="text-align:left;">
+Scott Barlow | BRA
+</td>
+<td style="text-align:left;">
+Luis Torrens | BRA
+</td>
+<td style="text-align:left;">
+Javier Baez | BRA
+</td>
+<td style="text-align:left;">
+pass | BRA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+Jose Leclerc | HV
+</td>
+<td style="text-align:left;">
+Kyle Freeland | HV
+</td>
+<td style="text-align:left;">
+Nick Sandlin | HV
+</td>
+<td style="text-align:left;">
+Greg Weissert | HV
+</td>
+<td style="text-align:left;">
+Enyel De Los Santos | HV
+</td>
+<td style="text-align:left;">
+Anthony Molina | HV
+</td>
+<td style="text-align:left;">
+Cole Winn | HV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+Tyler Ferguson | ALA
+</td>
+<td style="text-align:left;">
+Justyn-Henry Malloy | ALA
+</td>
+<td style="text-align:left;">
+T.J. McFarland | ALA
+</td>
+<td style="text-align:left;">
+Brandon zzDrury | HAR
+</td>
+<td style="text-align:left;">
+Sam Long | ALA
+</td>
+<td style="text-align:left;">
+Luis Guillorme | HAR
+</td>
+<td style="text-align:left;">
+Keaton Winn | HAR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+Valente Bellozo | NB
+</td>
+<td style="text-align:left;">
+Xzavion Curry | NB
+</td>
+<td style="text-align:left;">
+Prelander Berroa | NB
+</td>
+<td style="text-align:left;">
+Richard Fitts | NB
+</td>
+<td style="text-align:left;">
+Sixto zzSanchez | NB
+</td>
+<td style="text-align:left;">
+Roddery Munoz | NB
+</td>
+<td style="text-align:left;">
+Carlos F. zzRodriguez | NB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+Andrew Kittredge | STE
+</td>
+<td style="text-align:left;">
+Stuart Fairchild | STE
+</td>
+<td style="text-align:left;">
+Edgardo Henriquez | STE
+</td>
+<td style="text-align:left;">
+Jonatan Clase | STE
+</td>
+<td style="text-align:left;">
+Aaron Schunk | STE
+</td>
+<td style="text-align:left;">
+Ty Madden | STE
+</td>
+<td style="text-align:left;">
+Brandon Hughes | STE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+Will Benson | TB
+</td>
+<td style="text-align:left;">
+Abraham Toro | ROC
+</td>
+<td style="text-align:left;">
+Carson Spiers | TB
+</td>
+<td style="text-align:left;">
+Jonathan Loaisiga | TB
+</td>
+<td style="text-align:left;">
+Mitch Haniger | TB
+</td>
+<td style="text-align:left;">
+Eduard Bazardo | ROC
+</td>
+<td style="text-align:left;">
+Michael A. Taylor | TB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+Anthony Banda | PR
+</td>
+<td style="text-align:left;">
+Austin Voth | PR
+</td>
+<td style="text-align:left;">
+Michael zzStefanic | PR
+</td>
+<td style="text-align:left;">
+Bryan King | PR
+</td>
+<td style="text-align:left;">
+Brent zzHoneywell | PR
+</td>
+<td style="text-align:left;">
+Hunter Stratton | PR
+</td>
+<td style="text-align:left;">
+German Marquez | PR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+Hunter Strickland | CAM
+</td>
+<td style="text-align:left;">
+Dominic Smith | CAM
+</td>
+<td style="text-align:left;">
+Manuel Rodriguez | CAM
+</td>
+<td style="text-align:left;">
+Austin Slater | CAM
+</td>
+<td style="text-align:left;">
+Kyle McCann | CAM
+</td>
+<td style="text-align:left;">
+Zack Kelly | CAM
+</td>
+<td style="text-align:left;">
+Tim Anderson | CAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+Gustavo Campero | WHI
+</td>
+<td style="text-align:left;">
+Javier Sanoja | WHI
+</td>
+<td style="text-align:left;">
+Collin Snider | WHI
+</td>
+<td style="text-align:left;">
+Rece Hinds | WHI
+</td>
+<td style="text-align:left;">
+Brenan Hanifee | WHI
+</td>
+<td style="text-align:left;">
+Justin Foscue | WHI
+</td>
+<td style="text-align:left;">
+Spencer Bivens | WHI
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:left;">
+Jesus Tinoco | RAM
+</td>
+<td style="text-align:left;">
+Chayce McDermott | RAM
+</td>
+<td style="text-align:left;">
+Tyler Locklear | RAM
+</td>
+<td style="text-align:left;">
+Nick zzNastrini | RAM
+</td>
+<td style="text-align:left;">
+Andrew zzWalters | RAM
+</td>
+<td style="text-align:left;">
+Seth Johnson | RAM
+</td>
+<td style="text-align:left;">
+Troy zzTaylor | RAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+Tyler Black | HAL
+</td>
+<td style="text-align:left;">
+Zach Dezenzo | HAL
+</td>
+<td style="text-align:left;">
+Craig Kimbrel | HAL
+</td>
+<td style="text-align:left;">
+Garrett Hampson | HAL
+</td>
+<td style="text-align:left;">
+Abner Uribe | HAL
+</td>
+<td style="text-align:left;">
+Luke Maile | HAL
+</td>
+<td style="text-align:left;">
+Anthony Rendon | HAL
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:left;">
+Dairon Blanco | DAY
+</td>
+<td style="text-align:left;">
+Mark Leiter | DAY
+</td>
+<td style="text-align:left;">
+Brennan Bernardino | DAY
+</td>
+<td style="text-align:left;">
+Weston Wilson | DAY
+</td>
+<td style="text-align:left;">
+Garrett Stubbs | DAY
+</td>
+<td style="text-align:left;">
+Brendon Little | DAY
+</td>
+<td style="text-align:left;">
+Luis Peralta | DAY
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:left;">
+Reed Garrett | DV
+</td>
+<td style="text-align:left;">
+Jake Cave | DV
+</td>
+<td style="text-align:left;">
+Alek Thomas | DV
+</td>
+<td style="text-align:left;">
+Tyler Mahle | DV
+</td>
+<td style="text-align:left;">
+Reese McGuire | DV
+</td>
+<td style="text-align:left;">
+Cam Booser | DV
+</td>
+<td style="text-align:left;">
+Tomas Nido | DV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+Hayden Wesneski | RAC
+</td>
+<td style="text-align:left;">
+Jerar Encarnacion | RAC
+</td>
+<td style="text-align:left;">
+Davis Martin | RAC
+</td>
+<td style="text-align:left;">
+Robert Gasser | RAC
+</td>
+<td style="text-align:left;">
+Billy Cook | RAC
+</td>
+<td style="text-align:left;">
+Hunter Bigge | RAC
+</td>
+<td style="text-align:left;">
+Eric Wagaman | RAC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+Hogan Harris | HOM
+</td>
+<td style="text-align:left;">
+Trent Grisham | HOM
+</td>
+<td style="text-align:left;">
+Anthony Bender | HOM
+</td>
+<td style="text-align:left;">
+Ryan Burr | HOM
+</td>
+<td style="text-align:left;">
+Danny zzYoung | HOM
+</td>
+<td style="text-align:left;">
+Daysbel Hernandez | GRF
+</td>
+<td style="text-align:left;">
+Luis Urias | HOM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:left;">
+Luke Little | GRF
+</td>
+<td style="text-align:left;">
+Nate Pearson | GRF
+</td>
+<td style="text-align:left;">
+Louie Varland | GRF
+</td>
+<td style="text-align:left;">
+Adam Frazier | GNB
+</td>
+<td style="text-align:left;">
+J.T. Ginn | GNB
+</td>
+<td style="text-align:left;">
+Tristan Beck | CK
+</td>
+<td style="text-align:left;">
+James Outman | CK
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+Tony Santillan | CC
+</td>
+<td style="text-align:left;">
+Andres Chaparro | CC
+</td>
+<td style="text-align:left;">
+Sean Burke | CC
+</td>
+<td style="text-align:left;">
+John Means | CC
+</td>
+<td style="text-align:left;">
+Blake zzSabol | CC
+</td>
+<td style="text-align:left;">
+Carlos Narvaez | CC
+</td>
+<td style="text-align:left;">
+Cody Poteet | CC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:left;">
+Garrett Whitlock | VAN
+</td>
+<td style="text-align:left;">
+Jordan Romano | VAN
+</td>
+<td style="text-align:left;">
+Jordan Beck | VAN
+</td>
+<td style="text-align:left;">
+Ian Hamilton | VAN
+</td>
+<td style="text-align:left;">
+Ryan Bliss | VAN
+</td>
+<td style="text-align:left;">
+Caleb Kilian | VAN
+</td>
+<td style="text-align:left;">
+pass | VAN
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:left;">
+Addison Barger | SV
+</td>
+<td style="text-align:left;">
+Jake Cousins | SV
+</td>
+<td style="text-align:left;">
+J.T. Chargois | SV
+</td>
+<td style="text-align:left;">
+Kyle Leahy | SV
+</td>
+<td style="text-align:left;">
+Josh Staumont | SV
+</td>
+<td style="text-align:left;">
+Sean Reid-Foley | SV
+</td>
+<td style="text-align:left;">
+Ryan Zeferjahn | SV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+Will Warren | GRF
+</td>
+<td style="text-align:left;">
+Tim Hill | GNB
+</td>
+<td style="text-align:left;">
+Kyle Nicolas | GNB
+</td>
+<td style="text-align:left;">
+Michel Otanez | GNB
+</td>
+<td style="text-align:left;">
+Dane Myers | GNB
+</td>
+<td style="text-align:left;">
+Hans Crouse | GNB
+</td>
+<td style="text-align:left;">
+Matt Carpenter | GNB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+Jason Heyward | ROC
+</td>
+<td style="text-align:left;">
+Nick Gordon | TB
+</td>
+<td style="text-align:left;">
+Nathan Lukes | ROC
+</td>
+<td style="text-align:left;">
+Jalen Beeks | TB
+</td>
+<td style="text-align:left;">
+Fraser Ellard | ROC
+</td>
+<td style="text-align:left;">
+Joey Gallo | ROC
+</td>
+<td style="text-align:left;">
+Enoli Paredes | ROC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:left;">
+Victor Vodnik | HAR
+</td>
+<td style="text-align:left;">
+Randy Rodriguez | HAR
+</td>
+<td style="text-align:left;">
+Blaze Alexander | HAR
+</td>
+<td style="text-align:left;">
+Angel Martinez | HAR
+</td>
+<td style="text-align:left;">
+Kyle zzMuller | HAR
+</td>
+<td style="text-align:left;">
+Jake Bloss | HAR
+</td>
+<td style="text-align:left;">
+Jose zzSuarez | HAR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+Brooks Baldwin | GRF
+</td>
+<td style="text-align:left;">
+Nick Ahmed | PR
+</td>
+<td style="text-align:left;">
+Darell Hernaiz | CK
+</td>
+<td style="text-align:left;">
+Eric Haase | CK
+</td>
+<td style="text-align:left;">
+Sean Guenther | CK
+</td>
+<td style="text-align:left;">
+Dylan Carlson | CK
+</td>
+<td style="text-align:left;">
+pass | CK
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="section-2" class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">2024</h3>
+<div id="rounds-1-6-2" class="section level4">
+<h4>Rounds 1-6</h4>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Pick
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 1
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 2
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 3
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 4
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 5
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 6
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2023 Jordan Walker | GH
+</td>
+<td style="text-align:left;">
+2023 Christian Encarnacn-Stran | GNB
+</td>
+<td style="text-align:left;">
+2023 Andrew Abbott | HAR
+</td>
+<td style="text-align:left;">
+2023 Ryan Noda | HAR
+</td>
+<td style="text-align:left;">
+2023 Dauri Moreta | HAR
+</td>
+<td style="text-align:left;">
+2023 Slade Cecconi | HAR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2023 Anthony Volpe | TB
+</td>
+<td style="text-align:left;">
+2023 Austin Wells | TB
+</td>
+<td style="text-align:left;">
+2023 Brent Rooker | GNB
+</td>
+<td style="text-align:left;">
+2023 Tom Cosgrove | GNB
+</td>
+<td style="text-align:left;">
+2023 Elvis Peguero | GNB
+</td>
+<td style="text-align:left;">
+2023 Nick Ahmed | HAR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2023 Evan Carter | HV
+</td>
+<td style="text-align:left;">
+2023 Yennier Cano | CK
+</td>
+<td style="text-align:left;">
+2023 Luis Matos | ALA
+</td>
+<td style="text-align:left;">
+2023 Michael Soroka | ALA
+</td>
+<td style="text-align:left;">
+2023 Quinn Priester | ALA
+</td>
+<td style="text-align:left;">
+2023 Tyler Freeman | ALA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+2023 Eury Perez | HAR
+</td>
+<td style="text-align:left;">
+2023 Zack Gelof | HAR
+</td>
+<td style="text-align:left;">
+2023 Ronny Mauricio | TB
+</td>
+<td style="text-align:left;">
+2023 Jake Rogers | TB
+</td>
+<td style="text-align:left;">
+2023 Javier Baez | TB
+</td>
+<td style="text-align:left;">
+2023 Blake Sabol | TB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+2023 Junior Caminero | PR
+</td>
+<td style="text-align:left;">
+2023 Taj Bradley | PR
+</td>
+<td style="text-align:left;">
+2023 Jose Caballero | HV
+</td>
+<td style="text-align:left;">
+2023 Jake Irvin | HV
+</td>
+<td style="text-align:left;">
+2023 Wilyer Abreu | CK
+</td>
+<td style="text-align:left;">
+2023 Nick Gonzales | WHI
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+2023 Elly De La Cruz | CC
+</td>
+<td style="text-align:left;">
+2023 Bryan Woo | CC
+</td>
+<td style="text-align:left;">
+2023 Ceddanne Rafaela |
+</td>
+<td style="text-align:left;">
+2023 Joey Ortiz |
+</td>
+<td style="text-align:left;">
+2023 Tyler Mahle | GRF
+</td>
+<td style="text-align:left;">
+2023 Nick Fortes |
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+2023 Grayson Rodriguez | ALA
+</td>
+<td style="text-align:left;">
+2023 Brandon Pfaadt | ALA
+</td>
+<td style="text-align:left;">
+2023 Emmet Sheehan | PR
+</td>
+<td style="text-align:left;">
+2023 Jordan Wicks | PR
+</td>
+<td style="text-align:left;">
+2023 Nate Pearson | CK
+</td>
+<td style="text-align:left;">
+2023 Jonny Deluca | PR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+2023 Bobby Miller | HAL
+</td>
+<td style="text-align:left;">
+2023 Kyle Harrison | HOM
+</td>
+<td style="text-align:left;">
+2023 Griffin Canning | CC
+</td>
+<td style="text-align:left;">
+2023 Kevin Kelly | CC
+</td>
+<td style="text-align:left;">
+2023 Brenton Doyle | GH
+</td>
+<td style="text-align:left;">
+2023 Ildemaro Vargas | STE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+2023 Kodai Senga | HOM
+</td>
+<td style="text-align:left;">
+2023 Patrick Bailey | HAL
+</td>
+<td style="text-align:left;">
+2023 Masyn Winn | HOM
+</td>
+<td style="text-align:left;">
+2023 Orion Kerkering | HOM
+</td>
+<td style="text-align:left;">
+2023 Andruw Monasterio | HOM
+</td>
+<td style="text-align:left;">
+2023 Carlos Santana | RAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+2023 Matt McLain | WHI
+</td>
+<td style="text-align:left;">
+2023 Reese Olson | WHI
+</td>
+<td style="text-align:left;">
+2023 Davis Schneider | HAL
+</td>
+<td style="text-align:left;">
+2023 Sawyer Gipson-Long | HAL
+</td>
+<td style="text-align:left;">
+2023 Parker Meadows | HAL
+</td>
+<td style="text-align:left;">
+2023 Ryan Walker | HAL
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:left;">
+2023 Tanner Bibee | VAN
+</td>
+<td style="text-align:left;">
+2023 Ryan Pepiot | VAN
+</td>
+<td style="text-align:left;">
+2023 Jared Triolo | WHI
+</td>
+<td style="text-align:left;">
+2023 Gregory Santos | SV
+</td>
+<td style="text-align:left;">
+2023 Xzavion Curry | WHI
+</td>
+<td style="text-align:left;">
+2023 Brock Burke | WHI
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+2023 Logan Allen | CAM
+</td>
+<td style="text-align:left;">
+2023 J.P. France | CAM
+</td>
+<td style="text-align:left;">
+2023 Mason Miller | VAN
+</td>
+<td style="text-align:left;">
+2023 Jeffrey Springs | VAN
+</td>
+<td style="text-align:left;">
+2023 Brock Stewart | VAN
+</td>
+<td style="text-align:left;">
+2023 Hunter Goodman | VAN
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:left;">
+2023 Jordan Lawlar | BRA
+</td>
+<td style="text-align:left;">
+2023 Heston Kjerstad | BRA
+</td>
+<td style="text-align:left;">
+2023 Mickey Moniak | CAM
+</td>
+<td style="text-align:left;">
+2023 Mike Tauchman | CAM
+</td>
+<td style="text-align:left;">
+2023 Colin Rea | CAM
+</td>
+<td style="text-align:left;">
+2023 Kenta Maeda | CAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:left;">
+2023 Edouard Julien | ROC
+</td>
+<td style="text-align:left;">
+2023 Luke Raley | ROC
+</td>
+<td style="text-align:left;">
+2023 AJ Smith-Shawver | BRA
+</td>
+<td style="text-align:left;">
+2023 Connor Phillips | BRA
+</td>
+<td style="text-align:left;">
+2023 Luis Medina | BRA
+</td>
+<td style="text-align:left;">
+2023 Everson Pereira | BRA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+2023 Noelvi Marte | CK
+</td>
+<td style="text-align:left;">
+2023 Tyler Soderstrom |
+</td>
+<td style="text-align:left;">
+2023 Jacob deGrom | ROC
+</td>
+<td style="text-align:left;">
+2023 Joey Wiemer | ROC
+</td>
+<td style="text-align:left;">
+2023 Ryan Borucki | ROC
+</td>
+<td style="text-align:left;">
+2023 Enmanuel Valdez | ROC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+2023 Bryce Miller | DAY
+</td>
+<td style="text-align:left;">
+2023 Brandon Williamson | RAC
+</td>
+<td style="text-align:left;">
+2023 Jhony Brito | RAC
+</td>
+<td style="text-align:left;">
+2023 James Karinchak | RAC
+</td>
+<td style="text-align:left;">
+2023 Tyler Alexander | RAC
+</td>
+<td style="text-align:left;">
+2023 Carmen Mlodzinski | RAC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:left;">
+2023 Masataka Yoshida |
+</td>
+<td style="text-align:left;">
+2023 Zach Neto | DAY
+</td>
+<td style="text-align:left;">
+2023 Endy Rodriguez | DAY
+</td>
+<td style="text-align:left;">
+2023 Lucas Sims | DAY
+</td>
+<td style="text-align:left;">
+2023 Dairon Blanco | DAY
+</td>
+<td style="text-align:left;">
+2023 Robert Suarez | DAY
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+2023 Colton Cowser | GH
+</td>
+<td style="text-align:left;">
+2023 Cristopher Sanchez | STE
+</td>
+<td style="text-align:left;">
+2023 Brice Turang | STE
+</td>
+<td style="text-align:left;">
+2023 Justin Topa | STE
+</td>
+<td style="text-align:left;">
+2023 Julian Merryweather | STE
+</td>
+<td style="text-align:left;">
+2023 Kirby Yates | STE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:left;">
+2023 Jasson Dominguez | GH
+</td>
+<td style="text-align:left;">
+2023 Curtis Mead | GH
+</td>
+<td style="text-align:left;">
+2023 Brayan Rocchio | GH
+</td>
+<td style="text-align:left;">
+2023 Ryan O’Hearn | RAM
+</td>
+<td style="text-align:left;">
+2023 Justin Lawrence | RAM
+</td>
+<td style="text-align:left;">
+2023 Trevor Richards | PR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:left;">
+2023 Sal Frelick | GRF
+</td>
+<td style="text-align:left;">
+2023 Xavier Edwards | GRF
+</td>
+<td style="text-align:left;">
+2023 Joe Boyle | GRF
+</td>
+<td style="text-align:left;">
+2023 Chris Martin | GNB
+</td>
+<td style="text-align:left;">
+2023 JoJo Romero | GRF
+</td>
+<td style="text-align:left;">
+2023 Jonathan Aranda | GRF
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+2023 Pete Crow-Armstrong | GH
+</td>
+<td style="text-align:left;">
+2023 Johan Rojas | SV
+</td>
+<td style="text-align:left;">
+2023 Andrew Nardi | SV
+</td>
+<td style="text-align:left;">
+2023 Randy Vasquez | SV
+</td>
+<td style="text-align:left;">
+2023 Keaton Winn | SV
+</td>
+<td style="text-align:left;">
+2023 Jose Soriano | SV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+2023 Henry Davis | ALA
+</td>
+<td style="text-align:left;">
+2023 Nolan Schanuel | PR
+</td>
+<td style="text-align:left;">
+2023 Abner Uribe | CK
+</td>
+<td style="text-align:left;">
+2023 DJ Stewart | CK
+</td>
+<td style="text-align:left;">
+2023 Dominic Fletcher | CK
+</td>
+<td style="text-align:left;">
+2023 German Marquez | CK
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:left;">
+2023 Gavin Williams | DEA
+</td>
+<td style="text-align:left;">
+2023 Jordan Westburg | DEA
+</td>
+<td style="text-align:left;">
+2023 Danny Coulombe | DEA
+</td>
+<td style="text-align:left;">
+2023 Ian Hamilton | DEA
+</td>
+<td style="text-align:left;">
+2023 Tyrone Taylor | DEA
+</td>
+<td style="text-align:left;">
+2023 Tayler Saucedo | DEA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+2023 Marco Luciano | GH
+</td>
+<td style="text-align:left;">
+2023 Michael Busch | GH
+</td>
+<td style="text-align:left;">
+2023 Gavin Stone | GH
+</td>
+<td style="text-align:left;">
+2023 Emerson Hancock | GH
+</td>
+<td style="text-align:left;">
+2023 Dominic Smith | GH
+</td>
+<td style="text-align:left;">
+2023 Miguel Rojas | GH
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="rounds-7-13-2" class="section level4">
+<h4>Rounds 7-13</h4>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Pick
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 7
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 8
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 9
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 10
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 11
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 12
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 13
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2023 Michael Tonkin | HAR
+</td>
+<td style="text-align:left;">
+2023 Lawrence Butler | HAR
+</td>
+<td style="text-align:left;">
+2023 Austin Cox | HAR
+</td>
+<td style="text-align:left;">
+2023 Mitch Haniger | CC
+</td>
+<td style="text-align:left;">
+2023 Josh Harrison | HAR
+</td>
+<td style="text-align:left;">
+2023 Jacob Amaya | HAR
+</td>
+<td style="text-align:left;">
+2023 Lyon Richardson | HAR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2023 Scott Barlow | GRF
+</td>
+<td style="text-align:left;">
+2023 Mike Baumann | GNB
+</td>
+<td style="text-align:left;">
+2023 Cade Marlowe | GNB
+</td>
+<td style="text-align:left;">
+2023 Andrew Wantz | GNB
+</td>
+<td style="text-align:left;">
+2023 Chris Devenski | GNB
+</td>
+<td style="text-align:left;">
+2023 Jimmy Cordero | GNB
+</td>
+<td style="text-align:left;">
+pass | HAR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2023 Bailey Falter | ALA
+</td>
+<td style="text-align:left;">
+2023 Ross Stripling | ALA
+</td>
+<td style="text-align:left;">
+2023 Dakota Hudson | ALA
+</td>
+<td style="text-align:left;">
+2023 Peter Lambert | ALA
+</td>
+<td style="text-align:left;">
+2023 Jackson Rutledge | ALA
+</td>
+<td style="text-align:left;">
+2023 Osvaldo Bido | ALA
+</td>
+<td style="text-align:left;">
+pass | ALA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+2023 Jake Bauers | TB
+</td>
+<td style="text-align:left;">
+2023 Hyun Jin zzRyu | TB
+</td>
+<td style="text-align:left;">
+2023 Joey zzGallo | TB
+</td>
+<td style="text-align:left;">
+2023 Matt Boyd | TB
+</td>
+<td style="text-align:left;">
+2023 Julio Teheran | TB
+</td>
+<td style="text-align:left;">
+2023 Jacob Webb | TB
+</td>
+<td style="text-align:left;">
+2023 Andre Jackson | TB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+2023 Patrick Corbin | HV
+</td>
+<td style="text-align:left;">
+2023 Yasmani Grandal | HV
+</td>
+<td style="text-align:left;">
+2023 Trevor Williams | HV
+</td>
+<td style="text-align:left;">
+2023 Giovanny Gallegos | WHI
+</td>
+<td style="text-align:left;">
+2023 Tucupita Marcano | HV
+</td>
+<td style="text-align:left;">
+2023 Ty Blach | HV
+</td>
+<td style="text-align:left;">
+2023 Austin Hedges | HV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+2023 Osleivis Basabe |
+</td>
+<td style="text-align:left;">
+2023 Connor Seabold |
+</td>
+<td style="text-align:left;">
+2023 Alex Wood |
+</td>
+<td style="text-align:left;">
+2023 Owen White |
+</td>
+<td style="text-align:left;">
+2023 Sam Bachman |
+</td>
+<td style="text-align:left;">
+2023 Drew Rom |
+</td>
+<td style="text-align:left;">
+2023 Mason Englert |
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+2023 Casey Schmitt | PR
+</td>
+<td style="text-align:left;">
+2023 Victor zzGonzalez | PR
+</td>
+<td style="text-align:left;">
+2023 Dominic Canzone | PR
+</td>
+<td style="text-align:left;">
+2023 Ben Joyce | PR
+</td>
+<td style="text-align:left;">
+2023 Kody Funderburk | PR
+</td>
+<td style="text-align:left;">
+2023 Jonathan Loaisiga | PR
+</td>
+<td style="text-align:left;">
+2023 Ben Joyce | RAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+2023 Bowden Francis | CC
+</td>
+<td style="text-align:left;">
+2023 Pablo Reyes | CC
+</td>
+<td style="text-align:left;">
+2023 Anthony DeSclafani | GH
+</td>
+<td style="text-align:left;">
+2023 Vince Velasquez | CC
+</td>
+<td style="text-align:left;">
+2023 Joey Estes | CC
+</td>
+<td style="text-align:left;">
+2023 Michael zzBrantley | CC
+</td>
+<td style="text-align:left;">
+2023 Hunter Gaddis | CC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+2023 Pierce Johnson | HOM
+</td>
+<td style="text-align:left;">
+2023 Lucas Erceg | HOM
+</td>
+<td style="text-align:left;">
+2023 Scott McGough | HOM
+</td>
+<td style="text-align:left;">
+2023 Brendan White | HOM
+</td>
+<td style="text-align:left;">
+2023 Luke Jackson | HOM
+</td>
+<td style="text-align:left;">
+2023 Tim Herrin | HOM
+</td>
+<td style="text-align:left;">
+2023 Bryan Hudson | HOM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+2023 Miguel Amaya | HAL
+</td>
+<td style="text-align:left;">
+2023 Matt Mervis | HAL
+</td>
+<td style="text-align:left;">
+2023 Shintaro Fujinami | HAL
+</td>
+<td style="text-align:left;">
+2023 Joshua Palacios | HAL
+</td>
+<td style="text-align:left;">
+2023 Jace Peterson | HAL
+</td>
+<td style="text-align:left;">
+2023 Chris zzMurphy | HAL
+</td>
+<td style="text-align:left;">
+2023 Bryan Hoeing | HAL
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:left;">
+2023 Josh Sborz | WHI
+</td>
+<td style="text-align:left;">
+2023 Jordan Weems | WHI
+</td>
+<td style="text-align:left;">
+2023 Tyler Fitzgerald | WHI
+</td>
+<td style="text-align:left;">
+2023 Jose Hernandez | WHI
+</td>
+<td style="text-align:left;">
+2023 Yoendrys Gomez | WHI
+</td>
+<td style="text-align:left;">
+2023 Dane Myers | WHI
+</td>
+<td style="text-align:left;">
+2023 Christian Arroyo | WHI
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+2023 Keynan Middleton | VAN
+</td>
+<td style="text-align:left;">
+2023 James McArthur | VAN
+</td>
+<td style="text-align:left;">
+2023 Rene Pinto | VAN
+</td>
+<td style="text-align:left;">
+2023 Chad Green | VAN
+</td>
+<td style="text-align:left;">
+2023 Cody Bradford | VAN
+</td>
+<td style="text-align:left;">
+2023 Garrett Cleavinger | VAN
+</td>
+<td style="text-align:left;">
+2023 Peyton Battenfield | DAY
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:left;">
+2023 Kyle Farmer | CAM
+</td>
+<td style="text-align:left;">
+2023 Corey Julks | CAM
+</td>
+<td style="text-align:left;">
+2023 Tommy Henry | CAM
+</td>
+<td style="text-align:left;">
+2023 Trevor May | CAM
+</td>
+<td style="text-align:left;">
+2023 Ben Lively | CAM
+</td>
+<td style="text-align:left;">
+2023 David Fry | CAM
+</td>
+<td style="text-align:left;">
+2023 Bobby Dalbec | CAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:left;">
+2023 James Paxton | BRA
+</td>
+<td style="text-align:left;">
+2023 Joan Adon | BRA
+</td>
+<td style="text-align:left;">
+2023 Austin Barnes | BRA
+</td>
+<td style="text-align:left;">
+2023 Aledmys Diaz | BRA
+</td>
+<td style="text-align:left;">
+2023 Jason zzDelay | BRA
+</td>
+<td style="text-align:left;">
+2023 Zack zzShort | BRA
+</td>
+<td style="text-align:left;">
+2023 Yonny Chirinos | BRA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+2023 Carlos Perez | DEA
+</td>
+<td style="text-align:left;">
+2023 Drew Millas | ROC
+</td>
+<td style="text-align:left;">
+2023 Nick Anderson | ROC
+</td>
+<td style="text-align:left;">
+2023 Nick Martini | ROC
+</td>
+<td style="text-align:left;">
+2023 Richard Lovelady | ROC
+</td>
+<td style="text-align:left;">
+2023 Drew Carlton | ROC
+</td>
+<td style="text-align:left;">
+2023 Max Castillo | ROC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+2023 Jacob Young | RAC
+</td>
+<td style="text-align:left;">
+2023 Jose Butto | RAC
+</td>
+<td style="text-align:left;">
+2023 Isaiah Campbell | RAC
+</td>
+<td style="text-align:left;">
+2023 Daniel Palencia | RAC
+</td>
+<td style="text-align:left;">
+2023 Jared Shuster | RAC
+</td>
+<td style="text-align:left;">
+2023 Bryce Jarvis | RAC
+</td>
+<td style="text-align:left;">
+2023 Yerry De Los Santos | RAC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:left;">
+2023 Nick Loftin | DAY
+</td>
+<td style="text-align:left;">
+2023 Luke Little | VAN
+</td>
+<td style="text-align:left;">
+2023 Angel Perdomo | DAY
+</td>
+<td style="text-align:left;">
+2023 Ernie Clement | DAY
+</td>
+<td style="text-align:left;">
+2023 Andrew Vasquez | DAY
+</td>
+<td style="text-align:left;">
+2023 Grae Kessinger | DAY
+</td>
+<td style="text-align:left;">
+2023 Jake Alu | DAY
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+2023 Reese McGuire | STE
+</td>
+<td style="text-align:left;">
+2023 Alex Young | STE
+</td>
+<td style="text-align:left;">
+2023 Joey Lucchesi | STE
+</td>
+<td style="text-align:left;">
+2023 Sean Bouchard | STE
+</td>
+<td style="text-align:left;">
+2023 Trent Thornton | STE
+</td>
+<td style="text-align:left;">
+2023 Matt Waldron | STE
+</td>
+<td style="text-align:left;">
+2023 Blake Perkins | STE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:left;">
+2023 Oscar Colas | RAM
+</td>
+<td style="text-align:left;">
+2023 Robert Garcia | RAM
+</td>
+<td style="text-align:left;">
+2023 Jose zzUrquidy | RAM
+</td>
+<td style="text-align:left;">
+2023 Carlos Hernandez | RAM
+</td>
+<td style="text-align:left;">
+2023 Zach Remillard | RAM
+</td>
+<td style="text-align:left;">
+2023 Nick Gordon | RAM
+</td>
+<td style="text-align:left;">
+2023 Prelander Berroa | HOM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:left;">
+2023 Spencer Horwitz | GRF
+</td>
+<td style="text-align:left;">
+2023 Brennan Bernardino | GRF
+</td>
+<td style="text-align:left;">
+2023 Huascar Brazoban | GRF
+</td>
+<td style="text-align:left;">
+2023 Dylan Floro | GRF
+</td>
+<td style="text-align:left;">
+2023 Miguel Andujar | GRF
+</td>
+<td style="text-align:left;">
+2023 Wade Meckler | GRF
+</td>
+<td style="text-align:left;">
+2023 Jose Ferrer | GRF
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+2023 George Soriano | SV
+</td>
+<td style="text-align:left;">
+2023 Kyle Hurt | SV
+</td>
+<td style="text-align:left;">
+2023 Abraham Toro | SV
+</td>
+<td style="text-align:left;">
+2023 Alexander Canario | SV
+</td>
+<td style="text-align:left;">
+2023 John McMillon | SV
+</td>
+<td style="text-align:left;">
+2023 Simeon Woods Richardso | SV
+</td>
+<td style="text-align:left;">
+2023 Kyle Nicolas | SV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+2023 Francisco Mejia | CK
+</td>
+<td style="text-align:left;">
+2023 Kevin Newman | CK
+</td>
+<td style="text-align:left;">
+2023 Jay Jackson | CK
+</td>
+<td style="text-align:left;">
+2023 Dany Jimenez | CK
+</td>
+<td style="text-align:left;">
+2023 Tejay Antone | CK
+</td>
+<td style="text-align:left;">
+2023 Jesse Winker | CK
+</td>
+<td style="text-align:left;">
+2023 Jose Barrero | CK
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:left;">
+2023 Mike Ford | DEA
+</td>
+<td style="text-align:left;">
+2023 Tristan Beck | DEA
+</td>
+<td style="text-align:left;">
+2023 Bryan Baker | DEA
+</td>
+<td style="text-align:left;">
+2023 Nick Ramirez | DEA
+</td>
+<td style="text-align:left;">
+2023 Andrew zzSaalfrank | DEA
+</td>
+<td style="text-align:left;">
+2023 Kyren Paris | DEA
+</td>
+<td style="text-align:left;">
+2023 Dylan Lee | DEA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+2023 Brian Anderson | GH
+</td>
+<td style="text-align:left;">
+2023 Christian Vazquez | GH
+</td>
+<td style="text-align:left;">
+2023 Carlos zzCarrasco | GH
+</td>
+<td style="text-align:left;">
+2023 Brandon Crawford | GH
+</td>
+<td style="text-align:left;">
+2023 Spencer Turnbull | RAM
+</td>
+<td style="text-align:left;">
+2023 Korey Lee | RAM
+</td>
+<td style="text-align:left;">
+2023 Heliot Ramos | RAM
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="section-3" class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">2023</h3>
+<div id="rounds-1-6-3" class="section level4">
+<h4>Rounds 1-6</h4>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Pick
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 1
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 2
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 3
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 4
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 5
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 6
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Julio Y. Rodriguez | DAY
+</td>
+<td style="text-align:left;">
+Hunter Brown | HOM
+</td>
+<td style="text-align:left;">
+Spenser Watkins | SEA
+</td>
+<td style="text-align:left;">
+Jacob Stallings | SEA
+</td>
+<td style="text-align:left;">
+Mauricio Dubon | SEA
+</td>
+<td style="text-align:left;">
+Maikel Franco | SEA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Adley Rutschman | BLU
+</td>
+<td style="text-align:left;">
+Gabriel Moreno | VAN
+</td>
+<td style="text-align:left;">
+Cade Cavalli | BLU
+</td>
+<td style="text-align:left;">
+Max Meyer | BLU
+</td>
+<td style="text-align:left;">
+Drew Waters | BLU
+</td>
+<td style="text-align:left;">
+Jose Leclerc | BLU
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+Gunnar Henderson | PR
+</td>
+<td style="text-align:left;">
+Jhoan Duran | SAC
+</td>
+<td style="text-align:left;">
+Sam Hentges | KYZ
+</td>
+<td style="text-align:left;">
+Andre Pallante | KYZ
+</td>
+<td style="text-align:left;">
+Jordan Hicks | KYZ
+</td>
+<td style="text-align:left;">
+Seth Martinez | KYZ
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+Michael Harris II | KYZ
+</td>
+<td style="text-align:left;">
+MacKenzie Gore | BLU
+</td>
+<td style="text-align:left;">
+John Schreiber | DAY
+</td>
+<td style="text-align:left;">
+Joey Meneses | DAY
+</td>
+<td style="text-align:left;">
+Ezequiel Duran | SV
+</td>
+<td style="text-align:left;">
+Nate Eaton | DAY
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+Corbin Carroll | VAN
+</td>
+<td style="text-align:left;">
+Mike Clevinger | KYZ
+</td>
+<td style="text-align:left;">
+Graham Ashcraft | PR
+</td>
+<td style="text-align:left;">
+Matthew Liberatore | PR
+</td>
+<td style="text-align:left;">
+Ryne Nelson | PR
+</td>
+<td style="text-align:left;">
+James Outman | PR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+Hunter Greene | WHI
+</td>
+<td style="text-align:left;">
+Spencer Torkelson | WHI
+</td>
+<td style="text-align:left;">
+Brayan Bello | VAN
+</td>
+<td style="text-align:left;">
+Seranthony Dominguez | VAN
+</td>
+<td style="text-align:left;">
+Ron Marinaccio | VAN
+</td>
+<td style="text-align:left;">
+Caleb Ferguson | VAN
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+Bobby Witt Jr | LV
+</td>
+<td style="text-align:left;">
+Alexis Diaz | LV
+</td>
+<td style="text-align:left;">
+Nolan Gorman | HOM
+</td>
+<td style="text-align:left;">
+Ryan Pepiot | HOM
+</td>
+<td style="text-align:left;">
+Alec Burleson | HOM
+</td>
+<td style="text-align:left;">
+Enyel De Los Santos | HOM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+George Kirby | GNB
+</td>
+<td style="text-align:left;">
+Logan O’Hoppe | GNB
+</td>
+<td style="text-align:left;">
+Jason Adam | DV
+</td>
+<td style="text-align:left;">
+Adrian Sampson | STE
+</td>
+<td style="text-align:left;">
+Dylan Lee | STE
+</td>
+<td style="text-align:left;">
+Johan Camargo | STE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+Jeremy Pena | STE
+</td>
+<td style="text-align:left;">
+Christian Bethancourt | STE
+</td>
+<td style="text-align:left;">
+Oswaldo Cabrera | RM
+</td>
+<td style="text-align:left;">
+Rich Hill | RM
+</td>
+<td style="text-align:left;">
+Zach Thompson | RM
+</td>
+<td style="text-align:left;">
+Justin Dunn | RM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+Riley Greene | HAR
+</td>
+<td style="text-align:left;">
+Brett Baty | HOM
+</td>
+<td style="text-align:left;">
+Tyler Freeman | WHI
+</td>
+<td style="text-align:left;">
+Jonathan Aranda | SV
+</td>
+<td style="text-align:left;">
+Garrett Cleavinger | WHI
+</td>
+<td style="text-align:left;">
+Yainer Diaz | WHI
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:left;">
+Francisco Alvarez | DV
+</td>
+<td style="text-align:left;">
+Josh Jung | HAR
+</td>
+<td style="text-align:left;">
+Cionel Perez | GRF
+</td>
+<td style="text-align:left;">
+John Brebbia | LV
+</td>
+<td style="text-align:left;">
+Erasmo Ramirez | LV
+</td>
+<td style="text-align:left;">
+Kyle Nelson | LV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+Triston Casas | HOM
+</td>
+<td style="text-align:left;">
+Oswald Peraza | TB
+</td>
+<td style="text-align:left;">
+Alek Thomas | GNB
+</td>
+<td style="text-align:left;">
+Nick Martinez | GNB
+</td>
+<td style="text-align:left;">
+Kerry Carpenter | GNB
+</td>
+<td style="text-align:left;">
+Domingo German | GNB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:left;">
+Steven Kwan | SV
+</td>
+<td style="text-align:left;">
+Felix Bautista | CAM
+</td>
+<td style="text-align:left;">
+Jack Suwinski | TB
+</td>
+<td style="text-align:left;">
+Ken Waldichuk | TB
+</td>
+<td style="text-align:left;">
+Jovani Moran | TB
+</td>
+<td style="text-align:left;">
+Elehuris Montero | TB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:left;">
+Vaughn Grissom | TB
+</td>
+<td style="text-align:left;">
+Eugenio Suarez | DV
+</td>
+<td style="text-align:left;">
+Oscar Gonzalez | CAM
+</td>
+<td style="text-align:left;">
+Konnor Pilkington | CAM
+</td>
+<td style="text-align:left;">
+Griffin Jax | CAM
+</td>
+<td style="text-align:left;">
+Scott Effross | CAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+MJ Melendez | CAM
+</td>
+<td style="text-align:left;">
+Royce Lewis | RM
+</td>
+<td style="text-align:left;">
+Garrett Mitchell | HAR
+</td>
+<td style="text-align:left;">
+Chase Silseth | HAR
+</td>
+<td style="text-align:left;">
+JP Sears | HAR
+</td>
+<td style="text-align:left;">
+Hayden Wesneski | HAR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+Vinnie Pasquantino | GRF
+</td>
+<td style="text-align:left;">
+Ezequiel Tovar | SV
+</td>
+<td style="text-align:left;">
+Brock Burke | CR
+</td>
+<td style="text-align:left;">
+JJ Bleday | CR
+</td>
+<td style="text-align:left;">
+P.J. Higgins | CR
+</td>
+<td style="text-align:left;">
+Bryce Elder | CR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:left;">
+Nick Lodolo | GNB
+</td>
+<td style="text-align:left;">
+Christopher Morel | CR
+</td>
+<td style="text-align:left;">
+Maikel Garcia | SAC
+</td>
+<td style="text-align:left;">
+Juan Yepez | SAC
+</td>
+<td style="text-align:left;">
+Cody Morris | SAC
+</td>
+<td style="text-align:left;">
+Austin Voth | SAC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+C.J. Abrams | ALA
+</td>
+<td style="text-align:left;">
+Bubba Thompson | FM
+</td>
+<td style="text-align:left;">
+Nick Pivetta | FM
+</td>
+<td style="text-align:left;">
+Victor Caratini | FM
+</td>
+<td style="text-align:left;">
+Austin Wynns | DV
+</td>
+<td style="text-align:left;">
+Luis Gonzalez | FM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:left;">
+Jose Miranda | FM
+</td>
+<td style="text-align:left;">
+Bo Naylor | HOM
+</td>
+<td style="text-align:left;">
+Jimmy Herget | GH
+</td>
+<td style="text-align:left;">
+David Robertson | GH
+</td>
+<td style="text-align:left;">
+Nick Pratto | ALA
+</td>
+<td style="text-align:left;">
+Heliot Ramos | GH
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:left;">
+Seiya Suzuki | RM
+</td>
+<td style="text-align:left;">
+Will Brennan | SAC
+</td>
+<td style="text-align:left;">
+Daniel Vogelbach | DV
+</td>
+<td style="text-align:left;">
+Penn Murfee | DV
+</td>
+<td style="text-align:left;">
+Bryan Baker | DV
+</td>
+<td style="text-align:left;">
+David Phelps | DV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+Brendan Donovan | DAY
+</td>
+<td style="text-align:left;">
+Evan Phillips | GRF
+</td>
+<td style="text-align:left;">
+Luis Ortiz | SV
+</td>
+<td style="text-align:left;">
+Ji Hwan Bae | SV
+</td>
+<td style="text-align:left;">
+Ivan Herrera | SV
+</td>
+<td style="text-align:left;">
+Zack Thompson | SV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+Kyle Bradish | CR
+</td>
+<td style="text-align:left;">
+Shea Langeliers | GNB
+</td>
+<td style="text-align:left;">
+Matt Brash | GRF
+</td>
+<td style="text-align:left;">
+Jalen Beeks | GRF
+</td>
+<td style="text-align:left;">
+Robert Suarez | GRF
+</td>
+<td style="text-align:left;">
+Caleb Kilian | GRF
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:left;">
+Miguel Vargas | PR
+</td>
+<td style="text-align:left;">
+DL Hall | ALA
+</td>
+<td style="text-align:left;">
+Spencer Steer | RAM
+</td>
+<td style="text-align:left;">
+Esteury Ruiz | RAM
+</td>
+<td style="text-align:left;">
+Kyle Stowers | RAM
+</td>
+<td style="text-align:left;">
+Michael Massey | RAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+Bryson Stott | SEA
+</td>
+<td style="text-align:left;">
+Paul Blackburn | SEA
+</td>
+<td style="text-align:left;">
+Drey Jameson | ALA
+</td>
+<td style="text-align:left;">
+Nick Allen | ALA
+</td>
+<td style="text-align:left;">
+Beau Brieske | KYZ
+</td>
+<td style="text-align:left;">
+Josh Winder | ALA
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="rounds-7-13-3" class="section level4">
+<h4>Rounds 7-13</h4>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Pick
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 7
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 8
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 9
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 10
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 11
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 12
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 13
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Darin Ruf | SEA
+</td>
+<td style="text-align:left;">
+Kole Calhoun | SEA
+</td>
+<td style="text-align:left;">
+Luke Maile | SEA
+</td>
+<td style="text-align:left;">
+Sheldon Neuse | SEA
+</td>
+<td style="text-align:left;">
+Matt Reynolds | SEA
+</td>
+<td style="text-align:left;">
+Cooper Hummel | SEA
+</td>
+<td style="text-align:left;">
+Bryan Shaw | SEA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Trayce Thompson | BLU
+</td>
+<td style="text-align:left;">
+Darick Hall | BLU
+</td>
+<td style="text-align:left;">
+Korey Lee | BLU
+</td>
+<td style="text-align:left;">
+Jose Azocar | BLU
+</td>
+<td style="text-align:left;">
+Liover Peguero | BLU
+</td>
+<td style="text-align:left;">
+Joan Adon | BLU
+</td>
+<td style="text-align:left;">
+Miguel Sano | BLU
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+David Villar | KYZ
+</td>
+<td style="text-align:left;">
+Ronny Henriquez | KYZ
+</td>
+<td style="text-align:left;">
+Connor Overton | KYZ
+</td>
+<td style="text-align:left;">
+Will Vest | KYZ
+</td>
+<td style="text-align:left;">
+Mike Brosseau | KYZ
+</td>
+<td style="text-align:left;">
+Romy Gonzalez | KYZ
+</td>
+<td style="text-align:left;">
+Tom Murphy | KYZ
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+Zach Jackson | DAY
+</td>
+<td style="text-align:left;">
+Sam Moll | DAY
+</td>
+<td style="text-align:left;">
+Stuart Fairchild | DAY
+</td>
+<td style="text-align:left;">
+Peter Strzelecki | DAY
+</td>
+<td style="text-align:left;">
+Alex Call | DAY
+</td>
+<td style="text-align:left;">
+Buck Farmer | DAY
+</td>
+<td style="text-align:left;">
+Sergio Alcantara | DAY
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+Steven Wilson | PR
+</td>
+<td style="text-align:left;">
+Ildemaro Vargas | PR
+</td>
+<td style="text-align:left;">
+Edwin zzRios | PR
+</td>
+<td style="text-align:left;">
+Trevor Gott | PR
+</td>
+<td style="text-align:left;">
+Miguel Andujar | PR
+</td>
+<td style="text-align:left;">
+Matt Foster | PR
+</td>
+<td style="text-align:left;">
+Zack Littell | PR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+Nick Maton | VAN
+</td>
+<td style="text-align:left;">
+John Means | VAN
+</td>
+<td style="text-align:left;">
+Lenyn Sosa | VAN
+</td>
+<td style="text-align:left;">
+Matt Wallner | WHI
+</td>
+<td style="text-align:left;">
+Tommy Kahnle | VAN
+</td>
+<td style="text-align:left;">
+Cooper Criswell | VAN
+</td>
+<td style="text-align:left;">
+Justin Bruihl | VAN
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+Tanner Scott | HOM
+</td>
+<td style="text-align:left;">
+Jason Foley | HOM
+</td>
+<td style="text-align:left;">
+Nelson Cruz | HOM
+</td>
+<td style="text-align:left;">
+Brett Martin | HOM
+</td>
+<td style="text-align:left;">
+Kirby Snead | HOM
+</td>
+<td style="text-align:left;">
+Joel Kuhnel | HOM
+</td>
+<td style="text-align:left;">
+pass | HOM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+Brandon Hughes | STE
+</td>
+<td style="text-align:left;">
+Chase De Jong | STE
+</td>
+<td style="text-align:left;">
+Alan Trejo | STE
+</td>
+<td style="text-align:left;">
+Garrett Stubbs | STE
+</td>
+<td style="text-align:left;">
+Cole Ragans | STE
+</td>
+<td style="text-align:left;">
+Jimmy Lambert | STE
+</td>
+<td style="text-align:left;">
+Mark Mathias | STE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+Nolan Jones | RM
+</td>
+<td style="text-align:left;">
+Jordan Groshans | RM
+</td>
+<td style="text-align:left;">
+Estevan Florial | RM
+</td>
+<td style="text-align:left;">
+Paul DeJong | RM
+</td>
+<td style="text-align:left;">
+Drew Hutchison | RM
+</td>
+<td style="text-align:left;">
+Rony Garcia | RM
+</td>
+<td style="text-align:left;">
+Andrew Velazquez | RM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+Andrew Bellatti | WHI
+</td>
+<td style="text-align:left;">
+Albert Pujols | RAM
+</td>
+<td style="text-align:left;">
+Gabriel Arias | VAN
+</td>
+<td style="text-align:left;">
+Jeremiah Estrada | WHI
+</td>
+<td style="text-align:left;">
+Stone Garrett | WHI
+</td>
+<td style="text-align:left;">
+Jose Cuas | WHI
+</td>
+<td style="text-align:left;">
+Cole Waites | WHI
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:left;">
+Jose Iglesias | LV
+</td>
+<td style="text-align:left;">
+Joey Wentz | LV
+</td>
+<td style="text-align:left;">
+Yonny Chirinos | DV
+</td>
+<td style="text-align:left;">
+Javier Assad | LV
+</td>
+<td style="text-align:left;">
+Jackson Stephens | LV
+</td>
+<td style="text-align:left;">
+John King | LV
+</td>
+<td style="text-align:left;">
+Austin zzPruitt | LV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+Sean Bouchard | GNB
+</td>
+<td style="text-align:left;">
+Emmanuel Rivera | RAM
+</td>
+<td style="text-align:left;">
+Mark Leiter | RAM
+</td>
+<td style="text-align:left;">
+Colin Poche | GNB
+</td>
+<td style="text-align:left;">
+Garrett Hill | GNB
+</td>
+<td style="text-align:left;">
+Lou Trivino | GNB
+</td>
+<td style="text-align:left;">
+Michael Rucker | GNB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:left;">
+Jakob Junis | TB
+</td>
+<td style="text-align:left;">
+Aroldis Chapman | TB
+</td>
+<td style="text-align:left;">
+Tanner Banks | TB
+</td>
+<td style="text-align:left;">
+Hoby Milner | TB
+</td>
+<td style="text-align:left;">
+Manny Banuelos | TB
+</td>
+<td style="text-align:left;">
+Paolo Espino | TB
+</td>
+<td style="text-align:left;">
+Colin Holderman | TB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:left;">
+Yency Almonte | CAM
+</td>
+<td style="text-align:left;">
+Jordan Diaz | CAM
+</td>
+<td style="text-align:left;">
+Mike Siani | CAM
+</td>
+<td style="text-align:left;">
+Angel Zerpa | CAM
+</td>
+<td style="text-align:left;">
+Francisco Morales | CAM
+</td>
+<td style="text-align:left;">
+Bryan Lavastida | CAM
+</td>
+<td style="text-align:left;">
+Israel Pineda | CAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+Carlos Santana | HAR
+</td>
+<td style="text-align:left;">
+Davis Martin | HAR
+</td>
+<td style="text-align:left;">
+Nick Nelson | HAR
+</td>
+<td style="text-align:left;">
+Tyler Alexander | HAR
+</td>
+<td style="text-align:left;">
+Ryan zzKreidler | HAR
+</td>
+<td style="text-align:left;">
+Jonah Bride | HAR
+</td>
+<td style="text-align:left;">
+pass | HAR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+Cal Mitchell | CR
+</td>
+<td style="text-align:left;">
+Andrew Wantz | CR
+</td>
+<td style="text-align:left;">
+Albert Abreu | CR
+</td>
+<td style="text-align:left;">
+Austin Barnes | CR
+</td>
+<td style="text-align:left;">
+Livan Soto | CR
+</td>
+<td style="text-align:left;">
+Devin Smeltzer | CR
+</td>
+<td style="text-align:left;">
+Drew Smith | CR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:left;">
+Josh Smith | SAC
+</td>
+<td style="text-align:left;">
+Carlos Perez | SAC
+</td>
+<td style="text-align:left;">
+Bryse Wilson | SAC
+</td>
+<td style="text-align:left;">
+Diego Castillo | SAC
+</td>
+<td style="text-align:left;">
+Terrin Vavra | SAC
+</td>
+<td style="text-align:left;">
+Richie Palacios | SAC
+</td>
+<td style="text-align:left;">
+Xzavion Curry | SAC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+Carl Edwards | DV
+</td>
+<td style="text-align:left;">
+Ryan Feltner | FM
+</td>
+<td style="text-align:left;">
+Genesis Cabrera | FM
+</td>
+<td style="text-align:left;">
+Jake Bird | FM
+</td>
+<td style="text-align:left;">
+Conner Capel | FM
+</td>
+<td style="text-align:left;">
+Joey Krehbiel | FM
+</td>
+<td style="text-align:left;">
+Dominic Leone | FM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:left;">
+Hunter Harvey | GH
+</td>
+<td style="text-align:left;">
+Victor Reyes | GH
+</td>
+<td style="text-align:left;">
+Matt Bush | GH
+</td>
+<td style="text-align:left;">
+Michael Toglia | GH
+</td>
+<td style="text-align:left;">
+Jake Marisnick | GH
+</td>
+<td style="text-align:left;">
+Wily Peralta | GH
+</td>
+<td style="text-align:left;">
+Mark Appel | GH
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:left;">
+Sam Haggerty | DV
+</td>
+<td style="text-align:left;">
+Mark Vientos | DV
+</td>
+<td style="text-align:left;">
+Eguy Rosario | DV
+</td>
+<td style="text-align:left;">
+pass | DV
+</td>
+<td style="text-align:left;">
+pass | DV
+</td>
+<td style="text-align:left;">
+pass | DV
+</td>
+<td style="text-align:left;">
+pass | DV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+Mason Thompson | SV
+</td>
+<td style="text-align:left;">
+Connor Wong | SV
+</td>
+<td style="text-align:left;">
+Yerry De Los Santos | SV
+</td>
+<td style="text-align:left;">
+Dany Jimenez | SV
+</td>
+<td style="text-align:left;">
+Matt Wisler | SV
+</td>
+<td style="text-align:left;">
+pass | SV
+</td>
+<td style="text-align:left;">
+pass | SV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+Dennis Santana | GRF
+</td>
+<td style="text-align:left;">
+Simeon Woods Richardso | GRF
+</td>
+<td style="text-align:left;">
+Kevin Ginkel | GRF
+</td>
+<td style="text-align:left;">
+Otto Lopez | GRF
+</td>
+<td style="text-align:left;">
+Louie Varland | GRF
+</td>
+<td style="text-align:left;">
+Michael Stefanic | GRF
+</td>
+<td style="text-align:left;">
+Ryan McKenna | LV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:left;">
+Rob Refsnyder | RAM
+</td>
+<td style="text-align:left;">
+Pavin Smith | RAM
+</td>
+<td style="text-align:left;">
+Alex Faedo | RAM
+</td>
+<td style="text-align:left;">
+Jose Herrera | RAM
+</td>
+<td style="text-align:left;">
+Jerar Encarnacion | RAM
+</td>
+<td style="text-align:left;">
+Ethan Small | RAM
+</td>
+<td style="text-align:left;">
+David Hensley | RAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+Brian Serven | ALA
+</td>
+<td style="text-align:left;">
+Aaron Bummer | ALA
+</td>
+<td style="text-align:left;">
+Josh Winckowski | ALA
+</td>
+<td style="text-align:left;">
+Luke Weaver | ALA
+</td>
+<td style="text-align:left;">
+Nelson Velazquez | ALA
+</td>
+<td style="text-align:left;">
+Cole Sands | ALA
+</td>
+<td style="text-align:left;">
+Kolby Allard | ALA
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="section-4" class="section level3 tabset tabset-pills">
+<h3 class="tabset tabset-pills">2022</h3>
+<div id="rounds-1-6-4" class="section level4">
+<h4>Rounds 1-6</h4>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Pick
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 1
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 2
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 3
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 4
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 5
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 6
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Wander Franco | HAR
+</td>
+<td style="text-align:left;">
+Reid Detmers | HOM
+</td>
+<td style="text-align:left;">
+LaMonte Wade | RM
+</td>
+<td style="text-align:left;">
+Kevin Newman | RM
+</td>
+<td style="text-align:left;">
+Connor Joe | DV
+</td>
+<td style="text-align:left;">
+Jackie Bradley | RM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Logan Gilbert | KYZ
+</td>
+<td style="text-align:left;">
+Garrett Whitlock | CAN
+</td>
+<td style="text-align:left;">
+Dom Nunez | HOM
+</td>
+<td style="text-align:left;">
+Bobby Bradley | CAM
+</td>
+<td style="text-align:left;">
+Steven Duggar | HOM
+</td>
+<td style="text-align:left;">
+Oscar Mercado | HOM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+Jonathan India | FM
+</td>
+<td style="text-align:left;">
+Avisail Garcia | KYZ
+</td>
+<td style="text-align:left;">
+Chas McCormick | CAN
+</td>
+<td style="text-align:left;">
+Joe Ross | CAN
+</td>
+<td style="text-align:left;">
+Kyle Funkhouser | CAN
+</td>
+<td style="text-align:left;">
+Tom Murphy | CAN
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+Shane Baz | CAN
+</td>
+<td style="text-align:left;">
+Drew Smyly | SEA
+</td>
+<td style="text-align:left;">
+Jake Meyers | HAR
+</td>
+<td style="text-align:left;">
+Andy Ibanez | ALA
+</td>
+<td style="text-align:left;">
+Matt Thaiss | HAR
+</td>
+<td style="text-align:left;">
+Reiver Sanmartin | HAR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+Andrew Vaughn | HOM
+</td>
+<td style="text-align:left;">
+Cole Irvin | FM
+</td>
+<td style="text-align:left;">
+Phil Bickford | FM
+</td>
+<td style="text-align:left;">
+Kolby Allard | FM
+</td>
+<td style="text-align:left;">
+Zack Littell | FM
+</td>
+<td style="text-align:left;">
+Jed Lowrie | FM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+Jarred Kelenic | AUG
+</td>
+<td style="text-align:left;">
+Tylor Megill | DAY
+</td>
+<td style="text-align:left;">
+Lars Nootbaar | AUG
+</td>
+<td style="text-align:left;">
+Tyler Wells | AUG
+</td>
+<td style="text-align:left;">
+John King | RAM
+</td>
+<td style="text-align:left;">
+Jose Ruiz | HAR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+Alek Manoah | DV
+</td>
+<td style="text-align:left;">
+Trey Mancini | TB
+</td>
+<td style="text-align:left;">
+Jose Barrero | KYZ
+</td>
+<td style="text-align:left;">
+Kyle Muller | KYZ
+</td>
+<td style="text-align:left;">
+Riley Adams | KYZ
+</td>
+<td style="text-align:left;">
+Gavin Sheets | KYZ
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+Oneil Cruz | RAM
+</td>
+<td style="text-align:left;">
+Eric Haase | LV
+</td>
+<td style="text-align:left;">
+David Bednar | DV
+</td>
+<td style="text-align:left;">
+Jose Alvarez | DV
+</td>
+<td style="text-align:left;">
+Lucas Luetge | DV
+</td>
+<td style="text-align:left;">
+Jimmy Nelson | DV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+Akil Baddoo | LV
+</td>
+<td style="text-align:left;">
+Jose Suarez | SV
+</td>
+<td style="text-align:left;">
+Drew Steckenrider | LV
+</td>
+<td style="text-align:left;">
+Anthony Bender | LV
+</td>
+<td style="text-align:left;">
+Brent Suter | LV
+</td>
+<td style="text-align:left;">
+Jake Cousins | LV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+Josiah Gray | TB
+</td>
+<td style="text-align:left;">
+Trevor Larnach | VAN
+</td>
+<td style="text-align:left;">
+Daniel Lynch | PR
+</td>
+<td style="text-align:left;">
+Carlos Martinez | PR
+</td>
+<td style="text-align:left;">
+Yonny Hernandez | DAY
+</td>
+<td style="text-align:left;">
+Mike Foltynewicz | PR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:left;">
+Ranger Suarez | SV
+</td>
+<td style="text-align:left;">
+Jameson Taillon | DV
+</td>
+<td style="text-align:left;">
+Domingo German | TB
+</td>
+<td style="text-align:left;">
+Odubel Herrera | TB
+</td>
+<td style="text-align:left;">
+Clay Holmes | TB
+</td>
+<td style="text-align:left;">
+Jesse Chavez | TB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+Brandon Marsh | VAN
+</td>
+<td style="text-align:left;">
+Bailey Ober | AUG
+</td>
+<td style="text-align:left;">
+Lane Thomas | SV
+</td>
+<td style="text-align:left;">
+Ha-Seong Kim | SV
+</td>
+<td style="text-align:left;">
+Tony Santillan | SV
+</td>
+<td style="text-align:left;">
+Nick Sandlin | SV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:left;">
+Emmanuel Clase | GRA
+</td>
+<td style="text-align:left;">
+Geraldo Perdomo | GRA
+</td>
+<td style="text-align:left;">
+Camilo Doval | VAN
+</td>
+<td style="text-align:left;">
+Dakota Hudson | VAN
+</td>
+<td style="text-align:left;">
+Kyle Isbel | VAN
+</td>
+<td style="text-align:left;">
+Rowan Wick | VAN
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:left;">
+Edward Cabrera | PUR
+</td>
+<td style="text-align:left;">
+Adolis Garcia | RM
+</td>
+<td style="text-align:left;">
+Nestor Cortes | GRA
+</td>
+<td style="text-align:left;">
+Sammy Long | GRA
+</td>
+<td style="text-align:left;">
+J.T. Chargois | GRA
+</td>
+<td style="text-align:left;">
+Matt Vierling | GRA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+Aaron Ashby | CAM
+</td>
+<td style="text-align:left;">
+Andrew Chafin | RAM
+</td>
+<td style="text-align:left;">
+Tim Mayza | CAM
+</td>
+<td style="text-align:left;">
+Jake Rogers | CAM
+</td>
+<td style="text-align:left;">
+Joe Barlow | CAM
+</td>
+<td style="text-align:left;">
+Sergio Alcantara | CAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+Vidal Brujan | RM
+</td>
+<td style="text-align:left;">
+Patrick Wisdom | CAM
+</td>
+<td style="text-align:left;">
+Spencer Strider | PUR
+</td>
+<td style="text-align:left;">
+Dominic Leone | RAM
+</td>
+<td style="text-align:left;">
+Jackson Kowar | PUR
+</td>
+<td style="text-align:left;">
+Jake Brentz | PUR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:left;">
+Josh Lowe | SAC
+</td>
+<td style="text-align:left;">
+Joe Ryan | SAC
+</td>
+<td style="text-align:left;">
+Dominic Smith | SEA
+</td>
+<td style="text-align:left;">
+Jake Bauers | SEA
+</td>
+<td style="text-align:left;">
+Josh Fleming | SEA
+</td>
+<td style="text-align:left;">
+Pat Valaika | SEA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+Jarren Duran | DAY
+</td>
+<td style="text-align:left;">
+Austin Hedges | DAY
+</td>
+<td style="text-align:left;">
+James Kaprielian | SAC
+</td>
+<td style="text-align:left;">
+Kyle Seager | SAC
+</td>
+<td style="text-align:left;">
+Wil Crowe | SAC
+</td>
+<td style="text-align:left;">
+J.P. Feyereisen | SAC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:left;">
+Matt Manning | WHI
+</td>
+<td style="text-align:left;">
+Cal Raleigh | WHI
+</td>
+<td style="text-align:left;">
+Zach Thompson | STE
+</td>
+<td style="text-align:left;">
+Bryan De La Cruz | STE
+</td>
+<td style="text-align:left;">
+Matt Beaty | STE
+</td>
+<td style="text-align:left;">
+Ryan Burr | STE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:left;">
+Roansy Contreras | PUR
+</td>
+<td style="text-align:left;">
+Edmundo Sosa | STE
+</td>
+<td style="text-align:left;">
+Frank Schwindel | DAY
+</td>
+<td style="text-align:left;">
+Matt Duffy | CAN
+</td>
+<td style="text-align:left;">
+Kyle Higashioka | DAY
+</td>
+<td style="text-align:left;">
+Robert Stephenson | DAY
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+Mitch Haniger | GH
+</td>
+<td style="text-align:left;">
+Rafael Ortega | RAM
+</td>
+<td style="text-align:left;">
+Eli Morgan | WHI
+</td>
+<td style="text-align:left;">
+Paul Sewald | VAN
+</td>
+<td style="text-align:left;">
+Nabil Crismatt | WHI
+</td>
+<td style="text-align:left;">
+Josh Taylor | GRA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+Eduardo Rodriguez | HAR
+</td>
+<td style="text-align:left;">
+Yermin Mercedes | ALA
+</td>
+<td style="text-align:left;">
+Collin McHugh | ALA
+</td>
+<td style="text-align:left;">
+Charlie Culberson | ALA
+</td>
+<td style="text-align:left;">
+Deolis Guerra | ALA
+</td>
+<td style="text-align:left;">
+Hunter Strickland | ALA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:left;">
+Chris Flexen | STE
+</td>
+<td style="text-align:left;">
+Vladimir Gutierrez | SEA
+</td>
+<td style="text-align:left;">
+Garrett Cooper | RAM
+</td>
+<td style="text-align:left;">
+Ryan Zimmerman | RAM
+</td>
+<td style="text-align:left;">
+Ben Gamel | RAM
+</td>
+<td style="text-align:left;">
+Dylan Coleman | RAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+Taylor Walls | HAR
+</td>
+<td style="text-align:left;">
+Luis Gil | GH
+</td>
+<td style="text-align:left;">
+A.J. Puk | GH
+</td>
+<td style="text-align:left;">
+Nick Gordon | GH
+</td>
+<td style="text-align:left;">
+Andres Munoz | GH
+</td>
+<td style="text-align:left;">
+Daz Cameron | GH
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="rounds-7-13-4" class="section level4">
+<h4>Rounds 7-13</h4>
+<div
+style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:500px; overflow-x: scroll; width:100%; ">
+<table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Pick
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 7
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 8
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 9
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 10
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 11
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 12
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;position: sticky; top:0; background-color: #FFFFFF;">
+Round 13
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Ryan Vilade | GRA
+</td>
+<td style="text-align:left;">
+Logan Allen | RM
+</td>
+<td style="text-align:left;">
+Leody Taveras | RM
+</td>
+<td style="text-align:left;">
+Rougned Odor | RM
+</td>
+<td style="text-align:left;">
+Jon Lester | RM
+</td>
+<td style="text-align:left;">
+Matt zzPeacock | RM
+</td>
+<td style="text-align:left;">
+Gregory Polanco | RM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Jeffrey Springs | HOM
+</td>
+<td style="text-align:left;">
+Joel Payamps | HOM
+</td>
+<td style="text-align:left;">
+Lucas Gilbreath | HOM
+</td>
+<td style="text-align:left;">
+Jhoulys zzChacin | HOM
+</td>
+<td style="text-align:left;">
+Spencer Patton | HOM
+</td>
+<td style="text-align:left;">
+Ervin Santana | HOM
+</td>
+<td style="text-align:left;">
+Alex Avila | HOM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+Griffin Jax | CAN
+</td>
+<td style="text-align:left;">
+Keegan Thompson | CAN
+</td>
+<td style="text-align:left;">
+Scott Kingery | CAN
+</td>
+<td style="text-align:left;">
+Zach McKinstry | CAN
+</td>
+<td style="text-align:left;">
+Phil Gosselin | CAN
+</td>
+<td style="text-align:left;">
+David Dahl | CAN
+</td>
+<td style="text-align:left;">
+Brent Rooker | CAN
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+Alcides Escobar | HOM
+</td>
+<td style="text-align:left;">
+Randy Dobnak | HAR
+</td>
+<td style="text-align:left;">
+Juan Minaya | GRA
+</td>
+<td style="text-align:left;">
+James Paxton | HAR
+</td>
+<td style="text-align:left;">
+Luke Raley | HAR
+</td>
+<td style="text-align:left;">
+Hoy Jun Park | HAR
+</td>
+<td style="text-align:left;">
+Kutter Crawford | HAR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+Bryan Shaw | FM
+</td>
+<td style="text-align:left;">
+Anthony Bass | FM
+</td>
+<td style="text-align:left;">
+Zack Collins | FM
+</td>
+<td style="text-align:left;">
+Sergio Romo | FM
+</td>
+<td style="text-align:left;">
+Miguel Cabrera | FM
+</td>
+<td style="text-align:left;">
+Matt Harvey | FM
+</td>
+<td style="text-align:left;">
+Kelvin Gutierrez | FM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+A.J. Alexy | AUG
+</td>
+<td style="text-align:left;">
+Ehire Adrianza | AUG
+</td>
+<td style="text-align:left;">
+Joe Mantiply | AUG
+</td>
+<td style="text-align:left;">
+Domingo Acevedo | AUG
+</td>
+<td style="text-align:left;">
+Cam Gallagher | AUG
+</td>
+<td style="text-align:left;">
+Max Kranick | AUG
+</td>
+<td style="text-align:left;">
+Jon Heasley | AUG
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:left;">
+Heath Hembree | KYZ
+</td>
+<td style="text-align:left;">
+Amir Garrett | KYZ
+</td>
+<td style="text-align:left;">
+Rafael Marchan | KYZ
+</td>
+<td style="text-align:left;">
+Jon Berti | KYZ
+</td>
+<td style="text-align:left;">
+Alec Mills | KYZ
+</td>
+<td style="text-align:left;">
+Rex Brothers | KYZ
+</td>
+<td style="text-align:left;">
+Patrick Murphy | KYZ
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:left;">
+Wilmer Difo | DV
+</td>
+<td style="text-align:left;">
+Noe Ramirez | DV
+</td>
+<td style="text-align:left;">
+Tejay Antone | DV
+</td>
+<td style="text-align:left;">
+Jharel zzCotton | DV
+</td>
+<td style="text-align:left;">
+Tres zzBarrera | DV
+</td>
+<td style="text-align:left;">
+Kervin Castro | DV
+</td>
+<td style="text-align:left;">
+pass | RAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+9
+</td>
+<td style="text-align:left;">
+Justin Steele | PUR
+</td>
+<td style="text-align:left;">
+Ian Kennedy | LV
+</td>
+<td style="text-align:left;">
+Yu Chang | LV
+</td>
+<td style="text-align:left;">
+Ronald Torreyes | LV
+</td>
+<td style="text-align:left;">
+Yadiel Hernandez | LV
+</td>
+<td style="text-align:left;">
+Jake McCarthy | LV
+</td>
+<td style="text-align:left;">
+Robert zzGsellman | LV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:left;">
+Jeurys Familia | PR
+</td>
+<td style="text-align:left;">
+Edwin Rios | PR
+</td>
+<td style="text-align:left;">
+Clint Frazier | PR
+</td>
+<td style="text-align:left;">
+Brent Honeywell | PR
+</td>
+<td style="text-align:left;">
+Jordan Hicks | PR
+</td>
+<td style="text-align:left;">
+Bryan Abreu | PR
+</td>
+<td style="text-align:left;">
+Franchy Cordero | PR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+11
+</td>
+<td style="text-align:left;">
+Max Schrock | TB
+</td>
+<td style="text-align:left;">
+Jake Burger | TB
+</td>
+<td style="text-align:left;">
+Domingo Tapia | TB
+</td>
+<td style="text-align:left;">
+Taylor Trammell | TB
+</td>
+<td style="text-align:left;">
+Tomas Nido | TB
+</td>
+<td style="text-align:left;">
+Jordan Holloway | TB
+</td>
+<td style="text-align:left;">
+Chris Ellis | TB
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+12
+</td>
+<td style="text-align:left;">
+Cole Tucker | SV
+</td>
+<td style="text-align:left;">
+Bailey Falter | SV
+</td>
+<td style="text-align:left;">
+Austin Warren | SV
+</td>
+<td style="text-align:left;">
+Mike Moustakas | SV
+</td>
+<td style="text-align:left;">
+Luis A Garcia | SV
+</td>
+<td style="text-align:left;">
+Derek Hill | SV
+</td>
+<td style="text-align:left;">
+Adrian Morejon | SV
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+13
+</td>
+<td style="text-align:left;">
+Tucupita Marcano | VAN
+</td>
+<td style="text-align:left;">
+Art Warren | VAN
+</td>
+<td style="text-align:left;">
+Glenn Otto | VAN
+</td>
+<td style="text-align:left;">
+Justin Bruihl | VAN
+</td>
+<td style="text-align:left;">
+Kevin Smith | VAN
+</td>
+<td style="text-align:left;">
+Owen Miller | VAN
+</td>
+<td style="text-align:left;">
+Jose Quijada | VAN
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+14
+</td>
+<td style="text-align:left;">
+Sam Coonrod | GRA
+</td>
+<td style="text-align:left;">
+Dean Kremer | GRA
+</td>
+<td style="text-align:left;">
+Alejo Lopez | GRA
+</td>
+<td style="text-align:left;">
+TJ Friedl | GRA
+</td>
+<td style="text-align:left;">
+Edward Olivares | WHI
+</td>
+<td style="text-align:left;">
+Luis Frias | HAR
+</td>
+<td style="text-align:left;">
+Alex Lange | RM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+15
+</td>
+<td style="text-align:left;">
+Louis Head | CAM
+</td>
+<td style="text-align:left;">
+Brandon Drury | CAM
+</td>
+<td style="text-align:left;">
+Chance Sisco | CAM
+</td>
+<td style="text-align:left;">
+Jordan Sheffield | CAM
+</td>
+<td style="text-align:left;">
+Payton Henry | CAM
+</td>
+<td style="text-align:left;">
+Sebastian Rivero | CAM
+</td>
+<td style="text-align:left;">
+Anderson Tejeda | CAM
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+16
+</td>
+<td style="text-align:left;">
+Steve Cishek | PUR
+</td>
+<td style="text-align:left;">
+John Curtiss | PUR
+</td>
+<td style="text-align:left;">
+Josh Sborz | PUR
+</td>
+<td style="text-align:left;">
+Bruce zzZimmermann | PUR
+</td>
+<td style="text-align:left;">
+Michael Lorenzen | PUR
+</td>
+<td style="text-align:left;">
+Jack Mayfield | PUR
+</td>
+<td style="text-align:left;">
+J.C. zzMejia | PUR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+17
+</td>
+<td style="text-align:left;">
+Harold Ramirez | SEA
+</td>
+<td style="text-align:left;">
+Willians Astudillo | SEA
+</td>
+<td style="text-align:left;">
+Yonathan Daza | SEA
+</td>
+<td style="text-align:left;">
+Maikel Franco | SEA
+</td>
+<td style="text-align:left;">
+Joe Jimenez | SEA
+</td>
+<td style="text-align:left;">
+Juan Lagares | SEA
+</td>
+<td style="text-align:left;">
+Jacob Webb | SEA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+18
+</td>
+<td style="text-align:left;">
+Wily Peralta | SAC
+</td>
+<td style="text-align:left;">
+Zach Pop | SAC
+</td>
+<td style="text-align:left;">
+Edgar Santana | SAC
+</td>
+<td style="text-align:left;">
+Duane Underwood | SAC
+</td>
+<td style="text-align:left;">
+Jaime Barria | SAC
+</td>
+<td style="text-align:left;">
+Andres Machado | SAC
+</td>
+<td style="text-align:left;">
+Ryan McKenna | SAC
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+19
+</td>
+<td style="text-align:left;">
+Tyler Gilbert | STE
+</td>
+<td style="text-align:left;">
+Taylor Widener | STE
+</td>
+<td style="text-align:left;">
+Ben Rortvedt | STE
+</td>
+<td style="text-align:left;">
+Jose Siri | STE
+</td>
+<td style="text-align:left;">
+Luke Williams | STE
+</td>
+<td style="text-align:left;">
+Josh Rogers | STE
+</td>
+<td style="text-align:left;">
+Jose Rondon | STE
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:left;">
+Hirokazu Sawamura | DAY
+</td>
+<td style="text-align:left;">
+Billy zzHamilton | DAY
+</td>
+<td style="text-align:left;">
+Miguel Diaz | DAY
+</td>
+<td style="text-align:left;">
+Joey Lucchesi | DAY
+</td>
+<td style="text-align:left;">
+Gilberto Celestino | DAY
+</td>
+<td style="text-align:left;">
+Magneuris Sierra | DAY
+</td>
+<td style="text-align:left;">
+Alexander Wells | DAY
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+21
+</td>
+<td style="text-align:left;">
+Nick Fortes | WHI
+</td>
+<td style="text-align:left;">
+Steven Okert | WHI
+</td>
+<td style="text-align:left;">
+Estevan Florial | WHI
+</td>
+<td style="text-align:left;">
+Drew Smith | WHI
+</td>
+<td style="text-align:left;">
+Trevor Stephan | WHI
+</td>
+<td style="text-align:left;">
+Alfonso Rivas | WHI
+</td>
+<td style="text-align:left;">
+Nick Maton | WHI
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+22
+</td>
+<td style="text-align:left;">
+Austin Allen | ALA
+</td>
+<td style="text-align:left;">
+Roberto Perez | ALA
+</td>
+<td style="text-align:left;">
+Dillon Peters | ALA
+</td>
+<td style="text-align:left;">
+Erik Swanson | ALA
+</td>
+<td style="text-align:left;">
+Chris Rodriguez | ALA
+</td>
+<td style="text-align:left;">
+Conner Greene | ALA
+</td>
+<td style="text-align:left;">
+Dillon Maples | ALA
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+23
+</td>
+<td style="text-align:left;">
+Jorge Mateo | RAM
+</td>
+<td style="text-align:left;">
+Seth Beer | DV
+</td>
+<td style="text-align:left;">
+Hans Crouse | RAM
+</td>
+<td style="text-align:left;">
+Corbin Martin | RAM
+</td>
+<td style="text-align:left;">
+Mike Baumann | RAM
+</td>
+<td style="text-align:left;">
+Tyler Beede | RAM
+</td>
+<td style="text-align:left;">
+Stephen Ridings | PUR
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+24
+</td>
+<td style="text-align:left;">
+Aaron zzSanchez | GH
+</td>
+<td style="text-align:left;">
+Christian Walker | GH
+</td>
+<td style="text-align:left;">
+Paolo Espino | GH
+</td>
+<td style="text-align:left;">
+Kyle zzZimmer | GH
+</td>
+<td style="text-align:left;">
+Sean Doolittle | GH
+</td>
+<td style="text-align:left;">
+Sam Hentges | GH
+</td>
+<td style="text-align:left;">
+pass | GH
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

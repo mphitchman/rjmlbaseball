@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>constitution</title>
+
+<script src="site_libs/header-attrs-2.32/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/flatly.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link rel="shortcut icon" href="logos/favicon.png" />
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">&nbsp;</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Draft Central</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Teams
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li class="dropdown-header">Wagner Division</li>
+    <li>
+      <a href="CAM.html">Camarillo</a>
+    </li>
+    <li>
+      <a href="GH.html">Gig Harbor</a>
+    </li>
+    <li>
+      <a href="HAL.html">Haliburton</a>
+    </li>
+    <li>
+      <a href="HV.html">Highland Village</a>
+    </li>
+    <li>
+      <a href="HOM.html">Homestead</a>
+    </li>
+    <li>
+      <a href="RAM.html">Ramey</a>
+    </li>
+    <li class="dropdown-header">Hornsby Divsion</li>
+    <li>
+      <a href="ALA.html">Alameda</a>
+    </li>
+    <li>
+      <a href="NB.html">New Britain</a>
+    </li>
+    <li>
+      <a href="ROC.html">Rochester</a>
+    </li>
+    <li>
+      <a href="SV.html">Silicon Valley</a>
+    </li>
+    <li>
+      <a href="TB.html">Thunder Bay</a>
+    </li>
+    <li>
+      <a href="WHI.html">Whitby</a>
+    </li>
+    <li class="dropdown-header">Gehrig Division</li>
+    <li>
+      <a href="ARB.html">Arboga</a>
+    </li>
+    <li>
+      <a href="BEA.html">Beauce</a>
+    </li>
+    <li>
+      <a href="BRA.html">Bradenton</a>
+    </li>
+    <li>
+      <a href="HAR.html">Harrison</a>
+    </li>
+    <li>
+      <a href="PR.html">Powder River</a>
+    </li>
+    <li>
+      <a href="VAN.html">Vancouver</a>
+    </li>
+    <li class="dropdown-header">Alexander Division</li>
+    <li>
+      <a href="CK.html">C. Kentucy</a>
+    </li>
+    <li>
+      <a href="DAY.html">Dayton</a>
+    </li>
+    <li>
+      <a href="DV.html">Death Valley</a>
+    </li>
+    <li>
+      <a href="EVA.html">Evansville</a>
+    </li>
+    <li>
+      <a href="GRF.html">Grafton</a>
+    </li>
+    <li>
+      <a href="GNB.html">Granby</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="dmb.html">Current Season</a>
+</li>
+<li>
+  <a href="mlb.html">Current MLB Stats</a>
+</li>
+<li>
+  <a href="transactions.html">Transactions</a>
+</li>
+<li>
+  <a href="constitution.html">Constitution</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">constitution</h1>
+
+</div>
+
+
+<div id="cal-ripken-junior-memorial-league-constitution"
+class="section level1 unlisted unnumbered">
+<h1 class="unlisted unnumbered">Cal Ripken Junior Memorial League
+Constitution</h1>
+<p><em>Last Update, November 2026</em></p>
+<div id="basics" class="section level2">
+<h2>Basics</h2>
+<p>The RJML consists of 24 teams. The Organization is divided into 2
+leagues, with each league having 2 6-team divisions. The divisions are
+realigned each season based on records from the previous season. Teams
+are ranked from 1-24 in order of the most wins. The divisions are then
+grouped as follows: (1,5,9,13,17,21), (2,6,10,14,18,22),
+(3,7,11,15,19,23), (4,8,12,16,20,24). The results are reported back to
+the league statistician. Results are then sent back to each manager on a
+monthly basis. The DH is used in the RJML whenever the universal DH is
+used in MLB.</p>
+<div id="whats-required" class="section level4">
+<h4>What’s required?</h4>
+<p>Each team must have the most current version of the DMB computer game
+(Version 12) as well as the latest season disk. Team owners are also
+responsible to download and install any current patch available.</p>
+</div>
+<div id="dues" class="section level4">
+<h4>Dues</h4>
+<p>No League fee is required</p>
+</div>
+</div>
+<div id="league-play" class="section level2">
+<h2>League Play</h2>
+<p>Each home team is responsible for playing all their home games and
+send in all results to the league statistician. Each away team is
+responsible in sending the commissioner a copy of their manager profile.
+The commissioner will then send out a “play-game” database with all of
+the MP’s loaded and ready to go. Generally, manager profiles are due to
+the commissioner on the 1st of every month. Each home team then has
+until the 20th of every month to email the results back to the. Please
+note, make sure manager profiles you send out are accurate. Once you
+send the profile to the commissioner, it should be final. The system is
+referred to as “load and go.” All the home team should have to do is
+download and install the ‘play-game’ database, set all aspects of the
+visitor manager to computer and then play the games. It is recommended
+that all depth charts be set to “game by game” and not “track starts”.
+Setting the depth chart to track starts may result in an unwanted
+lineup. If you have play time percentages in your depth chart, a starter
+may not start. Make sure that the play time percentages are what you
+want set before you send it out. If a manager neglects to send the
+commissioner a copy of his manager profile by the first of the month,
+the commissioner will generate an MP for that team for that month on the
+first offense. For future offenses, the previous month’s MP will be
+used, and the manager will have to live with any usage penalties that
+result. Teams may use a different MP to play their home games than the
+one they submitted for their away games.</p>
+</div>
+<div id="commissioner" class="section level2">
+<h2>Commissioner</h2>
+<p>The Commissioner is responsible for awarding and revoking RJML
+franchises. The commissioner, in conjunction with the Board of Trustees,
+are responsible for resolving any disputes and have complete and final
+authority in all matters.</p>
+</div>
+<div id="schedule" class="section level2">
+<h2>Schedule</h2>
+<p>The regular season starts April 1st and ends on September 25th. Each
+team will play 160 games (32 5-games series). The Diamond Mind computer
+manager will be used for visiting teams. Teams may play h2h if both
+managers agree to it. As stated before, the manager profile for visiting
+teams must reach the commissioner by the 1st of each month. All results
+must be sent to the league statistician by the 20th of each month.</p>
+</div>
+<div id="rosters" class="section level2">
+<h2>Rosters</h2>
+<p>Team Rosters will be set at 40 players. No uncarded players may be on
+a RJML Roster. The only exception to this rule is if a player was
+previously drafted to a RJML roster then that player may be retained for
+the following season but counts towards your roster count of 40 players.
+Teams must have sufficient batting and pitching resources to cover the
+160 game schedule. Sufficient resources include 160 starts, at least 600
+at bats per position, and about 600 innings of relief pitching. Of the
+40 players on your roster, 26 are designated as active for each series
+from April through August. Rosters may expand to 40 players in
+September. By the end of December, all teams must cut down to 27
+players. The players released will be available in the next year’s
+rookie/free agent draft. Any team meeting the minimum resources above
+will be allowed to request free agents during the season to avoid
+overuse penalties. Free agents may only be added between months of
+gameplay (the 21st to the 1st day of the next month). Free agents may
+not be retained for the following year. If your roster is at 40, a
+player must be dropped to add the free agent. Free agent requests must
+be submitted to the entire league (You won’t be allowed to add a player
+if you have players on your roster who can fill the same void).</p>
+</div>
+<div id="player-limits" class="section level2">
+<h2>Player Limits</h2>
+<ul>
+<li><p>All batters are limited to a + 5% over usage limit of their
+actual plate appearances (the listed percentage in the game)</p></li>
+<li><p>Batters with 600+ plate appearances have unlimited
+usage.</p></li>
+<li><p>All starting pitchers are limited to actual starts.</p></li>
+<li><p>All relief pitchers are limited to a +5% over usage limit of
+their actual batters faced.</p></li>
+<li><p>A pitcher with no actual starts may not start a game. A pitcher
+with actual starts, but no starter rating (opener), may be used as a
+starter, but is limited to the batters faced limitations for
+relievers.</p></li>
+<li><p>A pitcher with no relief appearances may not be used in relief in
+a game.</p></li>
+<li><p>A pitcher with both reliever and starter ratings will be subject
+to both usage restrictions for pitchers. The exception would be a dual
+pitcher used only as a starter in DMB that goes over 105% of his actual
+batters faced. This pitcher would not be penalized, unless he exceeded
+his actual number of starts.</p></li>
+<li><p>Batters with 50 or more actual at bats must be used for at least
+50% of their actual plate appearances or they will be released from
+their team and be made available for the next years rookie draft.
+Batters with 50 or more actual at bats who are not used for at least 50%
+of their actual plate appearances during the regular season may not be
+traded. <em>This rule is waived if a new manager takes over the team
+after the season.</em></p></li>
+<li><p>Pitchers with 4 or more actual starts, and a starter rating, must
+be used for 50% of their actual starts or they will be released from
+their team and be made available for the next year’s rookie draft.
+Pitchers with 4 or more actual starts, and a starter rating, who are not
+used for at least 50% of their actual starts during the regular season
+may not be traded. <em>This rule is waived for new
+ownership.</em></p></li>
+<li><p>Pitchers that have both starter and reliever ratings must be used
+for either 50% of their actual batters faced or 50% of their actual
+starts (4 or more), or they will be released from their team and be made
+available for the next year’s rookie draft. <em>This rule is waived if a
+new manager takes over the team after the season.</em></p></li>
+</ul>
+<!-- old language: Pitchers that have both starter and reliever ratings must be used for 50% of their actual starts (4 or more) or they will be released from their team and be made available for the next years rookie draft.  Pitchers with starter and reliever ratings who are not used for at least 50% of their actual starts (4 or more) during the regular season may not be traded.  **This rule is waived if a new manager takes over the team after the season.** -->
+</div>
+<div id="draft" class="section level2">
+<h2>Draft</h2>
+<p>The RJML draft will get underway the first week in January. The draft
+will be conducted by email on a pick-by-pick basis according to a
+schedule involving one hour time slots The number of picks per day will
+vary, as the schedule tries to accomodate each manager and the time zone
+in which they reside. Please see the Draft page of the website to see
+the most up to date information 1for the draft. Since we are freezing 27
+players only 13 rounds will be necessary to complete the draft. If a
+team has less than 40 players after the 13 rounds, they may add players
+on a first come, first served basis by announcing their remaining
+additions to the entire league once the final pick has been announced.
+Teams that reach 40 players during the draft and have picks remaining
+may pass for the remainder of the draft or drop a player in order to
+draft another. The draft order will go in reverse order of record and
+will be a straight draft for all rounds. The worst three teams will
+enter in a NBA draft style lottery to determine the #1 overall pick. The
+worst team will get 3 chances, second worst 2 chances, and the 3rd worst
+1 chance. The team that comes out of the hat first will receive the1st
+pick, the second name, 2nd pick and the 3rd name will receive the #3
+pick in the draft. Ties will be broken using the following in order with
+the earlier pick going to: (1)fewest penalty games, (2)worst away games
+record, (3)worst head-to-head record, (4)worst run differential, (5)coin
+flip.</p>
+</div>
+<div id="series-play" class="section level2">
+<h2>Series Play</h2>
+<p>Each Visiting team sends the commissioner his completed manager
+profile by the 1st of each month</p>
+<p>The home team installs the ‘play game’ database into the RJML
+database. (Transfer/install league database)</p>
+<p>The home team manager resets player usage and injuries for his team
+before each series is played.</p>
+<p>After completion of all home games for the month, the home manager
+exports the statistics back to the commissioner by the 20th of each
+month. (Transfer /export statistics)</p>
+<p>The Commissioner will post a new RJML database on the 2nd and 21st
+day of each month</p>
+<p>Managers are not to play any practice games in the RJML
+database!!!!!</p>
+<p>Managers are not to play ahead in any games using the RJML
+database!!!!</p>
+<p>If any manager has problems importing/transferring please do not
+hesitate to ask. After you do it the first couple of times it’s a
+breeze.</p>
+</div>
+<div id="playoffs" class="section level2">
+<h2>Playoffs</h2>
+<p>Each playoff series is a 7-game series. Days off will be between
+games 2 and 3 and 5 and 6. Injuries and player fatigue do not carry over
+from one playoff series to the next. The first round of playoffs will be
+the top teams in each division and the two teams with the best record
+that did not win their division. The second round of the playoffs will
+be division playoff winners and finally the last round will be the World
+Series between League Pennant winners. Playoff games must either be
+played head to head online, by the home team manager, or simulated by a
+neutral manager. Game 7 cannot be played by the home team manager. The
+league champion will be awarded a free copy of the new player disk when
+it is released.</p>
+</div>
+<div id="playoff-player-usage" class="section level2">
+<h2>Playoff Player Usage</h2>
+<p>To be eligible to make a playoff start, a pitcher must have at least
+made 10 or more RJML starts during the regular season. The chart below
+determines how many starts per series that starting pitchers are
+eligible to make.</p>
+<ul>
+<li><p>10-14 RJML Starts= 1 playoff <strong>appearance</strong> per
+series</p></li>
+<li><p>15-19 RJML Starts= 2 playoff <strong>appearances</strong> per
+series</p></li>
+<li><p>20+ RJML Starts= 3 playoff <strong>appearances</strong> per
+series</p></li>
+</ul>
+<p>Starting pitchers need at least 2 games rest between
+<strong>starts</strong>. If that pitcher is still tired he must pitch at
+that level of tiredness.</p>
+<p>Batters with 600+ plate appearances are allowed an unlimited amount
+of at bats per series.</p>
+<p>Batters and relief pitchers will be limited to 6% of their real life
+plate appearances and batters faced per series. A starter may not appear
+in relief if he is at or above the 6% batters faced limit. If he is only
+used as a starter, the batters faced limit does not apply.</p>
+<p>Players that reach their 6% limit in a series are permitted to finish
+the game they entered, regardless of usage.</p>
+<p>Any players that are over-used during the regular season will have
+their post-season playing time modified as follows.</p>
+<ul>
+<li><p>Starting pitchers - Each start over his actual total reduces his
+eligible playoff starts by one. For example, a pitcher with 30 actual
+starts is given 32 starts during the DMB season. Instead of being
+eligible for 3 starts in a series, he would only be allowed one
+start.</p></li>
+<li><p>Batters and RP</p>
+<ul>
+<li>106-110% of actual PA or BF may not appear in games 1 or 2.</li>
+<li>111-115% of actual PA or BF may not appear in games 1-4.</li>
+<li>over 115% of actual PA or BF is not eligible for any games.</li>
+</ul></li>
+</ul>
+<p>Players must be on the roster the entire series in order to appear in
+a game.</p>
+<p>For every extra inning game in a series, the maximum % for each
+batter and reliever goes up by one percent. For example, in a series
+with 2 extra inning games, the maximum usage increases to 8%.</p>
+</div>
+<div id="trading" class="section level2">
+<h2>Trading</h2>
+<p>All trades must be approved by the Commissioner.</p>
+<p>Both managers must report trades to the Commissioner before
+approved.</p>
+<p>The off-season trading Period is from November 1st to March 1st.</p>
+<p>During the season, trading will be allowed (including picks for the
+upcoming draft) from the 21st of each month to the 1st day of the
+following month until August 1st. Players involved in trades during the
+season must adhere to all usage limits for their season totals, not just
+for their new team.</p>
+<p>Only draft choices for the upcoming draft may be traded.</p>
+<p>If during any season, a manager trades away multiple draft picks and
+drops out of the league prior to the completion of the next draft, the
+in-season trading period will be removed permanently.</p>
+</div>
+<div id="penalties" class="section level2">
+<h2>Penalties</h2>
+<p>For each 5% total overuse of all the players added together, a team
+will have 1 game added to their victory total (1%-5% over = 1 game,
+6%-10% over = 2 games, etc). For example, one team has a batter at 107%,
+another batter at 109%, and a reliever at 111%, the team would be at 12%
+overuse overall, resulting in a 3 game penalty.</p>
+<p>For each game started of overuse per pitcher a team will have 9 games
+added to their victory total with no exceptions.</p>
+<!-- Pitchers with both starter and relief ratings must follow the usage restrictions for both starters and relievers.  For example, suppose a pitcher had 10 actual starts and 30 total appearances is used in only 11 games, but all starts.  This would result in a 9 game penalty.  If the pitcher pitched in 29 games, but only started 4 games, he would become a free agent due to underusage.  Pitchers with actual starts, but no starter rating (openers) may be used as a starter, but cannot exceed his actual starts or 105% of his actual batters faced.  A pitcher that is not rated as a starter cannot be lost due to underusage.-->
+<p>For every two penalty games accrued, the team’s first round draft
+pick will drop one spot, with a maximum drop of 23 spots. Penalties will
+be assessed beginning with the team picking 24th and ending with the
+team picking 1st. Since some teams may drop less than teams that are
+above them, the net result of where a team picks may not reflect the
+same drop in position as the penalties would indicate. For example, if a
+team that would normally have the 5th pick in the draft accrues 20
+penalty games, his pick would drop to the 15th pick in round one. If the
+team with the 4th pick drops 22 spots, the team that started with the
+5th pick essentially moves back up a spot..</p>
+<p>For round 2, the draft order goes from the team with the fewest
+adjusted wins (actual wins + penalty games) to the team with the
+greatest number of adjusted wins. Rounds 3-13 will be strictly based on
+the actual number of wins.</p>
+<p>All penalties are null and void if a manager resigns or is removed
+from the league. New managers are not penalized for the actions of a
+previous manager.</p>
+</div>
+<div id="late-reporting" class="section level2">
+<h2>Late Reporting</h2>
+<p>If a manager fails to meet the deadline for submitting home stats,
+his home games will be simulated by the commissioner and he will run the
+risk of playing time penalties. If the ‘play-game’ database was not
+installed prior to playing the home games for that month, the manager
+will have the option of re-playing the games until the 20th of the
+month, or having the games simulated.</p>
+</div>
+<div id="board-of-trustees" class="section level2">
+<h2>Board of Trustees</h2>
+<p>The Board of Trustees are made up of the Commissioner and one manager
+from each division (the manager that has been in the league the longest)
+creating a membership of 5 trustees. The Trustees sole duty is to vote
+on certain issues that arise during the course of the season or
+off-season that are not part of the Constitution. The trustees will also
+vote on trades that are deemed totally unfair to the rest of the League.
+Should a Board Member become involved in the dispute, he/she shall not
+have a vote on matter at hand. Should the board vote in a tie due to
+that possibility, a league wide vote of all 24 members will take place
+on that issue.</p>
+</div>
+<div id="odds-and-ends" class="section level2">
+<h2>Odds and Ends</h2>
+<ul>
+<li><p>The Ripken Junior Memorial League is a DH League whenever MLB
+uses a universal DH.</p></li>
+<li><p>Era setting (A or N) will be determined by coin flip</p></li>
+<li><p>A player rated in the OF may play any OF position</p></li>
+<li><p>Other than above, a player may only play a game at a position he
+is rated at. A player only rated at DH can play his last position played
+on a Diamond Mind disk taking into consideration he will not have a
+rating at that position.</p></li>
+<li><p>Managers must be aware that they will have to take the defensive
+consequences of playing players not rated at positions.</p></li>
+<li><p>Teams can, if they wish, use net meeting to conduct their games.
+This is up to the home team if he desires to do so. If the Visiting team
+does not wish to play over net meeting and the Home team does, the home
+team will play using the visitor’s manager profile.</p></li>
+<li><p>The tie-break procedure for playoff seeding is as follows: head
+to head record, then division record, then league record, then road
+record, then a coin flip.</p></li>
+<li><p>The tie-break procedure for draft order is as follows: If two or
+more teams have the same win total, the team with the fewest game
+penalties from over usage receives the better draft position; if the
+game penalties are equal, the team that would have lost the tie-break
+procedure for playoff seeding receives the better draft
+position.</p></li>
+</ul>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
